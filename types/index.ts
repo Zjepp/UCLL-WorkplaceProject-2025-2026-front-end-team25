@@ -6,6 +6,13 @@ export type User = {
   password?: string;
 }
 
+export type Team = {
+  id?: number;
+  name?: string;
+  town?: string;
+  foundationYear?: number;
+}
+
 export type StatusMessage = {
   message: string;
   type: 'error' | 'success';

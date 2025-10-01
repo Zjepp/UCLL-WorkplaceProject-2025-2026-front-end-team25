@@ -20,6 +20,12 @@ const Header: React.FC = () => {
           Players
         </Link>
 
+        <Link
+          href="/teams"
+          className=" px-4 text-xl text-white  hover:bg-gray-600 rounded-lg">
+          Teams
+        </Link>
+        
    </nav>
     </header>
   )
