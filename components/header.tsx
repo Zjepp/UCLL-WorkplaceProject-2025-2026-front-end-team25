@@ -10,17 +10,22 @@ const Header: React.FC = () => {
       <nav className="items-center flex md:flex-row flex-col">
         <Link
           href="/"
-          className=" px-4 text-xl text-white  hover:bg-gray-600 rounded-lg">
+          className="px-4 text-xl text-white hover:bg-gray-600 rounded-lg">
           Home
         </Link>
 
         <Link
           href="/players"
-          className=" px-4 text-xl text-white  hover:bg-gray-600 rounded-lg">
+          className="px-4 text-xl text-white hover:bg-gray-600 rounded-lg">
           Players
         </Link>
 
-   </nav>
+        <Link
+          href="/program"
+          className="px-4 text-xl text-white rounded-lg ml-2 hover:bg-gray-600">
+          Program
+        </Link>
+      </nav>
     </header>
   )
 }
