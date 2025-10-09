@@ -1,0 +1,39 @@
+# Node modules
+IPSA_VZW/node_modules
+node_modules
+
+# Build outputs
+IPSA_VZW/.expo
+IPSA_VZW/dist
+IPSA_VZW/web-build
+
+# Git
+.git
+.gitignore
+
+# GitHub
+.github
+
+# Development files
+IPSA_VZW/.expo-shared
+IPSA_VZW/app-example
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode
+.idea
+
+# Environment
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
