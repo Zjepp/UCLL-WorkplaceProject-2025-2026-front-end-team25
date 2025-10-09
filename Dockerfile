@@ -13,7 +13,7 @@ RUN npm ci
 COPY IPSA_VZW/ ./
 
 # Build the web version
-RUN npx expo export:web
+RUN npx expo export
 
 # Production stage
 FROM nginx:alpine
