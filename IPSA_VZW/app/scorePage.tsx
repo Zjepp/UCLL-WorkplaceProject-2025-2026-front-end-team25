@@ -19,7 +19,7 @@ import { Pressable, Text, View } from "react-native";
       </Pressable>
 
         <Text>
-            <p>19/20</p>
+            19/20
         </Text>
 
       <Pressable>
