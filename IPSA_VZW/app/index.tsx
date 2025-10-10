@@ -10,7 +10,7 @@ export default function Index() {
         alignItems: "center",
       }}
     >
-      <Text> this is the main page. The setup is successful!</Text>
+      <Text>this is the main page. The setup is successful!</Text>
     </View>
   );
 }
