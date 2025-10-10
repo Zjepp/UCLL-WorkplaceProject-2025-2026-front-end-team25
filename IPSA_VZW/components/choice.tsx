@@ -1,10 +1,6 @@
 
-
-
 import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, useWindowDimensions } from 'react-native';
-const boxSize = (useWindowDimensions().width - 60) / 2; 
-
+import { View, Text, TouchableOpacity, StyleSheet, Dimensions, Pressable } from 'react-native';
 
 interface QuizOption {
   id: number;
@@ -27,19 +23,21 @@ const questionData: {
   ],
 };
 
-interface QuizQuestionProps {
+interface MultipleChoiceProps {
   onAnswerSelected?: (selectedId: number) => void;
 }
 
 
-const QuizQuestion: React.FC<QuizQuestionProps> = ({ onAnswerSelected }: QuizQuestionProps) => {
+const QuizMultipleChoice: React.FC<MultipleChoiceProps> = ({ onAnswerSelected }: MultipleChoiceProps) => {
   const [selectedOption, setSelectedOption] = useState<number | null>(null);
+  const windowWidth = Dimensions.get('window').width;
+  const boxSize = (windowWidth - 100) / 2;
+  
 
-  const handleSelect = (option: QuizOption) => {
-    if (selectedOption === null) { 
+  const handleSelect = (option: QuizOption) => { 
+      console.log(`Je hebt gekozen voor: ${option.formula}`);
       setSelectedOption(option.id);
       onAnswerSelected?.(option.id);
-    }
 };
 return ( 
     <View style={styles.container}>
@@ -55,7 +53,7 @@ return (
           const isFirstCol = col === 0;
 
           return (
-            <TouchableOpacity
+            <Pressable
               key={option.id}
               style={[
                 styles.optionBox,
@@ -64,16 +62,17 @@ return (
                   width: boxSize,
                   height: boxSize,
                   marginTop: isFirstRow ? 20 : 10,
+                  marginRight: isFirstCol ? 10 : 20,
                   marginLeft: isFirstCol ? 20 : 10,
                   borderWidth: isSelected ? 3 : 0,
-                  borderColor: '#FFFFFF',
+                  borderColor: '#000000',
                 },
               ]}
               onPress={() => handleSelect(option)}
               disabled={selectedOption !== null}
             >
               <Text style={styles.formulaText}>{option.formula}</Text>
-            </TouchableOpacity>
+            </Pressable>
           );
         })}
       </View>
@@ -126,7 +125,7 @@ const styles = StyleSheet.create({
   },
 });
 
-export default QuizQuestion;
+export default QuizMultipleChoice;
 
 
 
