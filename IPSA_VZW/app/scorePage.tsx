@@ -5,10 +5,8 @@ import { LinearGradient } from "expo-linear-gradient";
 const ScorePage: React.FC = () => {
   return (
     <View style={styles.container}>
-      {/* Title */}
       <Text style={styles.title}>Resultaten</Text>
 
-      {/* Score Bord */}
       <LinearGradient
         colors={["#A89BC7", "#5B4D9F"]}
         start={{ x: 0, y: 0 }}
@@ -19,7 +17,6 @@ const ScorePage: React.FC = () => {
         <Text style={styles.buttonText}>Score Bord</Text>
       </LinearGradient>
 
-      {/* Score Section */}
       <LinearGradient
         colors={["#FF4928", "#A91E00"]}
         start={{ x: 0, y: 0 }}
@@ -32,7 +29,6 @@ const ScorePage: React.FC = () => {
         <Text style={styles.scoreNumber}>20</Text>
       </LinearGradient>
 
-      {/* Foute Antwoorden */}
       <LinearGradient
         colors={["#A5BCBC", "#1CA0A0"]}
         start={{ x: 0, y: 0 }}
@@ -43,7 +39,6 @@ const ScorePage: React.FC = () => {
         <Text style={styles.buttonText}>Foute Antwoorden</Text>
       </LinearGradient>
 
-      {/* Terug */}
       <LinearGradient
         colors={["#FFD285", "#CE9935"]}
         start={{ x: 0, y: 0 }}
@@ -81,8 +76,9 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     color: "#FFFFFF",
-    fontSize: 20,
+    fontSize: 30,
     fontWeight: "400",
+    marginRight: 10,
   },
   scoreContainer: {
     flexDirection: "row",
@@ -96,12 +92,13 @@ const styles = StyleSheet.create({
   scoreNumber: {
     fontSize: 70,
     color: "#FFFFFF",
-    fontWeight: "300",
+    fontWeight: "bold",
+    marginHorizontal: 30,
   },
   scoreBar: {
-    fontSize: 60,
+    fontSize: 50,
     color: "#FFFFFF",
-    marginHorizontal: 20,
+    position: "fixed",
   },
 });
 
