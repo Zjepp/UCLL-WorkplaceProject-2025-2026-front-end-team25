@@ -3,6 +3,7 @@
 
 import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, useWindowDimensions } from 'react-native';
+const boxSize = (useWindowDimensions().width - 60) / 2; 
 
 
 interface QuizOption {
@@ -35,12 +36,12 @@ const QuizQuestion: React.FC<QuizQuestionProps> = ({ onAnswerSelected }: QuizQue
   const [selectedOption, setSelectedOption] = useState<number | null>(null);
 
   const handleSelect = (option: QuizOption) => {
-    if (selectedOption === null) { // Prevent re-selection if already chosen
+    if (selectedOption === null) { 
       setSelectedOption(option.id);
       onAnswerSelected?.(option.id);
     }
 };
-return (  // <-- This return statement is key—TS now infers ReactNode
+return ( 
     <View style={styles.container}>
       <Text style={styles.title}>{questionData.title}</Text>
       <Text style={styles.question}>{questionData.question}</Text>
@@ -124,6 +125,10 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
 });
+
+export default QuizQuestion;
+
+
 
 
 
