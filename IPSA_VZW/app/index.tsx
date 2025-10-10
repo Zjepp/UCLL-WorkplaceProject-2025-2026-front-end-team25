@@ -1,7 +1,9 @@
+import { Link, router, useRouter } from "expo-router";
 import React from "react";
-import { Text, View } from "react-native";
+import { Pressable, Text, View } from "react-native";
 
 export default function Index() {
+  const router = useRouter();
   return (
     <View
       style={{
@@ -11,6 +13,9 @@ export default function Index() {
       }}
     >
       <Text> this is the main page. The setup is successful!</Text>
+      <Pressable onPress={() => router.navigate("/multipleChoice")}>
+        <Text>Multiple Choice page</Text>
+      </Pressable>
     </View>
   );
 }
