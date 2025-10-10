@@ -13,7 +13,7 @@ export default function Index() {
       }}
     >
       <Text> this is the main page. The setup is successful!</Text>
-      <Pressable style={styles.button} onPress={() => router.push("/multipleChoice")}>
+      <Pressable style={styles.button} onPress={() => router.push("/quiz")}>
         <Text style={styles.buttonText}>Multiple Choice page</Text>
       </Pressable>
     </View>
