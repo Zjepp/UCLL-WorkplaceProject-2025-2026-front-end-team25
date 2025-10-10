@@ -1,8 +1,10 @@
 import React from "react";
 import { Pressable, Text, View, StyleSheet } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
+import { useRouter } from "expo-router";
 
 const ScorePage: React.FC = () => {
+    const router = useRouter();
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Resultaten</Text>
@@ -14,7 +16,7 @@ const ScorePage: React.FC = () => {
         locations={[0.5, 0.5]} // hard split
         style={styles.button}
       >
-        <Text style={styles.buttonText}>Score Bord</Text>
+        <Pressable style={styles.buttonText}><Text>Score Bord</Text></Pressable>
       </LinearGradient>
 
       <LinearGradient
@@ -35,8 +37,9 @@ const ScorePage: React.FC = () => {
         end={{ x: 1, y: 0 }}
         locations={[0.5, 0.5]}
         style={styles.button}
+
       >
-        <Text style={styles.buttonText}>Foute Antwoorden</Text>
+        <Pressable style={styles.buttonText} onPress={() => router.push("/index")}><Text>Foute Antwoorden</Text></Pressable>
       </LinearGradient>
 
       <LinearGradient
@@ -45,8 +48,10 @@ const ScorePage: React.FC = () => {
         end={{ x: 1, y: 0 }}
         locations={[0.5, 0.5]}
         style={styles.button}
+
+
       >
-        <Text style={styles.buttonText}>Terug</Text>
+        <Pressable style={styles.buttonText}><Text>Terug</Text></Pressable>
       </LinearGradient>
     </View>
   );
