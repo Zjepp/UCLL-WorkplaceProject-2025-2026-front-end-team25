@@ -1,10 +1,7 @@
 import { useRouter } from "expo-router";
 import React from "react";
 import { Text, View, StyleSheet, Pressable } from "react-native";
-
-const quizButtonPress = () => {
-  console.log("Quiz button pressed");
-}
+//import LinearGradient from 'react-native-linear-gradient';
 
 export default function Index() {
   const router = useRouter();
@@ -31,11 +28,15 @@ export default function Index() {
 
 
       <View style={styles.buttonContainer}>
+        {/* <LinearGradient
+          colors={['#A395CA', '#674DAF']}
+          style={[styles.button, styles.scoreBordButton]}
+          /> */}
         <Pressable style={[styles.button, styles.scoreBordButton]}>
           <Text style={styles.buttonText}>Score Bord</Text>
         </Pressable>
 
-        <Pressable onPress={quizButtonPress} style={[styles.quizButton]}>
+        <Pressable onPress={() => router.push("/quizPage")} style={[styles.quizButton]}>
           <Text style={styles.buttonQuizText}>Quiz</Text>
         </Pressable>
 
@@ -58,6 +59,7 @@ const styles = StyleSheet.create({
   container: {
     flex: .9,
     flexDirection: "column",
+    //backgroundColor: "#9cce90b7"
   },
   headerContainer: {
     flexDirection: "row",
@@ -100,9 +102,11 @@ const styles = StyleSheet.create({
     width: 250,
     justifyContent: "center",
     alignItems: "center",
+    elevation: 5,
   },
   scoreBordButton: {
     backgroundColor: "#A395CA",
+    shadowOffset: { width: 0, height: 4 },
   },
   quizButton: {
     borderRadius: 50,
@@ -110,7 +114,8 @@ const styles = StyleSheet.create({
     width: 295,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#FF4F21"
+    backgroundColor: "#FF4F21",
+    elevation: 5,
   },
   overzichtButton: {
     backgroundColor: "#A1C2C2"
