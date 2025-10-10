@@ -96,5 +96,3 @@ docker run -p 8080:80 ghcr.io/ucll-workplaceproject-2025-2026/front-end-team25:m
 - [Expo Documentation](https://docs.expo.dev/)
 - [Expo Router Documentation](https://docs.expo.dev/router/introduction/)
 - [React Native Documentation](https://reactnative.dev/)
-
-test
