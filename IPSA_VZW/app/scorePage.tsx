@@ -16,7 +16,9 @@ const ScorePage: React.FC = () => {
         locations={[0.5, 0.5]} // hard split
         style={styles.button}
       >
-        <Pressable style={styles.buttonText}><Text>Score Bord</Text></Pressable>
+        {/* // moet nog veranderd worden */}
+        <Pressable  onPress={() => router.push("/")}>
+          <Text style={styles.buttonText}>Score Bord</Text></Pressable>
       </LinearGradient>
 
       <LinearGradient
@@ -38,8 +40,9 @@ const ScorePage: React.FC = () => {
         locations={[0.5, 0.5]}
         style={styles.button}
 
-      >
-        <Pressable style={styles.buttonText} onPress={() => router.push("/index")}><Text>Foute Antwoorden</Text></Pressable>
+      > {/* // moet nog veranderd worden */}
+        <Pressable  onPress={() => router.push("/")}>
+          <Text style={styles.buttonText}>Foute Antwoorden</Text></Pressable>
       </LinearGradient>
 
       <LinearGradient
@@ -51,7 +54,7 @@ const ScorePage: React.FC = () => {
 
 
       >
-        <Pressable style={styles.buttonText}><Text>Terug</Text></Pressable>
+        <Pressable ><Text style={styles.buttonText}>Terug</Text></Pressable>
       </LinearGradient>
     </View>
   );
