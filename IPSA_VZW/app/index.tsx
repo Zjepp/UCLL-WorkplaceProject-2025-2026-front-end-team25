@@ -1,5 +1,4 @@
 import { useRouter } from "expo-router";
-import { useRouter } from "expo-router";
 import React from "react";
 import { Pressable, Text, View, StyleSheet } from "react-native";
 
@@ -18,8 +17,8 @@ export default function Index() {
         <Text style={styles.buttonText}>Multiple Choice page</Text>
       </Pressable>
 
-      <Pressable onPress={() => router.push("/scorePage")}>
-        <Text>Start Quiz</Text>
+      <Pressable style={styles.button} onPress={() => router.push("/scorePage")}>
+        <Text style={styles.buttonText}>Start Quiz</Text>
       </Pressable>
 
     </View>
