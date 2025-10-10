@@ -5,7 +5,7 @@ export default function RootLayout() {
   return (
   <Stack>
     <Stack.Screen name="index"/>
-    <Stack.Screen name="scorePage"/>
+    <Stack.Screen name="multipleChoice"/>
   </Stack>
   );
 }
