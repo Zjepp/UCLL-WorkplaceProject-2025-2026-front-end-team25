@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Dimensions, Pressable } from 'react-native';
 
 interface QuizOption {
@@ -16,10 +16,10 @@ const questionData: {
   title: 'Vraag 1 van 20',
   question: 'Wat is de formule van paracetamol',
   options: [
-    { id: 1, formula: 'C₈H₉NO₂', color: '#26A69A' },
-    { id: 2, formula: 'P₈H₉NO₂', color: '#FFCA28' }, 
-    { id: 3, formula: 'C₈H₉O₂', color: '#EF5350' },
-    { id: 4, formula: 'C₈H₉NO₂', color: '#AB47BC' },
+    { id: 1, formula: 'C₈H₉NO₂', color: '#26A69Aff' },
+    { id: 2, formula: 'P₈H₉NO₂', color: '#fdc961ff' }, 
+    { id: 3, formula: 'C₈H₉O₂', color: '#e64d32ff' },
+    { id: 4, formula: 'C₈H₉NO₂', color: '#bd99d4ff' },
   ],
 };
 
@@ -31,19 +31,41 @@ interface MultipleChoiceProps {
 const QuizMultipleChoice: React.FC<MultipleChoiceProps> = ({ onAnswerSelected }: MultipleChoiceProps) => {
   const [selectedOption, setSelectedOption] = useState<number | null>(null);
   const windowWidth = Dimensions.get('window').width;
+  const [timeLeft, setTimeLeft] = useState(10);
   const boxSize = (windowWidth - 100) / 2;
-  
+  const [visible, setVisible] = useState(true);
+
+    useEffect(() => {
+    const interval = setInterval(() => {
+      setTimeLeft(prev => {
+        if (prev <= 1) {
+          clearInterval(interval);
+          setVisible(false);
+          return 0;
+        }
+        return prev - 1;
+      });
+    }, 1000);
+    return () => clearInterval(interval);
+  }, []);
 
   const handleSelect = (option: QuizOption) => { 
       console.log(`Je hebt gekozen voor: ${option.formula}`);
       setSelectedOption(option.id);
       onAnswerSelected?.(option.id);
 };
+
+ const progressWidth = ((10 - timeLeft) / 10) * 100;
+
 return ( 
     <View style={styles.container}>
       <Text style={styles.title}>{questionData.title}</Text>
       <Text style={styles.question}>{questionData.question}</Text>
       
+      <View style={styles.progressContainer}>
+        <View style={[styles.progressBar, { width: `${progressWidth}%` }]} />
+      </View>
+
       <View style={styles.optionsGrid}>
         {questionData.options.map((option, index) => {
           const isSelected = selectedOption === option.id;
@@ -60,7 +82,7 @@ return (
                 {
                   backgroundColor: option.color,
                   width: boxSize,
-                  height: boxSize,
+                  height: boxSize + 30,
                   marginTop: isFirstRow ? 20 : 10,
                   marginRight: isFirstCol ? 10 : 20,
                   marginLeft: isFirstCol ? 20 : 10,
@@ -69,9 +91,9 @@ return (
                 },
               ]}
               onPress={() => handleSelect(option)}
-              disabled={selectedOption !== null}
+              disabled={visible || selectedOption !== null}
             >
-              <Text style={styles.formulaText}>{option.formula}</Text>
+              <Text style={[styles.formulaText, !visible && { opacity: 0 }]}>{option.formula}</Text>
             </Pressable>
           );
         })}
@@ -83,44 +105,50 @@ return (
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 20,
+    //padding: 20,
     backgroundColor: '#FFFFFF',
     justifyContent: 'flex-start',
   },
   title: {
     fontSize: 18,
-    fontWeight: 'bold',
-    color: '#333333',
+    color: '#000000ff',
     marginBottom: 10,
-    textAlign: 'center',
+    textAlign: 'right',
+    paddingHorizontal: 20,
+    paddingTop: 20,
   },
   question: {
-    fontSize: 20,
-    fontWeight: '600',
-    color: '#333333',
+    fontSize: 36,
+    color: '#000000ff',
     marginBottom: 30,
     textAlign: 'center',
-    lineHeight: 28,
+    paddingHorizontal: 20,
+  },
+  progressContainer: {
+    height: 20,
+    width: '100%',
+    backgroundColor: '#26A69Aff',
+    overflow: 'hidden',
+    marginVertical: 10,
+  },
+  progressBar: {
+    height: '100%',
+    backgroundColor: '#acece6ff',
   },
   optionsGrid: {
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'space-between',
+    paddingHorizontal: 20,
   },
   optionBox: {
-    borderRadius: 8,
+    borderRadius: 20,
     justifyContent: 'center',
     alignItems: 'center',
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 3,
   },
   formulaText: {
-    fontSize: 16,
-    fontWeight: 'bold',
-    color: '#FFFFFF',
+    fontSize: 28,
+    color: '#000000ff',
     textAlign: 'center',
   },
 });
