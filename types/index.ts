@@ -9,8 +9,8 @@ export type User = {
 export type Vraag = {
   id?: number;
   type?: string;
-  vraag: string;
-  antwoord: Antwoord[];
+  vraag?: string;
+  antwoord?: Antwoord[];
   resultaat?: Resultaat[];
 }
 
