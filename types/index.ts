@@ -6,11 +6,23 @@ export type User = {
   password?: string;
 }
 
-export type Team = {
+export type Vraag = {
   id?: number;
-  name?: string;
-  town?: string;
-  foundationYear?: number;
+  type?: string;
+  vraag?: string;
+  antwoord?: Antwoord[];
+  resultaat?: Resultaat[];
+}
+
+export type Antwoord = {
+  id?: number,
+  correct?: boolean,
+  antwoord?: string,
+}
+
+export type Resultaat = {
+  id?: number,
+  resultaat?: string,
 }
 
 export type StatusMessage = {
