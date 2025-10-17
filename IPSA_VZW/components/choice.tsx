@@ -34,10 +34,10 @@ const QuizChoice: React.FC<MultipleChoiceProps> = ({ onAnswerSelected, question,
     title: title,
     question: question.vraag ? question : { vraag: 'vraag niet beschikbaar' } as Vraag,
     options: [
-      { id: 1, formula: question.antwoord?.[0] ?? 'antwoord niet beschikbaar', color: '#26A69Aff' },
-      { id: 2, formula: question.antwoord?.[1] ?? 'antwoord niet beschikbaar', color: '#fdc961ff' }, 
-      { id: 3, formula: question.antwoord?.[2] ?? 'antwoord niet beschikbaar', color: '#e64d32ff' },
-      { id: 4, formula: question.antwoord?.[3] ?? 'antwoord niet beschikbaar', color: '#bd99d4ff' },
+      { id: 1, formula: question.antwoorden?.[0] ?? 'antwoord niet beschikbaar', color: '#26A69Aff' },
+      { id: 2, formula: question.antwoorden?.[1] ?? 'antwoord niet beschikbaar', color: '#fdc961ff' }, 
+      { id: 3, formula: question.antwoorden?.[2] ?? 'antwoord niet beschikbaar', color: '#e64d32ff' },
+      { id: 4, formula: question.antwoorden?.[3] ?? 'antwoord niet beschikbaar', color: '#bd99d4ff' },
     ],
   };
   const handleSelect = (option: QuizOption) => { 
@@ -107,7 +107,7 @@ const styles = StyleSheet.create({
     paddingTop: 20,
   },
   question: {
-    fontSize: 36,
+    fontSize: 28,
     color: '#000000ff',
     marginBottom: 30,
     textAlign: 'center',
@@ -126,7 +126,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   formulaText: {
-    fontSize: 28,
+    fontSize: 22,
+    paddingHorizontal: 2,
     color: '#000000ff',
     textAlign: 'center',
   },

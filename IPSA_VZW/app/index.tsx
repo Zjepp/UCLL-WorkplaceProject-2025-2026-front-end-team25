@@ -43,14 +43,6 @@ export default function Index() {
           <Text style={styles.buttonText}>Faq</Text>
         </Pressable>
       </View>
-      <Pressable style={styles.button} onPress={() => router.push("/Multiplequiz")}>
-        <Text style={styles.buttonText}>Multiple Choice page</Text>
-      </Pressable>
-
-      <Pressable style={styles.button} onPress={() => router.push("/scorePage")}>
-        <Text style={styles.buttonText}>Start Quiz</Text>
-      </Pressable>
-
     </View>
   );
 }

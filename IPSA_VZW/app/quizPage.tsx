@@ -2,7 +2,6 @@ import quizService from "@/services/quizService";
 import { useRouter } from "expo-router";
 import React, { useEffect, useState } from "react";
 import { View, Text, StyleSheet, ActivityIndicator } from "react-native";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Vraag } from "../../types";
 import QuizMultipleChoice from "@/components/memoryChoice";
 import QuizMemoryChoice from "@/components/memoryChoice";
@@ -23,6 +22,7 @@ export default function quiz() {
 
         if (response.status === 200) {
             const vragen: Vraag[] = await response.json();
+            JSON.stringify(vragen);
             setQuestions(vragen);
             console.log(vragen);
         } else {
@@ -46,19 +46,13 @@ export default function quiz() {
         correctAmount={correctAmount}
         mistakesAmount={mistakeAmount}
         />
-        // <View style={styles.center}>
-        //   <Text style={styles.done}>🎉 Alle vragen beantwoord!</Text>
-        //   <Text onPress={() => router.push("/")} style={styles.link}>
-        //     Terug naar menu
-        //   </Text>
-        // </View>
       );
     }
 
     if (question.type === "standaard-choice") {
       return (
         <QuizChoice
-          title=""
+          title={`Pagina ${currentIndex + 1} van ${questions.length}`}
           question={question}
           onAnswerSelected={() => setCurrentIndex((i) => i + 1)}
           mistakeAmount={mistakeAmount}
@@ -71,7 +65,7 @@ export default function quiz() {
     if (question.type === "memory-choice") {
       return (
         <QuizMemoryChoice
-          title=""
+          title={`Pagina ${currentIndex + 1} van ${questions.length}`}
           question={question}
           onAnswerSelected={() => setCurrentIndex((i) => i + 1)}
           mistakeAmount={mistakeAmount}
