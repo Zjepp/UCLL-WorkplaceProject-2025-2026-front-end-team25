@@ -6,6 +6,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Vraag } from "../../types";
 import QuizMultipleChoice from "@/components/memoryChoice";
 import QuizMemoryChoice from "@/components/memoryChoice";
+import QuizChoice from "@/components/choice";
 
 
 export default function quiz() {
@@ -34,6 +35,7 @@ export default function quiz() {
   }, [])
   const openQuestion = () => {
     const question = questions[currentIndex];
+    console.log(question);
 
     if (!question) {
       return (
@@ -48,13 +50,14 @@ export default function quiz() {
 
     if (question.type === "standaard-choice") {
       return (
-        <QuizMultipleChoice
+        <QuizChoice
           title=""
           question={question}
           onAnswerSelected={() => setCurrentIndex((i) => i + 1)}
         />
       );
-    } else {
+    } 
+    if (question.type === "memory-choice") {
       return (
         <QuizMemoryChoice
           title=""
