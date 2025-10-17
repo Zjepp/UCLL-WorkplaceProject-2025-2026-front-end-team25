@@ -14,6 +14,7 @@ interface MultipleChoiceProps {
   question : Vraag;
 }
 
+
 const QuizMultipleChoice: React.FC<MultipleChoiceProps> = ({ onAnswerSelected, question, title }: MultipleChoiceProps) => {
   const [selectedOption, setSelectedOption] = useState<number | null>(null);
   const windowWidth = Dimensions.get('window').width;
@@ -63,7 +64,7 @@ const QuizMultipleChoice: React.FC<MultipleChoiceProps> = ({ onAnswerSelected, q
       onAnswerSelected?.(option.id);
 };
 
-const progressWidth = ((10 - timeLeft) / 10) * 100;
+ const progressWidth = ((10 - timeLeft) / 10) * 100;
 const progressColor = phase === 'view' ? '#acece6ff' : '#e64d32ff';
 
 return ( 
