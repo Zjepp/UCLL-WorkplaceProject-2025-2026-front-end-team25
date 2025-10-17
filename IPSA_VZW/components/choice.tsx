@@ -12,9 +12,13 @@ interface MultipleChoiceProps {
   onAnswerSelected?: (selected: boolean) => void;
   title: string;
   question : Vraag;
+  mistakeAmount: number;
+  mistakeAmountSetter: (amount: number) => void;
+  correctAmount: number;
+  correctAmountSetter: (amount: number) => void;
 }
 
-const QuizChoice: React.FC<MultipleChoiceProps> = ({ onAnswerSelected, question, title }: MultipleChoiceProps) => {
+const QuizChoice: React.FC<MultipleChoiceProps> = ({ onAnswerSelected, question, title, mistakeAmount, mistakeAmountSetter, correctAmount, correctAmountSetter }: MultipleChoiceProps) => {
   const [selectedOption, setSelectedOption] = useState<number | null>(null);
   const windowWidth = Dimensions.get('window').width;
   const [timeLeft, setTimeLeft] = useState(10);
@@ -38,6 +42,9 @@ const QuizChoice: React.FC<MultipleChoiceProps> = ({ onAnswerSelected, question,
   };
   const handleSelect = (option: QuizOption) => { 
       console.log(`Je hebt gekozen voor: ${option.formula}`);
+      if(typeof option.formula === 'object' && option.formula !== null && 'correct' in option.formula){
+        if(option.formula.correct) {correctAmountSetter(correctAmount+1)} else {mistakeAmountSetter(mistakeAmount + 1)};
+      };
       onAnswerSelected?.(true);
 };
 
