@@ -6,6 +6,7 @@ export default function RootLayout() {
   <Stack>
     <Stack.Screen name="index"/>
     <Stack.Screen name="multipleChoice"/>
+    <Stack.Screen name="quizPage"/>
   </Stack>
   );
 }
