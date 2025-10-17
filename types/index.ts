@@ -10,7 +10,7 @@ export type Vraag = {
   id?: number;
   type?: string;
   vraag?: string;
-  antwoord?: Antwoord[];
+  antwoorden?: Antwoord[];
   resultaat?: Resultaat[];
 }
 
