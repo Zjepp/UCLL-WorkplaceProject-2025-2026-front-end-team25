@@ -3,7 +3,12 @@ import { Pressable, Text, View, StyleSheet } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { useRouter } from "expo-router";
 
-const Score: React.FC = () => {
+interface ScoreProps {
+  correctAmount: number;
+  mistakesAmount: number;
+}
+
+const Score: React.FC<ScoreProps> = ({ correctAmount, mistakesAmount }) => {
     const router = useRouter();
   return (
     <View style={styles.container}>
@@ -27,9 +32,9 @@ const Score: React.FC = () => {
         locations={[0.5, 0.5]}
         style={styles.scoreContainer}
       >
-        <Text style={styles.scoreNumberLeft}>14</Text>
+        <Text style={styles.scoreNumberLeft}>{correctAmount}</Text>
         <Text style={styles.scoreBar}>|</Text>
-        <Text style={styles.scoreNumberRight}>20</Text>
+        <Text style={styles.scoreNumberRight}>{correctAmount + mistakesAmount}</Text>
       </LinearGradient>
 
       <LinearGradient

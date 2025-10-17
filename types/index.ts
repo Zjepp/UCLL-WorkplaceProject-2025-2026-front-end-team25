@@ -16,8 +16,8 @@ export type Vraag = {
 
 export type Antwoord = {
   id?: number,
-  correct?: boolean,
-  antwoord?: string,
+  correct: boolean,
+  antwoord: string,
 }
 
 export type Resultaat = {
