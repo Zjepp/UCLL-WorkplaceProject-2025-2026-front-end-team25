@@ -13,10 +13,9 @@ const Score: React.FC = () => {
         colors={["#A89BC7", "#5B4D9F"]}
         start={{ x: 0, y: 0 }}
         end={{ x: 1, y: 0 }}
-        locations={[0.5, 0.5]} // hard split
+        locations={[0.5, 0.5]}
         style={styles.button}
       >
-        {/* // moet nog veranderd worden */}
         <Pressable  onPress={() => router.push("/")}>
           <Text style={styles.buttonText}>Score Bord</Text></Pressable>
       </LinearGradient>
@@ -40,7 +39,7 @@ const Score: React.FC = () => {
         locations={[0.5, 0.5]}
         style={styles.button}
 
-      > {/* // moet nog veranderd worden */}
+      >
         <Pressable  onPress={() => router.push("/")}>
           <Text style={styles.buttonText}>Foute Antwoorden</Text></Pressable>
       </LinearGradient>
