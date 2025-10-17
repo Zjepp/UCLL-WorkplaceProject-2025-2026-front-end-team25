@@ -1,69 +1,78 @@
-
 import React, { useEffect, useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Dimensions, Pressable } from 'react-native';
+import { Antwoord, Vraag } from '../../types';
 
 interface QuizOption {
   id: number;
-  formula: string;
+  formula: string | Antwoord;
   color: string;
 }
 
-const questionData: {
-  title: string;
-  question: string;
-  options: QuizOption[];
-} = {
-  title: 'Vraag 1 van 20',
-  question: 'Wat is de formule van paracetamol',
-  options: [
-    { id: 1, formula: 'C₈H₉NO₂', color: '#26A69Aff' },
-    { id: 2, formula: 'P₈H₉NO₂', color: '#fdc961ff' }, 
-    { id: 3, formula: 'C₈H₉O₂', color: '#e64d32ff' },
-    { id: 4, formula: 'C₈H₉NO₂', color: '#bd99d4ff' },
-  ],
-};
-
 interface MultipleChoiceProps {
   onAnswerSelected?: (selectedId: number) => void;
+  title: string;
+  question : Vraag;
 }
 
-
-const QuizMultipleChoice: React.FC<MultipleChoiceProps> = ({ onAnswerSelected }: MultipleChoiceProps) => {
+const QuizMultipleChoice: React.FC<MultipleChoiceProps> = ({ onAnswerSelected, question, title }: MultipleChoiceProps) => {
   const [selectedOption, setSelectedOption] = useState<number | null>(null);
   const windowWidth = Dimensions.get('window').width;
   const [timeLeft, setTimeLeft] = useState(10);
   const boxSize = (windowWidth - 100) / 2;
   const [visible, setVisible] = useState(true);
-
+  const [phase, setPhase] = useState<'view' | 'answer'>('view');
+  
     useEffect(() => {
     const interval = setInterval(() => {
       setTimeLeft(prev => {
         if (prev <= 1) {
           clearInterval(interval);
-          setVisible(false);
+          if(phase === 'view'){
+            setVisible(false);
+            setPhase('answer');
+            setTimeLeft(10);
+          }
+          else{
+            setVisible(false);
+          }
           return 0;
         }
         return prev - 1;
       });
     }, 1000);
     return () => clearInterval(interval);
-  }, []);
+  }, [phase]);
 
+  const questionData: {
+  title: string;
+  question: Vraag;
+  options: QuizOption[];
+  } = {
+    title: title,
+    question: question.vraag ? question : { vraag: 'vraag niet beschikbaar' } as Vraag,
+    options: [
+      { id: 1, formula: question.antwoord?.[0] ?? 'antwoord niet beschikbaar', color: '#26A69Aff' },
+      { id: 2, formula: question.antwoord?.[1] ?? 'antwoord niet beschikbaar', color: '#fdc961ff' }, 
+      { id: 3, formula: question.antwoord?.[2] ?? 'antwoord niet beschikbaar', color: '#e64d32ff' },
+      { id: 4, formula: question.antwoord?.[3] ?? 'antwoord niet beschikbaar', color: '#bd99d4ff' },
+    ],
+  };
   const handleSelect = (option: QuizOption) => { 
       console.log(`Je hebt gekozen voor: ${option.formula}`);
       setSelectedOption(option.id);
       onAnswerSelected?.(option.id);
 };
 
- const progressWidth = ((10 - timeLeft) / 10) * 100;
+const progressWidth = ((10 - timeLeft) / 10) * 100;
+const progressColor = phase === 'view' ? '#acece6ff' : '#e64d32ff';
 
 return ( 
     <View style={styles.container}>
       <Text style={styles.title}>{questionData.title}</Text>
-      <Text style={styles.question}>{questionData.question}</Text>
+      <Text style={styles.question}>{questionData.question.vraag}</Text>
       
       <View style={styles.progressContainer}>
-        <View style={[styles.progressBar, { width: `${progressWidth}%` }]} />
+        <View style={[styles.progressBar, { width: `${progressWidth}%`, backgroundColor : progressColor }]} />
       </View>
 
       <View style={styles.optionsGrid}>
@@ -93,7 +102,9 @@ return (
               onPress={() => handleSelect(option)}
               disabled={visible || selectedOption !== null}
             >
-              <Text style={[styles.formulaText, !visible && { opacity: 0 }]}>{option.formula}</Text>
+              <Text style={[styles.formulaText, !visible && { opacity: 0 }]}>
+                {typeof option.formula === 'string' ? option.formula : option.formula.antwoord}
+              </Text>
             </Pressable>
           );
         })}
@@ -154,9 +165,3 @@ const styles = StyleSheet.create({
 });
 
 export default QuizMultipleChoice;
-
-
-
-
-
-
