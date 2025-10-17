@@ -1,5 +1,5 @@
 
-import QuizMultipleChoice from '@/components/choice';
+import QuizMultipleChoice from '@/components/memoryChoice';
 
 import React, { useState } from 'react';
 
