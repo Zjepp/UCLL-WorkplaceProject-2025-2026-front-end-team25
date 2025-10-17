@@ -28,9 +28,9 @@ const ScorePage: React.FC = () => {
         locations={[0.5, 0.5]}
         style={styles.scoreContainer}
       >
-        <Text style={styles.scoreNumber}>17</Text>
+        <Text style={styles.scoreNumberLeft}>14</Text>
         <Text style={styles.scoreBar}>|</Text>
-        <Text style={styles.scoreNumber}>20</Text>
+        <Text style={styles.scoreNumberRight}>20</Text>
       </LinearGradient>
 
       <LinearGradient
@@ -97,16 +97,26 @@ const styles = StyleSheet.create({
     borderRadius: 50,
     marginVertical: 20,
   },
-  scoreNumber: {
+  scoreNumberLeft: {
     fontSize: 70,
     color: "#FFFFFF",
     fontWeight: "bold",
     marginHorizontal: 30,
+    position: "absolute",
+    right: 150,
+  },
+  scoreNumberRight: {
+    fontSize: 70,
+    color: "#FFFFFF",
+    fontWeight: "bold",
+    marginHorizontal: 30,
+    position: "absolute",
+    left: 150,
   },
   scoreBar: {
     fontSize: 50,
     color: "#FFFFFF",
-    position: "fixed",
+    position: "absolute",
   },
 });
 
