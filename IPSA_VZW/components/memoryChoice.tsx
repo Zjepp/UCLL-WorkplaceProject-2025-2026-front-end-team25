@@ -9,12 +9,12 @@ interface QuizOption {
 }
 
 interface MultipleChoiceProps {
-  onAnswerSelected?: (selectedId: number) => void;
+  onAnswerSelected?: (selected: boolean) => void;
   title: string;
   question : Vraag;
 }
 
-const QuizMultipleChoice: React.FC<MultipleChoiceProps> = ({ onAnswerSelected, question, title }: MultipleChoiceProps) => {
+const QuizMemoryChoice: React.FC<MultipleChoiceProps> = ({ onAnswerSelected, question, title }: MultipleChoiceProps) => {
   const [selectedOption, setSelectedOption] = useState<number | null>(null);
   const windowWidth = Dimensions.get('window').width;
   const [timeLeft, setTimeLeft] = useState(10);
@@ -59,8 +59,10 @@ const QuizMultipleChoice: React.FC<MultipleChoiceProps> = ({ onAnswerSelected, q
   };
   const handleSelect = (option: QuizOption) => { 
       console.log(`Je hebt gekozen voor: ${option.formula}`);
-      setSelectedOption(option.id);
-      onAnswerSelected?.(option.id);
+      onAnswerSelected?.(true);
+      setTimeLeft(10);
+      setVisible(true);
+      setPhase('view')
 };
 
 const progressWidth = ((10 - timeLeft) / 10) * 100;
@@ -164,4 +166,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default QuizMultipleChoice;
+export default QuizMemoryChoice;
