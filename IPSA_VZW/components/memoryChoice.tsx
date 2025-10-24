@@ -168,7 +168,7 @@ const styles = StyleSheet.create({
   },
   formulaText: {
     fontSize: 22,
-    paddingHorizontal: 2,
+    paddingHorizontal: 5,
     color: '#000000ff',
     textAlign: 'center',
   },
