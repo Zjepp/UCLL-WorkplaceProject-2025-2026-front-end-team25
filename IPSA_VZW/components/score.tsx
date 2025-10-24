@@ -3,7 +3,12 @@ import { Pressable, Text, View, StyleSheet } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { useRouter } from "expo-router";
 
-const Score: React.FC = () => {
+interface ScoreProps {
+  correctAmount: number;
+  mistakesAmount: number;
+}
+
+const Score: React.FC<ScoreProps> = ({ correctAmount, mistakesAmount }) => {
     const router = useRouter();
   return (
     <View style={styles.container}>
@@ -13,10 +18,9 @@ const Score: React.FC = () => {
         colors={["#A89BC7", "#5B4D9F"]}
         start={{ x: 0, y: 0 }}
         end={{ x: 1, y: 0 }}
-        locations={[0.5, 0.5]} 
+        locations={[0.5, 0.5]}
         style={styles.button}
       >
-        
         <Pressable  onPress={() => router.push("/")}>
           <Text style={styles.buttonText}>Score Bord</Text></Pressable>
       </LinearGradient>
@@ -28,9 +32,9 @@ const Score: React.FC = () => {
         locations={[0.5, 0.5]}
         style={styles.scoreContainer}
       >
-        <Text style={styles.scoreNumberLeft}>14</Text>
+        <Text style={styles.scoreNumberLeft}>{correctAmount}</Text>
         <Text style={styles.scoreBar}>|</Text>
-        <Text style={styles.scoreNumberRight}>20</Text>
+        <Text style={styles.scoreNumberRight}>{correctAmount + mistakesAmount}</Text>
       </LinearGradient>
 
       <LinearGradient
@@ -40,7 +44,7 @@ const Score: React.FC = () => {
         locations={[0.5, 0.5]}
         style={styles.button}
 
-      > 
+      >
         <Pressable  onPress={() => router.push("/")}>
           <Text style={styles.buttonText}>Foute Antwoorden</Text></Pressable>
       </LinearGradient>

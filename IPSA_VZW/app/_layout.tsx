@@ -3,7 +3,7 @@ import React from "react";
 
 export default function RootLayout() {
   return (
-  <Stack>
+  <Stack screenOptions={{ headerShown: false , contentStyle: { backgroundColor: '#FFFFFF' }}}>
     <Stack.Screen name="index"/>
     <Stack.Screen name="quiz"/>
     <Stack.Screen name="scorePage"/>
