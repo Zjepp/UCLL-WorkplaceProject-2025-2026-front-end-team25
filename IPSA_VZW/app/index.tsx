@@ -21,6 +21,10 @@ export default function Index() {
         <Text style={styles.buttonText}>Start Quiz</Text>
       </Pressable>
 
+      <Pressable style={styles.button} onPress={() => router.push("/loginPage")}>
+        <Text style={styles.buttonText}>Login</Text>
+      </Pressable>
+
     </View>
   );
 }
