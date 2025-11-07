@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 
 const QuizQuestion: React.FC = () => {
 return ( 
-  <QuizMultipleChoice /> 
+  <QuizMultipleChoice/> 
   );
 };
 
