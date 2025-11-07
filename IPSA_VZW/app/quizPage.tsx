@@ -7,6 +7,7 @@ import QuizMultipleChoice from "@/components/memoryChoice";
 import QuizMemoryChoice from "@/components/memoryChoice";
 import QuizChoice from "@/components/choice";
 import Score from "@/components/score";
+import HangmanQuiz from "@/components/hangman";
 
 
 export default function quiz() {
@@ -65,6 +66,19 @@ export default function quiz() {
     if (question.type === "memory-choice") {
       return (
         <QuizMemoryChoice
+          title={`Pagina ${currentIndex + 1} van ${questions.length}`}
+          question={question}
+          onAnswerSelected={() => setCurrentIndex((i) => i + 1)}
+          mistakeAmount={mistakeAmount}
+          mistakeAmountSetter={setMistakeAmount}
+          correctAmount={correctAmount}
+          correctAmountSetter={setCorrectAmount}
+        />
+      );
+    }
+    if (question.type === "hangman") {
+      return (
+        <HangmanQuiz
           title={`Pagina ${currentIndex + 1} van ${questions.length}`}
           question={question}
           onAnswerSelected={() => setCurrentIndex((i) => i + 1)}
