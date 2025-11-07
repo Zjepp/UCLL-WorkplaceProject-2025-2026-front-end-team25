@@ -9,8 +9,18 @@ const getQuestions = async () => {
     });
 };
 
+const getAll = async () => {
+    return await fetch(apiUrl + '/vragen/all', {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+    });
+};
+
 const quizService = {
     getQuestions,
+    getAll
 };
 
 export default quizService;
