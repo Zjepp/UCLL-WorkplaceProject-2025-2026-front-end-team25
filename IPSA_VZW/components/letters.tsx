@@ -38,7 +38,7 @@ const styles = StyleSheet.create({
     paddingTop: 50
   },
   key: {
-    backgroundColor: '#ffffff',
+    backgroundColor: '#000000',
     borderRadius: 4,
     paddingVertical: 10,
     paddingHorizontal: 12,
@@ -48,19 +48,21 @@ const styles = StyleSheet.create({
     width: 41,
     alignItems: 'center',
     justifyContent: 'center',
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 1,
-    },
-    shadowOpacity: 0.5,
-    shadowRadius: 3,
-    elevation: 4,
+    // borderWidth: 0.5,
+    // borderColor: '#000000',
+    // shadowColor: '#000',
+    // shadowOffset: {
+    //   width: 0,
+    //   height: 1,
+    // },
+    // shadowOpacity: 0.5,
+    // shadowRadius: 3,
+    // elevation: 4,
   },
   letter: {
     fontSize: 21,
     fontWeight: '700',
-    color: '#000000',
+    color: '#ffffffff',
   },
 });
 
