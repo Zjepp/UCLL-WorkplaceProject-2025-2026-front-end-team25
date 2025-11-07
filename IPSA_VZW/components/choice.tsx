@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, useWindowDimensions } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, useWindowDimensions, Dimensions, Pressable } from 'react-native';
 const boxSize = (useWindowDimensions().width - 60) / 2; 
 
 interface QuizOption {
