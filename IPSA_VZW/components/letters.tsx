@@ -29,7 +29,7 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
     justifyContent: 'center',
     padding: 10,
-    backgroundColor: '#504545ff',
+    backgroundColor: '#ffffff',
     borderRadius: 8,
     maxWidth: '100%',
     height: '25%',
