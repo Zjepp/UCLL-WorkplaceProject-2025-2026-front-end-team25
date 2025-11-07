@@ -30,7 +30,6 @@ const HangmanQuiz: React.FC<HangmanQuizProps> = ({
   const [answerArray, setAnswerArray] = useState<string[]>([]);
   const [solutionArray, setSolutionArray] = useState<string[]>([]);
 
-
   const questionData: {
     title: string;
     question: Vraag;
@@ -58,17 +57,11 @@ const HangmanQuiz: React.FC<HangmanQuizProps> = ({
 
     // answerArray holds the visible characters for the player: letters -> '_' , keep spaces/punctuation
     const initialDisplay = letters.map(ch => /[A-Z]/.test(ch) ? '_' : ch);
-    // console.log('Initieel antwoord array:', initialDisplay);
     setAnswerArray(initialDisplay);
   }, [question]);
     const handleSelect = (option: QuizOption) => {
-      // make sure we have a string answer to work with (could be from Antwoord.antwoord)
       const answerText = typeof option.formula === 'string' ? option.formula : String(option.formula);
-      console.log(`Je hebt gekozen voor (raw):`, option.formula);
-      const upperText = answerText.toUpperCase();
-      console.log(`Afgehandeld als string: ${upperText}`);
 
-      // split into characters for hangman play (preserve spaces and punctuation)
       const letters = answerText.toUpperCase().split('');
       console.log('Letters:', letters);
 
@@ -87,9 +80,48 @@ const HangmanQuiz: React.FC<HangmanQuizProps> = ({
     };
     
   return (
+    <View style={styles.container}>
+      <Text style={styles.title}>
+        {questionData.question.vraag}
+      </Text>
+      <View style={styles.hangmanArray}>
+        {answerArray.map((ch, index) => {
+          return (
+              <Text style={styles.hangmanLetter}key={index}>{ch}</Text>
+          );
+        })}
+      </View>
     <Letters onSelect={handleLetterSelect} />
+    </View>
   );
 };
+
+const styles = StyleSheet.create({
+  container:{
+    flex: 1,
+    flexDirection: 'column', 
+    flexWrap:'wrap',
+    justifyContent: 'center',
+  },
+  hangmanArray: {
+    flexDirection:'row',
+    flexWrap:'wrap',
+    alignItems:'center',
+    justifyContent:'center',
+    marginBottom: 50,
+  },
+  hangmanLetter: {
+    margin: '5%',
+    fontSize: 30,
+  },
+  title: {
+    marginTop:0,
+    marginBottom: 70,
+    fontSize: 24,
+    width:'95%',
+    textAlign: 'center',
+  }
+})
 // const styles = StyleSheet.create({
 //   container: {
 //     flex: 1,
