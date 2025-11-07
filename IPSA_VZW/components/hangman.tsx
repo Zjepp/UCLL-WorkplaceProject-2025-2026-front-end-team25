@@ -102,6 +102,8 @@ const styles = StyleSheet.create({
     flexDirection: 'column', 
     flexWrap:'wrap',
     justifyContent: 'center',
+    paddingTop:0,
+    marginTop:0
   },
   hangmanArray: {
     flexDirection:'row',
@@ -122,56 +124,5 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   }
 })
-// const styles = StyleSheet.create({
-//   container: {
-//     flex: 1,
-//     //padding: 20,
-//     backgroundColor: '#FFFFFF',
-//     justifyContent: 'flex-start',
-//   },
-//   title: {
-//     fontSize: 18,
-//     color: '#000000ff',
-//     marginBottom: 10,
-//     textAlign: 'right',
-//     paddingHorizontal: 20,
-//     paddingTop: 20,
-//   },
-//   question: {
-//     fontSize: 28,
-//     color: '#000000ff',
-//     marginBottom: 30,
-//     textAlign: 'center',
-//     paddingHorizontal: 20,
-//   },
-//   progressContainer: {
-//     height: 20,
-//     width: '100%',
-//     backgroundColor: '#26A69Aff',
-//     overflow: 'hidden',
-//     marginVertical: 10,
-//   },
-//   progressBar: {
-//     height: '100%',
-//     backgroundColor: '#acece6ff',
-//   },
-//   optionsGrid: {
-//     flexDirection: 'row',
-//     flexWrap: 'wrap',
-//     justifyContent: 'space-between',
-//     paddingHorizontal: 20,
-//   },
-//   optionBox: {
-//     borderRadius: 20,
-//     justifyContent: 'center',
-//     alignItems: 'center',
-//   },
-//   formulaText: {
-//     fontSize: 22,
-//     paddingHorizontal: 2,
-//     color: '#000000ff',
-//     textAlign: 'center',
-//   },
-// });
 
 export default HangmanQuiz;
