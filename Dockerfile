@@ -15,36 +15,32 @@ COPY IPSA_VZW/ ./
 # Build the web version
 RUN npx expo export
 
-# Production stage
-FROM nginx:alpine
+# Production stage - Use unprivileged nginx image for OKD
+FROM nginxinc/nginx-unprivileged:alpine
 
-# Create a non-root user and necessary directories with proper permissions for OKD/OpenShift
+# Switch to root temporarily to set up directories
+USER root
+
+# Create necessary directories with proper permissions
 RUN mkdir -p /var/cache/nginx/client_temp \
     /var/cache/nginx/proxy_temp \
     /var/cache/nginx/fastcgi_temp \
     /var/cache/nginx/uwsgi_temp \
     /var/cache/nginx/scgi_temp \
-    /var/run \
-    /var/log/nginx \
-    && chmod -R 777 /var/cache/nginx \
-    && chmod -R 777 /var/run \
-    && chmod -R 777 /var/log/nginx \
-    && chmod -R 755 /usr/share/nginx/html
+    && chown -R nginx:nginx /var/cache/nginx \
+    && chmod -R 755 /var/cache/nginx
 
 # Copy built web app from builder
-COPY --from=builder /app/dist /usr/share/nginx/html
+COPY --chown=nginx:nginx --from=builder /app/dist /usr/share/nginx/html
 
 # Copy nginx configuration
-COPY nginx.conf /etc/nginx/nginx.conf
+COPY --chown=nginx:nginx nginx.conf /etc/nginx/nginx.conf
 
-# Make sure nginx config and html are readable
-RUN chmod 644 /etc/nginx/nginx.conf
+# Switch back to non-root user
+USER nginx
 
-# Expose port 8080 (non-privileged port for OKD)
+# Expose port 8080 (non-privileged port)
 EXPOSE 8080
-
-# Run as non-root user (OKD will assign random UID)
-USER 1001
 
 # Start nginx
 CMD ["nginx", "-g", "daemon off;"]
