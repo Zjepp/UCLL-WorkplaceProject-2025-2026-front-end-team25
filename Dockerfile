@@ -18,6 +18,10 @@ RUN npx expo export
 # Production stage
 FROM nginx:alpine
 
+# Create cache directories and set permissions
+RUN mkdir -p /var/cache/nginx/client_temp \
+    && chown -R nginx:nginx /var/cache/nginx
+
 # Copy built web app from builder
 COPY --from=builder /app/dist /usr/share/nginx/html
 
