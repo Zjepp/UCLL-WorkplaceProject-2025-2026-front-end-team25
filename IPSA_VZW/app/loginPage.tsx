@@ -58,7 +58,7 @@ const LoginPage: React.FC = () => {
 
           <Pressable 
             style={styles.loginButton}
-            onPress={() => router.push("/scorePage")}
+            onPress={() => {}}
           >
             <Text style={styles.loginButtonText}>Log In</Text>
           </Pressable>

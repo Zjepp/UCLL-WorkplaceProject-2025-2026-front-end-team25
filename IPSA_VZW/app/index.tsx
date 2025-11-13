@@ -1,48 +1,55 @@
+import Login from "@/components/login";
+import { LoginUserResponse } from "@/types";
 import { useRouter } from "expo-router";
-import React from "react";
+import React, { useState } from "react";
 import { Text, View, StyleSheet, Pressable } from "react-native";
 
 export default function Index() {
   const router = useRouter();
+  const [user, setUser] = useState<LoginUserResponse | null>(null);
+
   return (
     <View style={styles.container}>
+      {user == null && <Login user={user} setUser={setUser}/>}
+      {user && <View style={[styles.container, { marginTop: 35 }]}>
 
-      <View style={styles.headerContainer}>
-        <View>
-          <Text style={styles.headerText}>Dagen</Text>
+        <View style={styles.headerContainer}>
+          <View>
+            <Text style={styles.headerText}>Dagen</Text>
 
-          <View style={[styles.headerCounterLayout, styles.headerCounterLayoutDagen]}>
-            <Text style={styles.headerTextBox}>23</Text>
+            <View style={[styles.headerCounterLayout, styles.headerCounterLayoutDagen]}>
+              <Text style={styles.headerTextBox}>23</Text>
+            </View>
+          </View>
+
+          <View>
+            <Text style={styles.headerText}>Plaats 345</Text>
+
+            <View style={[styles.headerCounterLayout, styles.headerCounterLayoutPlaats]}>
+              <Text style={styles.headerTextBoxPlaats}>76800</Text>
+            </View>
           </View>
         </View>
 
-        <View>
-          <Text style={styles.headerText}>Plaats 345</Text>
 
-          <View style={[styles.headerCounterLayout, styles.headerCounterLayoutPlaats]}>
-            <Text style={styles.headerTextBoxPlaats}>76800</Text>
-          </View>
+        <View style={styles.buttonContainer}>
+          <Pressable style={[styles.button, styles.scoreBordButton]}>
+            <Text style={styles.buttonText}>Score Bord</Text>
+          </Pressable>
+
+          <Pressable onPress={() => router.push("/quizPage")} style={[styles.quizButton]}>
+            <Text style={styles.buttonQuizText}>Quiz</Text>
+          </Pressable>
+
+          <Pressable style={[styles.button, styles.overzichtButton]}>
+            <Text style={styles.buttonText}>Overzicht</Text>
+          </Pressable>
+
+          <Pressable style={[styles.button, styles.faqButton]}>
+            <Text style={styles.buttonText}>Faq</Text>
+          </Pressable>
         </View>
-      </View>
-
-
-      <View style={styles.buttonContainer}>
-        <Pressable style={[styles.button, styles.scoreBordButton]}>
-          <Text style={styles.buttonText}>Score Bord</Text>
-        </Pressable>
-
-        <Pressable onPress={() => router.push("/quizPage")} style={[styles.quizButton]}>
-          <Text style={styles.buttonQuizText}>Quiz</Text>
-        </Pressable>
-
-        <Pressable style={[styles.button, styles.overzichtButton]}>
-          <Text style={styles.buttonText}>Overzicht</Text>
-        </Pressable>
-
-        <Pressable style={[styles.button, styles.faqButton]}>
-          <Text style={styles.buttonText}>Faq</Text>
-        </Pressable>
-      </View>
+      </View>}
     </View>
   );
 }
@@ -50,10 +57,9 @@ export default function Index() {
 
 const styles = StyleSheet.create({
   container: {
-    flex: .9,
+    flex: 1,
     flexDirection: "column",
-    backgroundColor: "#ffffff",
-    marginTop: 35,
+    backgroundColor: "#ffffff"
   },
   headerContainer: {
     flexDirection: "row",
