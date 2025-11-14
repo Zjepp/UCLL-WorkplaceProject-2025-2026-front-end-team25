@@ -28,6 +28,8 @@ const HangmanQuiz: React.FC<HangmanQuizProps> = ({
   correctAmountSetter,
 }) => {
   const [answerArray, setAnswerArray] = useState<string[]>([]);
+  const [usedLetters, setUsedLetters] = useState<string[]>([]);
+  const [livesLeft, setLivesLeft] = useState<number>(3);
   const [solutionArray, setSolutionArray] = useState<string[]>([]);
 
   const questionData: {
@@ -75,8 +77,30 @@ const HangmanQuiz: React.FC<HangmanQuizProps> = ({
     const handleLetterSelect = (letter: string) => {
       console.log(`Geselecteerde letter vanuit Hangman: ${letter}`);
       handleSelect(questionData.options[0]);
-      // TODO: implement letter-matching logic here (reveal letters, update state, etc.)
-      
+      var temp = false;
+      for (let i = 0; i < solutionArray.length; i++) {
+        if (solutionArray[i] === letter) {
+          answerArray[i] = letter;
+          setAnswerArray([...answerArray]);
+          solutionArray[i] = '0';
+          temp = true;
+        }
+      }
+      console.log('Lives left:', livesLeft);
+      if (!temp){
+        setLivesLeft(livesLeft - 1);
+        if (livesLeft == 0) {
+          mistakeAmountSetter(mistakeAmount + 1);
+          setLivesLeft(3);
+          onAnswerSelected?.(true);
+        }
+      }
+      console.log('Huidige antwoord array:', answerArray);
+      if (!answerArray.includes('_')){
+        correctAmountSetter(correctAmount + 1);
+        setLivesLeft(3);
+        onAnswerSelected?.(true);
+      }
     };
     
   return (
