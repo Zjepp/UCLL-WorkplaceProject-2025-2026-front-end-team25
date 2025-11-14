@@ -47,6 +47,8 @@ export default function Index() {
 
 
         <View style={styles.buttonContainer}>
+            <Text style={styles.headerText}>Welkom {user?.username}</Text>
+
           <Pressable style={[styles.button, styles.scoreBordButton]}>
             <Text style={styles.buttonText}>Score Bord</Text>
           </Pressable>
@@ -61,6 +63,12 @@ export default function Index() {
 
           <Pressable style={[styles.button, styles.faqButton]}>
             <Text style={styles.buttonText}>Faq</Text>
+          </Pressable>
+
+          <Pressable style={[styles.button, styles.logoutButton]} onPress={async () => {
+            await AsyncStorage.removeItem('loggedInUser');
+            setUser(null);}}>
+            <Text style={styles.buttonText}>Log out</Text>
           </Pressable>
         </View>
       </View>}
@@ -132,6 +140,9 @@ const styles = StyleSheet.create({
   },
   faqButton: {
     backgroundColor: "#FDCE7E"
+  },
+  logoutButton: {
+    backgroundColor: "#FF4F21"
   },
   buttonText: {
     color: "white",
