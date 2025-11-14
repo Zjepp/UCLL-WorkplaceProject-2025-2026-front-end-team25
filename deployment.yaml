@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ipsa-vzw-frontend
+  labels:
+    app: ipsa-vzw-frontend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ipsa-vzw-frontend
+  template:
+    metadata:
+      labels:
+        app: ipsa-vzw-frontend
+    spec:
+      containers:
+      - name: frontend
+        image: ghcr.io/ucll-workplaceproject-2025-2026/front-end-team25:main
+        ports:
+        - containerPort: 8080
+        env:
+        - name: EXPO_PUBLIC_API_URL
+          value: "https://back-end-team25-wpp-team-25.apps.okd.ucll.cloud"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ipsa-vzw-frontend
+spec:
+  selector:
+    app: ipsa-vzw-frontend
+  ports:
+  - protocol: TCP
+    port: 8080
+    targetPort: 8080
+  type: ClusterIP
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: ipsa-vzw-frontend
+spec:
+  to:
+    kind: Service
+    name: ipsa-vzw-frontend
+  port:
+    targetPort: 8080
+  tls:
+    termination: edge
+    insecureEdgeTerminationPolicy: Redirect
