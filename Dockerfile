@@ -1,6 +1,10 @@
 # Build stage
 FROM node:20-alpine AS builder
 
+# Accept API URL as build argument
+ARG EXPO_PUBLIC_API_URL
+ENV EXPO_PUBLIC_API_URL=${EXPO_PUBLIC_API_URL}
+
 WORKDIR /app
 
 # Copy package files
@@ -12,7 +16,7 @@ RUN npm ci
 # Copy app source
 COPY IPSA_VZW/ ./
 
-# Build the web version
+# Build the web version (with EXPO_PUBLIC_API_URL embedded)
 RUN npx expo export
 
 # Production stage - Use unprivileged nginx image for OKD
