@@ -117,6 +117,7 @@ export default function quiz() {
           questionb={conn[1]}
           questionc={conn[2]}
           questiond={conn[3]}
+          onAnswerSelected={() => setCurrentIndex((i) => i + 1)}
         />
       );
     }

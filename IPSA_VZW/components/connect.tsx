@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { Antwoord, Vraag } from "../../types";
 import { Pressable, StyleSheet, View, Text } from "react-native";
 
@@ -36,7 +36,6 @@ const QuizConnect: React.FC<ConnectProps> = ({
     question2: questionb.vraag ? questionb: ({ vraag: "vraag niet beschikbaar" } as Vraag),
     question3: questionc.vraag ? questionc: ({ vraag: "vraag niet beschikbaar" } as Vraag),
     question4: questiond.vraag ? questiond: ({ vraag: "vraag niet beschikbaar" } as Vraag),
-    
     options: [
       {
         id: 1,
@@ -60,7 +59,52 @@ const QuizConnect: React.FC<ConnectProps> = ({
       },
     ],
   };
-  const handleSelect = (option: QuizOption) => {};
+
+  const [selectedQuestion, setSelectedQuestion] = useState<number | null>(null);
+  const [selectedOption, setSelectedOption] = useState<number | null>(null);
+  const [connections, setConnection] = useState<Array<{questionId: number, optionId: number}>>([]);
+
+  const questions = useMemo(() => [
+    { id: 1, data: questionData.question1, color: '#bd99d4ff' },
+    { id: 2, data: questionData.question2, color: '#e64d32ff'},
+    { id: 3, data: questionData.question3, color: '#fdc961ff' },	
+    { id: 4, data: questionData.question4, color: '#26A69Aff' },
+  ], [questionData.question1, questionData.question2, questionData.question3, questionData.question4]);
+
+  const isQuestionConnected = (questionId: number) => connections.some((c) => c.questionId === questionId);
+  const isOptionConnected = (optionId: number) => connections.some((c) => c.optionId === optionId);
+
+  const handleQuestionSelect = (questionId: number) => {
+    if (isQuestionConnected(questionId)) return;
+
+    setSelectedQuestion((oud) => (oud === questionId ? null : questionId));
+  };
+
+  const handleOptionSelect = (optionId: number) => {
+    if (isOptionConnected(optionId)) return;
+
+    setSelectedOption((oud) => oud === optionId ? null : optionId);
+    if (selectedQuestion !== null) {
+        setConnection((oud) => [...oud, { questionId: selectedQuestion, optionId: optionId }])
+      }
+      
+      if (connections.length === 3) {
+        onAnswerSelected?.(true);
+      }
+    console.log(connections)
+    setSelectedQuestion(null);
+    setSelectedOption(null);
+};
+
+  const resetState = () => {
+  setSelectedQuestion(null);
+  setSelectedOption(null);
+  setConnection([]);
+  };
+
+  useEffect(() => {
+    resetState();
+  }, [questiona, questionb, questionc, questiond]);
 
   return (
     <View style={styles.container}>
@@ -68,32 +112,50 @@ const QuizConnect: React.FC<ConnectProps> = ({
       <Text style={styles.connectTitle}>Verbind de vraag met het juiste antwoord</Text>
       
       <View style={styles.container2}>
-
         <View style={styles.questionsAndAnswers}>
-            <Pressable style={[styles.questionBox, {backgroundColor: '#bd99d4ff'}]}>
-                <Text style={styles.question}>{questionData.question1.vraag}</Text>
-            </Pressable>
-            <Pressable style={[styles.questionBox, {backgroundColor: '#e64d32ff'}]}>
-                <Text style={styles.question}>{questionData.question2.vraag}</Text>
-            </Pressable>
-            <Pressable style={[styles.questionBox, {backgroundColor: '#fdc961ff'}]}>
-                <Text style={styles.question}>{questionData.question3.vraag}</Text>
-            </Pressable>
-            <Pressable style={[styles.questionBox, {backgroundColor: '#26A69Aff'}]}>
-                <Text style={styles.question}>{questionData.question4.vraag}</Text>
-            </Pressable>
+          {questions.map((question) => {
+            const connected = isQuestionConnected(question.id);
+            const selected = (selectedQuestion === question.id);
+            return (
+              <Pressable
+                key={question.id}
+                style={[
+                  styles.questionBox, 
+                  { backgroundColor: question.color },
+                  connected ? styles.connected : {},
+                  selected ? styles.selected : {},
+                ]} 
+                  onPress={() => handleQuestionSelect(question.id)}>
+                  <Text style={styles.question}>{question.data.vraag}</Text>
+              </Pressable>
+            )})}
         </View>
 
         <View style={styles.questionsAndAnswers}>
           {questionData.options.map((option) => {
+            const connected = isOptionConnected(option.id)
+            const selected = (selectedOption === option.id)
             return (
-              <Pressable key={option.id} style={[styles.optionBox, {backgroundColor: option.color}]}>
+              <Pressable 
+                key={option.id} 
+                style={[
+                  styles.optionBox, 
+                  { backgroundColor: option.color },
+                  connected ? styles.connected : {},
+                  selected ? styles.selected : {},
+                  ]} 
+                  onPress={() => handleOptionSelect(option.id)}>
                 <Text style={styles.option}>{option.formula}</Text>
               </Pressable>
             );
           })}
         </View>
       </View>
+      {/* <View>
+        <Pressable>
+            <Text style={styles.verzend}>Verzend</Text>
+        </Pressable>
+      </View> */}
     </View>
   );
 };
@@ -140,7 +202,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     marginBottom: 30,
-    height: 150
+    height: 140
   },
   option: {
     fontSize: 18,
@@ -153,8 +215,25 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     marginBottom: 30,
-    height: 150
+    height: 140
   },
+  selected: {
+    borderWidth: 3,
+    borderColor: "#000000",
+  },
+  connected: {
+    opacity: 0.5,
+  },
+  // verzend: {
+  //   fontSize: 28,
+  //   textAlign: 'center',
+  //   width: '40%',
+  //   height: 40,
+  //   marginBottom: 50,
+  //   marginLeft: 130,
+  //   borderRadius: 20,
+  //   backgroundColor: '#797979ff'
+  // }
 });
 
 export default QuizConnect;
