@@ -1,6 +1,6 @@
 import React, { use, useEffect, useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Dimensions, Pressable } from 'react-native';
-import { Antwoord, Vraag } from '../../types';
+import { Antwoord, Vraag } from '@/types';
 import Letters from './letters';
 
 interface QuizOption {
