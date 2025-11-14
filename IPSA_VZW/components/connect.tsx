@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState } from "react";
-import { Antwoord, Vraag } from "../../types";
+import { Antwoord, Vraag } from "@/types";
 import { Pressable, StyleSheet, View, Text } from "react-native";
 
 interface QuizOption {
