@@ -7,25 +7,35 @@ interface LettersProps {
 
 const Letters: React.FC<LettersProps> = ({ onSelect }) => {
 
-    const paars= '#A395CA';
-    const oranje= '#FF4F21';
-    const blauw= '#A1C2C2' ;
-    const geel= '#FDCE7E' ;
+    const [backgroundColor, setBackgroundColor] = React.useState('#')
+    const grijs = '#b3b3b3';
+
+    const paars = '#A395CA';
+    const oranje = '#FF4F21';
+    const blauw = '#A1C2C2' ;
+    const geel = '#FDCE7E' ;
 
     const colors = [paars, oranje, blauw, geel];
-        const handleSelect = (letter: string) => { 
-            onSelect?.(letter);
+        const handleSelect = (letter: string) => {
+          setBackgroundColor(grijs);
+          letter.b
+          console.log(backgroundColor)
+          onSelect?.(letter);
         };
         const letters = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'];
         return (
           <View style={styles.container}>
               {letters.map((letter, index) => {
+                console.log(colors[index % colors.length], letter);
+                setBackgroundColor(colors[index % colors.length]);
                 const backgroundColor = colors[index % colors.length];
+                console.log(backgroundColor);
                 return (
                   <Pressable
                     key={letter}
                     onPress={() => handleSelect(letter)}
                     style={[styles.key, { backgroundColor }]}
+                    disabled={backgroundColor === grijs}
                   >
                     <Text style={styles.letter}>{letter}</Text>
                   </Pressable>

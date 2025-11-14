@@ -28,7 +28,6 @@ const HangmanQuiz: React.FC<HangmanQuizProps> = ({
   correctAmountSetter,
 }) => {
   const [answerArray, setAnswerArray] = useState<string[]>([]);
-  const [usedLetters, setUsedLetters] = useState<string[]>([]);
   const [livesLeft, setLivesLeft] = useState<number>(3);
   const [solutionArray, setSolutionArray] = useState<string[]>([]);
 
