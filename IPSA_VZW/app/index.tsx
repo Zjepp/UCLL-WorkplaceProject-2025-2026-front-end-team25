@@ -1,13 +1,26 @@
 import Login from "@/components/login";
 import { LoginUserResponse } from "@/types";
 import { useRouter } from "expo-router";
-import React, { useState } from "react";
+import React, { use, useEffect, useState } from "react";
 import { Text, View, StyleSheet, Pressable } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function Index() {
   const router = useRouter();
   const [user, setUser] = useState<LoginUserResponse | null>(null);
+
+  const fetchUser = async () => {
+    const userValue = await AsyncStorage.getItem('loggedInUser');
+    if (userValue) {
+        const fetchedUser: LoginUserResponse = JSON.parse(userValue);
+        setUser(fetchedUser);
+    }
+  }
+
+  useEffect(() => {
+    fetchUser();
+  }, []);
 
   return (
     <View style={styles.container}>
@@ -34,6 +47,8 @@ export default function Index() {
 
 
         <View style={styles.buttonContainer}>
+            <Text style={styles.headerText}>Welkom {user?.username}</Text>
+
           <Pressable style={[styles.button, styles.scoreBordButton]}>
             <Text style={styles.buttonText}>Score Bord</Text>
           </Pressable>
@@ -48,6 +63,12 @@ export default function Index() {
 
           <Pressable onPress={() => router.push("/faq" as any)} style={[styles.button, styles.faqButton]}>
             <Text style={styles.buttonText}>Faq</Text>
+          </Pressable>
+
+          <Pressable style={[styles.button, styles.logoutButton]} onPress={async () => {
+            await AsyncStorage.removeItem('loggedInUser');
+            setUser(null);}}>
+            <Text style={styles.buttonText}>Log out</Text>
           </Pressable>
         </View>
       </View>}
@@ -119,6 +140,9 @@ const styles = StyleSheet.create({
   },
   faqButton: {
     backgroundColor: "#FDCE7E"
+  },
+  logoutButton: {
+    backgroundColor: "#FF4F21"
   },
   buttonText: {
     color: "white",

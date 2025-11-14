@@ -156,7 +156,7 @@ const Login: React.FC<LoginProps> = ({ user, setUser }) => {
           <View style={loginStyles.inputContainer}>
             <Text style={loginStyles.label}>
               <Text style={[loginStyles.plusSign, { color: '#B196C7' }]}>+</Text> 
-              Gebruikersnaam
+              Email
             </Text>
             <TextInput
               style={loginStyles.input}
