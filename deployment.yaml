@@ -17,6 +17,7 @@ spec:
       containers:
       - name: frontend
         image: ghcr.io/ucll-workplaceproject-2025-2026/front-end-team25:main
+        imagePullPolicy: Always
         ports:
         - containerPort: 8080
         env:
