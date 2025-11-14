@@ -55,7 +55,7 @@ export default function quiz() {
     if (question.type === "standaard-choice") {
       return (
         <QuizChoice
-          title={`Pagina ${currentIndex + 1} van ${questions.length}`}
+          title={`Vraag ${currentIndex + 1} van ${questions.length}`}
           question={question}
           onAnswerSelected={() => setCurrentIndex((i) => i + 1)}
           mistakeAmount={mistakeAmount}
@@ -68,7 +68,7 @@ export default function quiz() {
     if (question.type === "memory-choice") {
       return (
         <QuizMemoryChoice
-          title={`Pagina ${currentIndex + 1} van ${questions.length}`}
+          title={`Vraag ${currentIndex + 1} van ${questions.length}`}
           question={question}
           onAnswerSelected={() => setCurrentIndex((i) => i + 1)}
           mistakeAmount={mistakeAmount}
@@ -112,7 +112,7 @@ export default function quiz() {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, position: 'relative', paddingTop: 50 },
+  container: { flex: 1, position: 'relative', marginTop: 35 },
   content: { flex: 1, justifyContent: 'center', alignItems: 'stretch', paddingHorizontal: 12 },
   center: { flex: 1 },
   done: { fontSize: 18, fontWeight: "bold", marginBottom: 12 },

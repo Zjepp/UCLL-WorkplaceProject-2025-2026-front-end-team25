@@ -1,4 +1,5 @@
-const apiUrl = 'http://10.0.2.2:8080'
+// Use environment variable for API URL, fallback to localhost for local dev
+const apiUrl = process.env.EXPO_PUBLIC_API_URL || 'http://localhost:8080';
 
 const getQuestions = async () => {
     return await fetch(apiUrl + '/vragen/random20', {
