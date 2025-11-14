@@ -16,6 +16,10 @@ interface HangmanQuizProps {
   mistakeAmountSetter: (amount: number) => void;
   correctAmount: number;
   correctAmountSetter: (amount: number) => void;
+  // when true the parent (page) will render hearts; hangman will update counts via heartsCountSetter
+  showHearts?: boolean;
+  heartsCount?: number;
+  heartsCountSetter?: (amount: number) => void;
 }
 
 const HangmanQuiz: React.FC<HangmanQuizProps> = ({
@@ -26,9 +30,12 @@ const HangmanQuiz: React.FC<HangmanQuizProps> = ({
   mistakeAmountSetter,
   correctAmount,
   correctAmountSetter,
+  showHearts,
+  heartsCount,
+  heartsCountSetter,
 }) => {
   const [answerArray, setAnswerArray] = useState<string[]>([]);
-  const [livesLeft, setLivesLeft] = useState<number>(3);
+  const [livesLeft, setLivesLeft] = useState<number>(heartsCount ?? 3);
   const [solutionArray, setSolutionArray] = useState<string[]>([]);
 
   const questionData: {
@@ -45,6 +52,11 @@ const HangmanQuiz: React.FC<HangmanQuizProps> = ({
     };
 
   useEffect(() => {
+    // if parent drives hearts, sync local state with the prop
+    if (typeof heartsCount === 'number') {
+      setLivesLeft(heartsCount);
+    }
+
     const raw = typeof questionData.options[0].formula === 'string'
       ? questionData.options[0].formula
       : String(questionData.options[0].formula);
@@ -87,12 +99,26 @@ const HangmanQuiz: React.FC<HangmanQuizProps> = ({
       }
       console.log('Lives left:', livesLeft);
       if (!temp){
-        setLivesLeft(livesLeft - 1);
-        if (livesLeft == 0) {
-          mistakeAmountSetter(mistakeAmount + 1);
-          setLivesLeft(3);
-          onAnswerSelected?.(true);
-        }
+          // decrement lives: prefer updating parent via heartsCountSetter if provided
+        setLivesLeft(prev => {
+          const newLives = prev - 1;
+          if (newLives === 0) {
+            mistakeAmountSetter(mistakeAmount + 1);
+            // reset to default (3)
+            if (heartsCountSetter) {
+              heartsCountSetter(3);
+            } else {
+              setLivesLeft(3);
+            }
+            onAnswerSelected?.(true);
+          } else {
+            if (heartsCountSetter) {
+              heartsCountSetter(newLives);
+            }
+          }
+          return newLives;
+        });
+
       }
       console.log('Huidige antwoord array:', answerArray);
       if (!answerArray.includes('_')){
@@ -145,6 +171,14 @@ const styles = StyleSheet.create({
     fontSize: 24,
     width:'95%',
     textAlign: 'center',
+  },
+  heartIcon: {
+    width: 30,
+    height: 30,
+    marginHorizontal: 4,
+    top: 0,
+    position: 'absolute',
+    marginTop: 0,
   }
 })
 

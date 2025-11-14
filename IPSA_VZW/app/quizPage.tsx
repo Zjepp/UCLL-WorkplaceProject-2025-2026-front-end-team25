@@ -1,13 +1,14 @@
 import quizService from "@/services/quizService";
 import { useRouter } from "expo-router";
 import React, { useEffect, useState } from "react";
-import { View, Text, StyleSheet, ActivityIndicator } from "react-native";
+import { View, Text, StyleSheet, ActivityIndicator, Image, Platform, StatusBar, KeyboardAvoidingView } from "react-native";
 import { Vraag } from "../../types";
 import QuizMultipleChoice from "@/components/memoryChoice";
 import QuizMemoryChoice from "@/components/memoryChoice";
 import QuizChoice from "@/components/choice";
 import Score from "@/components/score";
 import HangmanQuiz from "@/components/hangman";
+import HeartIcon from "../assets/images/heart.png";
 
 
 export default function quiz() {
@@ -16,6 +17,7 @@ export default function quiz() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [mistakeAmount, setMistakeAmount] = useState(0);
   const [correctAmount, setCorrectAmount] = useState(0);
+  const [heartsCount, setHeartsCount] = useState<number>(3);
   
   const getRandom20 = async () => {
     try {
@@ -78,6 +80,7 @@ export default function quiz() {
     }
     if (question.type === "hangman") {
       return (
+        
         <HangmanQuiz
           title={`Pagina ${currentIndex + 1} van ${questions.length}`}
           question={question}
@@ -86,17 +89,46 @@ export default function quiz() {
           mistakeAmountSetter={setMistakeAmount}
           correctAmount={correctAmount}
           correctAmountSetter={setCorrectAmount}
+          showHearts={true}
+          heartsCount={heartsCount}
+          heartsCountSetter={setHeartsCount}
         />
       );
     }
   };
 
-  return <View style={styles.container}>{openQuestion()}</View>;
+  return (
+    <View style={styles.container}>
+      {questions[currentIndex]?.type === 'hangman' && (
+        <View style={styles.heartContainer} pointerEvents="none">
+          {Array.from({ length: heartsCount }).map((_, i) => (
+            <Image key={i} source={HeartIcon} style={styles.heartIcon} resizeMode="contain" />
+          ))}
+        </View>
+      )}
+        {openQuestion()}
+    </View>
+  );
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1 },
-  center: { flex: 1, justifyContent: "center", alignItems: "center" },
+  container: { flex: 1, position: 'relative', paddingTop: 50 },
+  content: { flex: 1, justifyContent: 'center', alignItems: 'stretch', paddingHorizontal: 12 },
+  center: { flex: 1 },
   done: { fontSize: 18, fontWeight: "bold", marginBottom: 12 },
   link: { color: "blue", textDecorationLine: "underline" },
+  heartContainer: {
+    position: 'absolute',
+    top: 50,
+    left: 0,
+    right: 0,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    zIndex: 10,
+  },
+  heartIcon: {
+    width: 30,
+    height: 30,
+    marginHorizontal: 4,
+  }
 });
