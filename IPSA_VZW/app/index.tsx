@@ -46,7 +46,7 @@ export default function Index() {
             <Text style={styles.buttonText}>Overzicht</Text>
           </Pressable>
 
-          <Pressable style={[styles.button, styles.faqButton]}>
+          <Pressable onPress={() => router.push("/faq" as any)} style={[styles.button, styles.faqButton]}>
             <Text style={styles.buttonText}>Faq</Text>
           </Pressable>
         </View>

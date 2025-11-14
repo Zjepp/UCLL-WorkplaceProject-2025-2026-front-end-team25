@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { View, Text, StyleSheet, Pressable, FlatList, ActivityIndicator } from "react-native";
 import { useRouter } from "expo-router";
-
-const apiUrl = '';
+import faqService from "@/services/faqService";
 
 type FaqItem = {
   id?: number | string;
@@ -16,33 +15,25 @@ export default function FAQPage() {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    let mounted = true;
-    const load = async () => {
-      setLoading(true);
-      try {
-        const res = await fetch(apiUrl + "/faq");
-        if (!res.ok) throw new Error('network');
-        const data = await res.json();
-        if (mounted && Array.isArray(data)) {
-          // try to normalize items
-          const items = data.map((d: any, i: number) => ({
-            id: d.id ?? i,
-            question: d.question ?? d.vraag ?? d.title ?? String(d.id ?? i),
-            answer: d.answer ?? d.antwoord ?? d.body ?? "",
-          }));
-          setFaqs(items);
-        }
-      } catch (e) {
-        // fallback: empty list (or you can populate sample items)
-        if (mounted) setFaqs([]);
-      } finally {
-        if (mounted) setLoading(false);
-      }
-    };
-
-    load();
-    return () => { mounted = false; };
+    loadFaqs();
   }, []);
+
+  const loadFaqs = async () => {
+    setLoading(true);
+    try {
+      const res = await faqService.getFaqs();
+      if (!res.ok) throw new Error('network');
+      const data = await res.json();
+      if (Array.isArray(data)) {
+        setFaqs(data);
+      }
+    } catch (e) {
+      console.error('Failed to load FAQs:', e);
+      setFaqs([]);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const renderItem = ({ item }: { item: FaqItem }) => (
     <View style={styles.card}>
@@ -65,7 +56,7 @@ export default function FAQPage() {
           <Text style={styles.headerButtonText}>Chat met ons</Text>
         </Pressable>
 
-        <Pressable style={[styles.headerButton, styles.returnButton]} onPress={() => router.push('/' as any)}>
+        <Pressable style={[styles.headerButton, styles.returnButton]} onPress={() => router.push("/")}>
           <Text style={[styles.headerButtonText, { color: 'white' }]}>Terug</Text>
         </Pressable>
       </View>
