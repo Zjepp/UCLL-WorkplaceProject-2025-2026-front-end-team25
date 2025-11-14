@@ -1,19 +1,36 @@
+import { LoginUserResponse } from "@/types";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+
 const apiUrl = 'http://10.0.2.2:8080'
 
 const get18Questions = async () => {
+    const userValue = await AsyncStorage.getItem('loggedInUser');
+    let token = "";
+    if (userValue) {
+        const user: LoginUserResponse = JSON.parse(userValue);
+        token = user.token;
+    }
     return await fetch(apiUrl + '/vragen/random18', {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
         },
     });
 };
 
 const get8Questions = async () => {
+    const userValue = await AsyncStorage.getItem('loggedInUser');
+    let token = "";
+    if (userValue) {
+        const user: LoginUserResponse = JSON.parse(userValue);
+        token = user.token;
+    }
     return await fetch(apiUrl + '/vragen/random8', {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
         },
     });
 };

@@ -2,7 +2,7 @@ import quizService from "@/services/quizService";
 import { useRouter } from "expo-router";
 import React, { useEffect, useState } from "react";
 import { View, Text, StyleSheet, ActivityIndicator } from "react-native";
-import { Vraag } from "../../types";
+import { Vraag } from "@/types";
 import QuizMultipleChoice from "@/components/memoryChoice";
 import QuizMemoryChoice from "@/components/memoryChoice";
 import QuizConnect from "@/components/connect";
