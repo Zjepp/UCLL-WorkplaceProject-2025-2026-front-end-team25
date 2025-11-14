@@ -6,9 +6,8 @@ interface LettersProps {
 }
 
 const Letters: React.FC<LettersProps> = ({ onSelect }) => {
-
-    const [backgroundColor, setBackgroundColor] = React.useState('#')
-    const grijs = '#b3b3b3';
+    const [selectedLetters, setSelectedLetters] = React.useState<string[]>([]);
+    const grijs = '#404040ff';
 
     const paars = '#A395CA';
     const oranje = '#FF4F21';
@@ -16,26 +15,25 @@ const Letters: React.FC<LettersProps> = ({ onSelect }) => {
     const geel = '#FDCE7E' ;
 
     const colors = [paars, oranje, blauw, geel];
-        const handleSelect = (letter: string) => {
-          setBackgroundColor(grijs);
-          letter.b
-          console.log(backgroundColor)
-          onSelect?.(letter);
-        };
+      const handleSelect = (letter: string) => {
+        setSelectedLetters((prev) => [...prev, letter]);
+        onSelect?.(letter);
+      };
         const letters = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'];
         return (
           <View style={styles.container}>
               {letters.map((letter, index) => {
-                console.log(colors[index % colors.length], letter);
-                setBackgroundColor(colors[index % colors.length]);
-                const backgroundColor = colors[index % colors.length];
-                console.log(backgroundColor);
+                
+                const isSelected = selectedLetters.includes(letter);
+                const backgroundColor = isSelected ? grijs : colors[index % colors.length];
+                const opacity = isSelected ? 0.5 : 1.0;
+
                 return (
                   <Pressable
                     key={letter}
                     onPress={() => handleSelect(letter)}
-                    style={[styles.key, { backgroundColor }]}
-                    disabled={backgroundColor === grijs}
+                    style={[styles.key, { backgroundColor, opacity }]}
+                    disabled={isSelected}
                   >
                     <Text style={styles.letter}>{letter}</Text>
                   </Pressable>
