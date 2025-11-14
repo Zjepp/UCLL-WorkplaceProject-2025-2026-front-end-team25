@@ -1,15 +1,23 @@
 import quizService from "@/services/quizService";
 import { useRouter } from "expo-router";
 import React, { useEffect, useState } from "react";
-import { View, Text, StyleSheet, ActivityIndicator, Image, Platform, StatusBar, KeyboardAvoidingView } from "react-native";
-import { Vraag } from "../../types";
+import {
+  View,
+  Text,
+  StyleSheet,
+  ActivityIndicator,
+  Image,
+  Platform,
+  StatusBar,
+  KeyboardAvoidingView,
+} from "react-native";
+import { Vraag } from "@/types";
 import QuizMultipleChoice from "@/components/memoryChoice";
 import QuizMemoryChoice from "@/components/memoryChoice";
 import QuizChoice from "@/components/choice";
 import Score from "@/components/score";
 import HangmanQuiz from "@/components/hangman";
 import HeartIcon from "../assets/images/heart.png";
-
 
 export default function quiz() {
   const router = useRouter();
@@ -18,37 +26,34 @@ export default function quiz() {
   const [mistakeAmount, setMistakeAmount] = useState(0);
   const [correctAmount, setCorrectAmount] = useState(0);
   const [heartsCount, setHeartsCount] = useState<number>(3);
-  
+
   const getRandom20 = async () => {
     try {
-        const response = await quizService.getQuestions();
+      const response = await quizService.getQuestions();
 
-        if (response.status === 200) {
-            const vragen: Vraag[] = await response.json();
-            JSON.stringify(vragen);
-            setQuestions(vragen);
-            console.log(vragen);
-        } else {
-            console.log('Ophalen van vragen mislukt');
-        }
+      if (response.status === 200) {
+        const vragen: Vraag[] = await response.json();
+        JSON.stringify(vragen);
+        setQuestions(vragen);
+        console.log(vragen);
+      } else {
+        console.log("Ophalen van vragen mislukt");
+      }
     } catch (error) {
-        console.log(error);
+      console.log(error);
     }
-  }
+  };
 
   useEffect(() => {
     getRandom20();
-  }, [])
+  }, []);
   const openQuestion = () => {
     const question = questions[currentIndex];
     console.log(question);
 
     if (!question) {
       return (
-        <Score
-        correctAmount={correctAmount}
-        mistakesAmount={mistakeAmount}
-        />
+        <Score correctAmount={correctAmount} mistakesAmount={mistakeAmount} />
       );
     }
 
@@ -64,7 +69,7 @@ export default function quiz() {
           correctAmountSetter={setCorrectAmount}
         />
       );
-    } 
+    }
     if (question.type === "memory-choice") {
       return (
         <QuizMemoryChoice
@@ -80,7 +85,6 @@ export default function quiz() {
     }
     if (question.type === "hangman") {
       return (
-        
         <HangmanQuiz
           title={`Pagina ${currentIndex + 1} van ${questions.length}`}
           question={question}
@@ -99,36 +103,46 @@ export default function quiz() {
 
   return (
     <View style={styles.container}>
-      {questions[currentIndex]?.type === 'hangman' && (
+      {questions[currentIndex]?.type === "hangman" && (
         <View style={styles.heartContainer} pointerEvents="none">
           {Array.from({ length: heartsCount }).map((_, i) => (
-            <Image key={i} source={HeartIcon} style={styles.heartIcon} resizeMode="contain" />
+            <Image
+              key={i}
+              source={HeartIcon}
+              style={styles.heartIcon}
+              resizeMode="contain"
+            />
           ))}
         </View>
       )}
-        {openQuestion()}
+      {openQuestion()}
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, position: 'relative', marginTop: 35 },
-  content: { flex: 1, justifyContent: 'center', alignItems: 'stretch', paddingHorizontal: 12 },
+  container: { flex: 1, position: "relative", marginTop: 35 },
+  content: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "stretch",
+    paddingHorizontal: 12,
+  },
   center: { flex: 1 },
   done: { fontSize: 18, fontWeight: "bold", marginBottom: 12 },
   link: { color: "blue", textDecorationLine: "underline" },
   heartContainer: {
-    position: 'absolute',
+    position: "absolute",
     top: 50,
     left: 0,
     right: 0,
-    flexDirection: 'row',
-    justifyContent: 'center',
+    flexDirection: "row",
+    justifyContent: "center",
     zIndex: 10,
   },
   heartIcon: {
     width: 30,
     height: 30,
     marginHorizontal: 4,
-  }
+  },
 });
