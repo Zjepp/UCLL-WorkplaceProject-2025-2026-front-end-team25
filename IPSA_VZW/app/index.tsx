@@ -1,13 +1,26 @@
 import Login from "@/components/login";
 import { LoginUserResponse } from "@/types";
 import { useRouter } from "expo-router";
-import React, { useState } from "react";
+import React, { use, useEffect, useState } from "react";
 import { Text, View, StyleSheet, Pressable } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function Index() {
   const router = useRouter();
   const [user, setUser] = useState<LoginUserResponse | null>(null);
+
+  const fetchUser = async () => {
+    const userValue = await AsyncStorage.getItem('loggedInUser');
+    if (userValue) {
+        const fetchedUser: LoginUserResponse = JSON.parse(userValue);
+        setUser(fetchedUser);
+    }
+  }
+
+  useEffect(() => {
+    fetchUser();
+  }, []);
 
   return (
     <View style={styles.container}>
