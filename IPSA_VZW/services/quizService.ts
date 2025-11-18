@@ -39,11 +39,25 @@ const getAll = async () => {
     });
 };
 
+const getQuestionById= async(id: number) =>{
+  return fetch(`${apiUrl}/vragen/${id}`);
+}
+
+const updateQuestion = async(vraag: Vraag) =>{
+  return fetch(`${apiUrl}/vragen`, {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(vraag),
+  });
+}
+
 const quizService = {
     getQuestions,
     getAll,
     addQuestions,
-    deleteQuestions
+    deleteQuestions,
+    updateQuestion,
+    getQuestionById
 };
 
 export default quizService;

@@ -89,12 +89,11 @@ const Vragen: React.FC = () => {
         </Pressable>
       </View>
 
-      <Text style={styles.title}>Vragen</Text>
-
       <ScrollView
         showsVerticalScrollIndicator={false}
         contentContainerStyle={styles.scrollContent}
       >
+        <Text style={styles.title}>Vragen</Text>
         {questions.length === 0 ? (
           <Text style={{ textAlign: "center", marginTop: 50, fontSize: 18 }}>
             Nog geen vragen...
@@ -123,7 +122,12 @@ const Vragen: React.FC = () => {
                   <Pressable
                     style={styles.iconButton2}
                     hitSlop={20}
-                    onPress={() => router.push(`/wijzigvraag?id=${vraag.id}`)} // bonus: id meegeven
+                    onPress={() =>
+                      router.push({
+                        pathname: "/wijzigvraag/[id]",
+                        params: { id: vraag.id.toString() },
+                      })
+                    }
                   >
                     <MaterialIcons name="edit" size={30} color="#000000" />
                   </Pressable>
@@ -137,7 +141,6 @@ const Vragen: React.FC = () => {
   );
 };
 
-/* ==================== STYLES (exact zoals jij had) ==================== */
 const styles = StyleSheet.create({
   container: {
     backgroundColor: "#FFFFFF",
@@ -146,14 +149,13 @@ const styles = StyleSheet.create({
 
   title: {
     fontSize: 30,
-    paddingTop: 30,
     textAlign: "center",
     color: "#222",
     marginBottom: 30,
     fontWeight: "400",
   },
   scrollContent: {
-    paddingBottom: 250, // ← van 30 naar 120 (of zelfs 150 als je veel vragen hebt)
+    paddingBottom: 250,
     flexGrow: 1,
   },
   row: {
@@ -185,7 +187,7 @@ const styles = StyleSheet.create({
     borderRadius: 9,
   },
   Button: {
-    backgroundColor: "#FF4928", // rood
+    backgroundColor: "#FFD285", // rood
     padding: 6,
     width: "40%",
     height: "100%",
@@ -205,18 +207,14 @@ const styles = StyleSheet.create({
   },
 
   nieuwButton: {
-    backgroundColor: "#FF4928", // rood
+    backgroundColor: "#FFD285", // rood
     paddingVertical: 12,
     paddingHorizontal: 24,
+    marginBottom: 30,
     borderRadius: 12,
     minWidth: 120,
     alignItems: "center", // belangrijk!
     justifyContent: "center", // belangrijk!
-    elevation: 3,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.2,
-    shadowRadius: 4,
   },
 
   nieuwButtonText: {

@@ -12,10 +12,13 @@ import {
 } from "react-native";
 import DropDownPicker from "react-native-dropdown-picker";
 import quizService from "@/services/quizService"; // jouw service
+import { useRouter } from "expo-router";
 
 const Nieuwevraag = () => {
   const [open, setOpen] = useState(false);
   const [vraagType, setVraagType] = useState<string | null>(null);
+  const router = useRouter();
+
   const [items] = useState([
     { label: "Multiple Choice", value: "multiple_choice" },
     { label: "Memory", value: "memory" },
@@ -219,9 +222,18 @@ const Nieuwevraag = () => {
                 </>
               )}
 
-              <Pressable style={styles.saveBtn} onPress={saveVraag}>
-                <Text style={styles.saveBtnText}>Opslaan</Text>
-              </Pressable>
+              <View style={{ flexDirection: "row", gap: 20, marginTop: 30 }}>
+                <Pressable
+                  style={[styles.saveBtn, { backgroundColor: "#6c757d" }]}
+                  onPress={() => router.back()}
+                >
+                  <Text style={styles.saveBtnText}>Annuleren</Text>
+                </Pressable>
+
+                <Pressable style={styles.saveBtn} onPress={saveVraag}>
+                  <Text style={styles.saveBtnText}>Opslaan</Text>
+                </Pressable>
+              </View>
             </View>
           </ScrollView>
         </KeyboardAvoidingView>
@@ -281,14 +293,13 @@ const styles = StyleSheet.create({
     marginTop: 4,
   },
   saveBtn: {
+    flex: 1,
     backgroundColor: "#FFD285",
     paddingVertical: 16,
-    marginHorizontal: 40,
     borderRadius: 20,
     alignItems: "center",
-    marginBottom: 40,
   },
-  saveBtnText: { color: "#222", fontSize: 22, fontWeight: "600" },
+  saveBtnText: { color: "#222", fontSize: 20, fontWeight: "600" },
 });
 
 export default Nieuwevraag;
