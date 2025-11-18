@@ -9,9 +9,17 @@ import {
 } from "react-native";
 import { useRouter } from "expo-router";
 import quizService from "@/services/quizService";
-import { Vraag } from "../../types";
 
 import { MaterialIcons } from "@expo/vector-icons";
+import { Antwoord } from "../../types";
+
+// Je type (pas aan als nodig)
+type Vraag = {
+  id: number;
+  vraag: string;
+  type: string;
+  antwoorden?: Antwoord[];
+};
 
 const Vragen: React.FC = () => {
   const router = useRouter();
@@ -20,21 +28,55 @@ const Vragen: React.FC = () => {
   const getVragen = async () => {
     try {
       const response = await quizService.getAll();
-      if (response.status === 200) {
-        const vragen: Vraag[] = await response.json();
-        setQuestions(vragen);
+      if (response.ok) {
+        const data: Vraag[] = await response.json();
+        setQuestions(data);
       }
     } catch (error) {
-      console.error(error);
+      console.error("Fout bij ophalen vragen:", error);
     }
+  };
+
+  // CORRECTE delete functie
+  const deleteVraag = async (id: number) => {
+    Alert.alert(
+      "Verwijderen",
+      "Ben je zeker dat je deze vraag wilt verwijderen?",
+      [
+        { text: "Annuleren", style: "cancel" },
+        {
+          text: "Verwijderen",
+          style: "destructive",
+          onPress: async () => {
+            try {
+              // 1. Optimistic update → direct uit UI halen
+              setQuestions((prev) => prev.filter((q) => q.id !== id));
+
+              // 2. Verzoek naar backend
+              const response = await quizService.deleteQuestions(id);
+
+              if (!response.ok) {
+                // Mislukt → terugzetten in lijst
+                Alert.alert("Fout", "Kon vraag niet verwijderen.");
+                getVragen(); // herlaad alles
+              }
+            } catch (error) {
+              console.error("Delete error:", error);
+              Alert.alert("Fout", "Er ging iets mis.");
+              getVragen(); // herlaad als backup
+            }
+          },
+        },
+      ],
+      { cancelable: true }
+    );
   };
 
   useEffect(() => {
     getVragen();
   }, []);
 
-  // Kleuren om en om
-  const rowColors = ["#A89BC7", "#6FA8DC"]; // paars → blauw
+  const rowColors = ["#A89BC7", "#6FA8DC"];
 
   return (
     <View style={styles.container}>
@@ -53,39 +95,43 @@ const Vragen: React.FC = () => {
         showsVerticalScrollIndicator={false}
         contentContainerStyle={styles.scrollContent}
       >
-        {questions.map((vraag, index) => {
-          const backgroundColor = rowColors[index % 2]; // 0 → paars, 1 → blauw
+        {questions.length === 0 ? (
+          <Text style={{ textAlign: "center", marginTop: 50, fontSize: 18 }}>
+            Nog geen vragen...
+          </Text>
+        ) : (
+          questions.map((vraag, index) => {
+            const backgroundColor = rowColors[index % 2];
 
-          return (
-            <View
-              key={vraag.id}
-              style={[styles.row, { backgroundColor }]} // dynamische achtergrond
-            >
-              <Text style={styles.vraag} numberOfLines={3}>
-                {vraag.vraag}
-              </Text>
+            return (
+              <View key={vraag.id} style={[styles.row, { backgroundColor }]}>
+                <Text style={styles.vraag} numberOfLines={3}>
+                  {vraag.vraag}
+                </Text>
 
-              <View style={styles.iconRow}>
-                {/* DELETE */}
-                <Pressable
-                  style={styles.iconButton1}
-                  hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
-                >
-                  <MaterialIcons name="delete" size={30} color="#000000ff" />
-                </Pressable>
+                <View style={styles.iconRow}>
+                  {/* DELETE – nu correct aangeroepen */}
+                  <Pressable
+                    style={styles.iconButton1}
+                    hitSlop={20}
+                    onPress={() => deleteVraag(vraag.id)} // ← hier was de fout!
+                  >
+                    <MaterialIcons name="delete" size={30} color="#000000ff" />
+                  </Pressable>
 
-                {/* EDIT */}
-                <Pressable
-                  style={styles.iconButton2}
-                  hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
-                  onPress={() => router.push("/wijzigvraag")}
-                >
-                  <MaterialIcons name="edit" size={30} color="#000000" />
-                </Pressable>
+                  {/* EDIT */}
+                  <Pressable
+                    style={styles.iconButton2}
+                    hitSlop={20}
+                    onPress={() => router.push(`/wijzigvraag?id=${vraag.id}`)} // bonus: id meegeven
+                  >
+                    <MaterialIcons name="edit" size={30} color="#000000" />
+                  </Pressable>
+                </View>
               </View>
-            </View>
-          );
-        })}
+            );
+          })
+        )}
       </ScrollView>
     </View>
   );
@@ -107,7 +153,8 @@ const styles = StyleSheet.create({
     fontWeight: "400",
   },
   scrollContent: {
-    paddingBottom: 30,
+    paddingBottom: 250, // ← van 30 naar 120 (of zelfs 150 als je veel vragen hebt)
+    flexGrow: 1,
   },
   row: {
     flexDirection: "row",
