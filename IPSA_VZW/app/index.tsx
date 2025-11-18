@@ -2,9 +2,11 @@ import Login from "@/components/login";
 import { LoginUserResponse } from "@/types";
 import { useRouter } from "expo-router";
 import React, { use, useEffect, useState } from "react";
-import { Text, View, StyleSheet, Pressable } from "react-native";
+import { Text, View, StyleSheet, Pressable, Platform } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import * as Notifications from 'expo-notifications';
+
 
 export default function Index() {
   const router = useRouter();
@@ -20,6 +22,24 @@ export default function Index() {
 
   useEffect(() => {
     fetchUser();
+  }, []);
+
+  useEffect(() => {
+    Notifications.requestPermissionsAsync();
+
+    Notifications.cancelAllScheduledNotificationsAsync();
+    
+    Notifications.scheduleNotificationAsync({
+      content: {
+        title: "Goedemorgen!",
+        body: "Dit is je dagelijkse herinnering.",
+      },
+      trigger: {
+        type: Notifications.SchedulableTriggerInputTypes.DAILY,
+        hour: 15,
+        minute: 58
+      },
+    });
   }, []);
 
   return (
