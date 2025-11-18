@@ -38,6 +38,15 @@ const Vragen: React.FC = () => {
 
   return (
     <View style={styles.container}>
+      <View style={styles.container2}>
+        <Pressable
+          style={styles.nieuwButton}
+          onPress={() => router.push("/nieuwevraag")}
+        >
+          <Text style={styles.nieuwButtonText}>Nieuw</Text>
+        </Pressable>
+      </View>
+
       <Text style={styles.title}>Vragen</Text>
 
       <ScrollView
@@ -69,6 +78,7 @@ const Vragen: React.FC = () => {
                 <Pressable
                   style={styles.iconButton2}
                   hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+                  onPress={() => router.push("/wijzigvraag")}
                 >
                   <MaterialIcons name="edit" size={30} color="#000000" />
                 </Pressable>
@@ -84,17 +94,16 @@ const Vragen: React.FC = () => {
 /* ==================== STYLES (exact zoals jij had) ==================== */
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    width: "100%",
     backgroundColor: "#FFFFFF",
     paddingHorizontal: 20,
   },
+
   title: {
     fontSize: 30,
-    paddingTop: 70,
+    paddingTop: 30,
     textAlign: "center",
     color: "#222",
-    marginBottom: 50,
+    marginBottom: 30,
     fontWeight: "400",
   },
   scrollContent: {
@@ -114,6 +123,11 @@ const styles = StyleSheet.create({
     color: "#000000ff",
     marginRight: 12,
   },
+  vraag2: {
+    fontSize: 24,
+    color: "#000000ff",
+    textAlign: "center",
+  },
   iconRow: {
     flexDirection: "row",
     gap: 16,
@@ -123,10 +137,46 @@ const styles = StyleSheet.create({
     padding: 6,
     borderRadius: 9,
   },
+  Button: {
+    backgroundColor: "#FF4928", // rood
+    padding: 6,
+    width: "40%",
+    height: "100%",
+    borderRadius: 9,
+    marginTop: 50,
+    textAlign: "center",
+  },
   iconButton2: {
     backgroundColor: "#FFD285", // oranje
     padding: 6,
     borderRadius: 9,
+  },
+  container2: {
+    paddingHorizontal: 20,
+    marginTop: 50,
+    alignItems: "flex-end", // knop rechts uitgelijnd
+  },
+
+  nieuwButton: {
+    backgroundColor: "#FF4928", // rood
+    paddingVertical: 12,
+    paddingHorizontal: 24,
+    borderRadius: 12,
+    minWidth: 120,
+    alignItems: "center", // belangrijk!
+    justifyContent: "center", // belangrijk!
+    elevation: 3,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.2,
+    shadowRadius: 4,
+  },
+
+  nieuwButtonText: {
+    color: "#000000ff", // WITTE tekst
+    fontSize: 20,
+    fontWeight: "400",
+    textAlign: "center",
   },
 });
 
