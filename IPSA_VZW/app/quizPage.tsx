@@ -32,6 +32,7 @@ export default function quiz() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [mistakeAmount, setMistakeAmount] = useState(0);
   const [correctAmount, setCorrectAmount] = useState(0);
+  const [heartsCount, setHeartsCount] = useState(3);
 
   const getRandom18 = async () => {
     try {
