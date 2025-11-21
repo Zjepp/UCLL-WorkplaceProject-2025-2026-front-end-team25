@@ -1,4 +1,4 @@
-import { LoginUserResponse } from "@/types";
+import { LoginUserResponse, Vraag } from "@/types";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const apiUrl = "http://10.0.2.2:8080";
