@@ -6,7 +6,7 @@ import { Text, View, StyleSheet, Pressable } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-const Admin: React.FC = () => {
+export default function HomePage() {
   const router = useRouter();
   const [user, setUser] = useState<LoginUserResponse | null>(null);
 
@@ -72,8 +72,7 @@ const Admin: React.FC = () => {
         </View>
       </View>}
 
-      {user && user.role == 'ADMIN' && <View style={[styles.container, { marginTop: 35 }]}>
-        <View style={styles.headerContainer}>
+      {user && user.role == 'ADMIN' && <View style={[styles.container, { marginTop: 35, justifyContent: "center" , alignItems: "center"}]}>
           <Text style={styles.title}>Admin Paneel</Text>
 
           <LinearGradient
@@ -123,7 +122,12 @@ const Admin: React.FC = () => {
               <Text style={styles.buttonText}>FAQ</Text>
             </Pressable>
           </LinearGradient>
-        </View>
+
+          <Pressable style={[styles.button, styles.logoutButton]} onPress={async () => {
+            await AsyncStorage.removeItem('loggedInUser');
+            setUser(null);}}>
+            <Text style={styles.buttonText}>Log out</Text>
+          </Pressable>
       </View>}
     </View>
   );
