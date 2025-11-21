@@ -39,11 +39,6 @@ export default function quiz() {
     connectQuestions.length > 0 &&
     questions.length > 0;
 
-  const dataReady =
-    questionsStandaard.length > 0 &&
-    connectQuestions.length > 0 &&
-    questions.length > 0;
-
   const getRandom18 = async () => {
     try {
       const response = await quizService.get18Questions();
@@ -207,13 +202,6 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "stretch",
     paddingHorizontal: 12,
-  },
-  loadingContainer: {
-    flex: 1,
-
-    justifyContent: "center",
-
-    alignItems: "center",
   },
   center: { flex: 1 },
   done: { fontSize: 18, fontWeight: "bold", marginBottom: 12 },
