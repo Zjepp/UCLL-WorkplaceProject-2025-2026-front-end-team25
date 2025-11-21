@@ -1,14 +1,38 @@
-import { Vraag } from "../../types";
+import { LoginUserResponse, Vraag } from "@/types";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
-const apiUrl = 'http://10.0.2.2:8080'
+const apiUrl = "http://10.0.2.2:8080";
 
-const getQuestions = async () => {
-    return await fetch(apiUrl + '/vragen/random20', {
-        method: 'GET',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-    });
+const get18Questions = async () => {
+  const userValue = await AsyncStorage.getItem("loggedInUser");
+  let token = "";
+  if (userValue) {
+    const user: LoginUserResponse = JSON.parse(userValue);
+    token = user.token;
+  }
+  return await fetch(apiUrl + "/vragen/random18", {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+  });
+};
+
+const get8Questions = async () => {
+  const userValue = await AsyncStorage.getItem("loggedInUser");
+  let token = "";
+  if (userValue) {
+    const user: LoginUserResponse = JSON.parse(userValue);
+    token = user.token;
+  }
+  return await fetch(apiUrl + "/vragen/random8", {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+  });
 };
 
 const addQuestions = async (payload: Vraag) => {
@@ -52,12 +76,13 @@ const updateQuestion = async(vraag: Vraag) =>{
 }
 
 const quizService = {
-    getQuestions,
     getAll,
     addQuestions,
     deleteQuestions,
     updateQuestion,
-    getQuestionById
+    getQuestionById,
+    get18Questions,
+    get8Questions,
 };
 
 export default quizService;
