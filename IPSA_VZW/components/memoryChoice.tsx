@@ -36,7 +36,7 @@ const QuizMemoryChoice: React.FC<MultipleChoiceProps> = ({
 }: MultipleChoiceProps) => {
   const [selectedOption, setSelectedOption] = useState<number | null>(null);
   const windowWidth = Dimensions.get("window").width;
-  const [timeLeft, setTimeLeft] = useState(0);
+  const [timeLeft, setTimeLeft] = useState(10);
   const boxSize = (windowWidth - 100) / 2;
   const [visible, setVisible] = useState(true);
   const [phase, setPhase] = useState<"view" | "answer">("view");
@@ -49,7 +49,7 @@ const QuizMemoryChoice: React.FC<MultipleChoiceProps> = ({
           if (phase === "view") {
             setVisible(false);
             setPhase("answer");
-            setTimeLeft(0);
+            setTimeLeft(10);
           } else {
             setVisible(false);
           }
@@ -107,7 +107,7 @@ const QuizMemoryChoice: React.FC<MultipleChoiceProps> = ({
       }
     }
     onAnswerSelected?.(true);
-    setTimeLeft(0);
+    setTimeLeft(10);
     setVisible(true);
     setPhase("view");
   };
