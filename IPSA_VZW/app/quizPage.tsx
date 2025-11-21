@@ -118,6 +118,10 @@ export default function quiz() {
           questionc={conn[2]}
           questiond={conn[3]}
           onAnswerSelected={() => setCurrentIndex((i) => i + 1)}
+          mistakeAmount={mistakeAmount}
+          mistakeAmountSetter={setMistakeAmount}
+          correctAmount={correctAmount}
+          correctAmountSetter={setCorrectAmount}
         />
       );
     }

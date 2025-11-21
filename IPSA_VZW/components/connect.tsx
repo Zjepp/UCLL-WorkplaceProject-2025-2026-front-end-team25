@@ -15,6 +15,10 @@ interface ConnectProps {
   questionb: Vraag;
   questionc: Vraag;
   questiond: Vraag;
+  mistakeAmount: number;
+  mistakeAmountSetter: (amount: number) => void;
+  correctAmount: number;
+  correctAmountSetter: (amount: number) => void;
 }
 
 const QuizConnect: React.FC<ConnectProps> = ({
@@ -24,6 +28,10 @@ const QuizConnect: React.FC<ConnectProps> = ({
   questionc,
   questiond,
   title,
+  mistakeAmount,
+  mistakeAmountSetter,
+  correctAmount,
+  correctAmountSetter
 }: ConnectProps) => {const questionData: {
     title: string;
     question1: Vraag;
@@ -89,20 +97,37 @@ const QuizConnect: React.FC<ConnectProps> = ({
       }
       
       if (connections.length === 3) {
+        const score = calculateScore();
         onAnswerSelected?.(true);
+        correctAmountSetter?.(correctAmount+score);
+        mistakeAmountSetter?.(mistakeAmount+(4-score))
       }
+    // console.log(`Je hebt gekozen voor: ${option.formula}`);
     console.log(connections)
     setSelectedQuestion(null);
     setSelectedOption(null);
 };
 
+  // Function to reset state for a new question
   const resetState = () => {
-  setSelectedQuestion(null);
-  setSelectedOption(null);
-  setConnection([]);
+    setSelectedQuestion(null);
+    setSelectedOption(null);
+    setConnection([]);
   };
 
+  const calculateScore = () => {
+    let score = 0;
+    connections.forEach(({ questionId, optionId }) => {
+      const question = questions.find((q) => q.id === questionId);
+      const option = questionData.options.find((o) => o.id === optionId);
+      if (question?.data.antwoorden?.some((a: Antwoord) => a.correct && a.antwoord === option?.formula)
+      ) {score += 1;}
+    });
+    return score;
+  }
+
   useEffect(() => {
+    // Reset state whenever the component receives new props (e.g., new question)
     resetState();
   }, [questiona, questionb, questionc, questiond]);
 
@@ -128,7 +153,8 @@ const QuizConnect: React.FC<ConnectProps> = ({
                   onPress={() => handleQuestionSelect(question.id)}>
                   <Text style={styles.question}>{question.data.vraag}</Text>
               </Pressable>
-            )})}
+            )
+          })}
         </View>
 
         <View style={styles.questionsAndAnswers}>
