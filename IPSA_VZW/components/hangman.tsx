@@ -64,6 +64,7 @@ const HangmanQuiz: React.FC<HangmanQuizProps> = ({
       },
     ],
   };
+  const questionResetKey = question.vraag;
 
   useEffect(() => {
     if (typeof heartsCount === "number") {
@@ -160,7 +161,7 @@ const HangmanQuiz: React.FC<HangmanQuizProps> = ({
           );
         })}
       </View>
-      <Letters onSelect={handleLetterSelect} />
+      <Letters onSelect={handleLetterSelect} resetKey={questionResetKey} />
     </View>
   );
 };
