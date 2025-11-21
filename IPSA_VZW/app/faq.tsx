@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, StyleSheet, Pressable, FlatList, ActivityIndicator } from "react-native";
+import { View, Text, StyleSheet, Pressable, FlatList, ActivityIndicator, Linking } from "react-native";
 import { useRouter } from "expo-router";
 import faqService from "@/services/faqService";
 
@@ -35,6 +35,20 @@ export default function FAQPage() {
     }
   };
 
+  const openForumPage = async () => {
+    const url = 'https://ipsa.be/totara/dashboard/index.php?id=6';
+    try {
+      const supported = await Linking.canOpenURL(url);
+      if (supported) {
+        await Linking.openURL(url);
+      } else {
+        console.error("Cannot open URL:", url);
+      }
+    } catch (error) {
+      console.error("Error opening URL:", error);
+    }
+  };
+
   const renderItem = ({ item }: { item: FaqItem }) => (
     <View style={styles.card}>
       <Text style={styles.question}>{item.question}</Text>
@@ -52,7 +66,7 @@ export default function FAQPage() {
       </View>
 
       <View style={styles.headerRow}>
-        <Pressable style={[styles.headerButton, styles.chatButton]} onPress={() => { /* optionally open chat */ }}>
+        <Pressable style={[styles.headerButton, styles.chatButton]} onPress={openForumPage}>
           <Text style={styles.headerButtonText}>Chat met ons</Text>
         </Pressable>
 

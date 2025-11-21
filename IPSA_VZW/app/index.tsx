@@ -53,7 +53,7 @@ export default function Index() {
             <Text style={styles.buttonText}>Score Bord</Text>
           </Pressable>
 
-          <Pressable onPress={() => router.push("/quizPage")} style={[styles.quizButton]}>
+          <Pressable onPress={() => router.push("/categoryPage" as any)} style={[styles.quizButton]}>
             <Text style={styles.buttonQuizText}>Quiz</Text>
           </Pressable>
 
