@@ -15,6 +15,10 @@ interface ConnectProps {
   questionb: Vraag;
   questionc: Vraag;
   questiond: Vraag;
+  mistakeAmount: number;
+  mistakeAmountSetter: (amount: number) => void;
+  correctAmount: number;
+  correctAmountSetter: (amount: number) => void;
 }
 
 const QuizConnect: React.FC<ConnectProps> = ({
@@ -24,6 +28,10 @@ const QuizConnect: React.FC<ConnectProps> = ({
   questionc,
   questiond,
   title,
+  mistakeAmount,
+  mistakeAmountSetter,
+  correctAmount,
+  correctAmountSetter
 }: ConnectProps) => {const questionData: {
     title: string;
     question1: Vraag;
@@ -39,22 +47,22 @@ const QuizConnect: React.FC<ConnectProps> = ({
     options: [
       {
         id: 1,
-        formula: questionb.antwoorden?.[0].antwoord ?? "antwoord niet beschikbaar",
+        formula: questiona.antwoorden?.[0].antwoord ?? "antwoord niet beschikbaar",
         color: "#26A69Aff",
       },
       {
         id: 2,
-        formula: questiond.antwoorden?.[0].antwoord ?? "antwoord niet beschikbaar",
+        formula: questionb.antwoorden?.[0].antwoord ?? "antwoord niet beschikbaar",
         color: "#fdc961ff",
       },
       {
         id: 3,
-        formula: questiona.antwoorden?.[0].antwoord ?? "antwoord niet beschikbaar",
+        formula: questionc.antwoorden?.[0].antwoord ?? "antwoord niet beschikbaar",
         color: "#e64d32ff",
       },
       {
         id: 4,
-        formula: questionc.antwoorden?.[0].antwoord ?? "antwoord niet beschikbaar",
+        formula: questiond.antwoorden?.[0].antwoord ?? "antwoord niet beschikbaar",
         color: "#bd99d4ff",
       },
     ],
@@ -63,10 +71,12 @@ const QuizConnect: React.FC<ConnectProps> = ({
   const [selectedQuestion, setSelectedQuestion] = useState<number | null>(null);
   const [selectedOption, setSelectedOption] = useState<number | null>(null);
   const [connections, setConnection] = useState<Array<{questionId: number, optionId: number}>>([]);
+  const [shuffledQuestions, setShuffledQuestions] = useState<typeof questions>([]);
+  const [shuffledOptions, setShuffledOptions] = useState<typeof questionData.options>([]);
 
   const questions = useMemo(() => [
     { id: 1, data: questionData.question1, color: '#bd99d4ff' },
-    { id: 2, data: questionData.question2, color: '#e64d32ff'},
+    { id: 2, data: questionData.question2, color: '#e64d32ff' },
     { id: 3, data: questionData.question3, color: '#fdc961ff' },	
     { id: 4, data: questionData.question4, color: '#26A69Aff' },
   ], [questionData.question1, questionData.question2, questionData.question3, questionData.question4]);
@@ -75,7 +85,10 @@ const QuizConnect: React.FC<ConnectProps> = ({
   const isOptionConnected = (optionId: number) => connections.some((c) => c.optionId === optionId);
 
   const handleQuestionSelect = (questionId: number) => {
-    if (isQuestionConnected(questionId)) return;
+    if (isQuestionConnected(questionId)) {
+      const arr = connections.filter((qo) => qo.questionId !== questionId);
+      setConnection(arr);
+    };
 
     setSelectedQuestion((oud) => (oud === questionId ? null : questionId));
   };
@@ -89,7 +102,10 @@ const QuizConnect: React.FC<ConnectProps> = ({
       }
       
       if (connections.length === 3) {
+        const score = calculateScore();
         onAnswerSelected?.(true);
+        correctAmountSetter?.(correctAmount+score);
+        mistakeAmountSetter?.(mistakeAmount+(4-score))
       }
     console.log(connections)
     setSelectedQuestion(null);
@@ -97,13 +113,36 @@ const QuizConnect: React.FC<ConnectProps> = ({
 };
 
   const resetState = () => {
-  setSelectedQuestion(null);
-  setSelectedOption(null);
-  setConnection([]);
+    setSelectedQuestion(null);
+    setSelectedOption(null);
+    setConnection([]);
+  };
+
+  const calculateScore = () => {
+    let score = 0;
+    connections.forEach(({ questionId, optionId }) => {
+      const question = questions.find((q) => q.id === questionId);
+      const option = questionData.options.find((o) => o.id === optionId);
+      if (question?.data.antwoorden?.some((a: Antwoord) => a.correct && a.antwoord === option?.formula)) {
+          score += 1;
+        };
+    });
+    return score;
+  }
+
+  const shuffleArray = (array: any[]) => {
+    return array
+      .map((item) => ({ item, sort: Math.random() }))
+      .sort((a, b) => a.sort - b.sort)
+      .map(({ item }) => item);
   };
 
   useEffect(() => {
     resetState();
+    const shuffledQuestions = shuffleArray(questions);
+    const shuffledOptions = shuffleArray(questionData.options);
+    setShuffledQuestions(shuffledQuestions);
+    setShuffledOptions(shuffledOptions);
   }, [questiona, questionb, questionc, questiond]);
 
   return (
@@ -113,7 +152,7 @@ const QuizConnect: React.FC<ConnectProps> = ({
       
       <View style={styles.container2}>
         <View style={styles.questionsAndAnswers}>
-          {questions.map((question) => {
+          {shuffledQuestions.map((question) => {
             const connected = isQuestionConnected(question.id);
             const selected = (selectedQuestion === question.id);
             return (
@@ -128,11 +167,12 @@ const QuizConnect: React.FC<ConnectProps> = ({
                   onPress={() => handleQuestionSelect(question.id)}>
                   <Text style={styles.question}>{question.data.vraag}</Text>
               </Pressable>
-            )})}
+            )
+          })}
         </View>
 
         <View style={styles.questionsAndAnswers}>
-          {questionData.options.map((option) => {
+          {shuffledOptions.map((option) => {
             const connected = isOptionConnected(option.id)
             const selected = (selectedOption === option.id)
             return (
@@ -151,11 +191,6 @@ const QuizConnect: React.FC<ConnectProps> = ({
           })}
         </View>
       </View>
-      {/* <View>
-        <Pressable>
-            <Text style={styles.verzend}>Verzend</Text>
-        </Pressable>
-      </View> */}
     </View>
   );
 };
