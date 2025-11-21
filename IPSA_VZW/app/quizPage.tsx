@@ -34,6 +34,11 @@ export default function quiz() {
   const [correctAmount, setCorrectAmount] = useState(0);
   const [heartsCount, setHeartsCount] = useState(3);
 
+  const dataReady =
+    questionsStandaard.length > 0 &&
+    connectQuestions.length > 0 &&
+    questions.length > 0;
+
   const getRandom18 = async () => {
     try {
       const response = await quizService.get18Questions();
@@ -83,14 +88,26 @@ export default function quiz() {
     console.log(questions);
   }, [questionsStandaard, connectQuestions]);
 
+  if (!dataReady) {
+    return (
+      <View style={styles.loadingContainer}>
+        <ActivityIndicator size="large" />
+      </View>
+    );
+  }
+
   const openQuestion = () => {
     const question = questions[currentIndex];
     console.log(question);
 
     if (!question) {
-      return (
-        <Score correctAmount={correctAmount} mistakesAmount={mistakeAmount} />
-      );
+      if (dataReady) {
+        return (
+          <Score correctAmount={correctAmount} mistakesAmount={mistakeAmount} />
+        );
+      }
+
+      return null;
     }
 
     if (question.type === "standaard-choice") {
@@ -176,6 +193,13 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "stretch",
     paddingHorizontal: 12,
+  },
+  loadingContainer: {
+    flex: 1,
+
+    justifyContent: "center",
+
+    alignItems: "center",
   },
   center: { flex: 1 },
   done: { fontSize: 18, fontWeight: "bold", marginBottom: 12 },
