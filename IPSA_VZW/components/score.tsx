@@ -58,7 +58,7 @@ const Score: React.FC<ScoreProps> = ({ correctAmount, mistakesAmount }) => {
 
 
       >
-        <Pressable onPress={() => router.push("/")}><Text style={styles.buttonText}>Terug</Text></Pressable>
+        <Pressable ><Text style={styles.buttonText}>Terug</Text></Pressable>
       </LinearGradient>
     </View>
   );

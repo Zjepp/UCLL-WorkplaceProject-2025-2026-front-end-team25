@@ -23,6 +23,7 @@ interface HangmanQuizProps {
   mistakeAmountSetter: (amount: number) => void;
   correctAmount: number;
   correctAmountSetter: (amount: number) => void;
+  // when true the parent (page) will render hearts; hangman will update counts via heartsCountSetter
   showHearts?: boolean;
   heartsCount?: number;
   heartsCountSetter?: (amount: number) => void;
@@ -41,7 +42,7 @@ const HangmanQuiz: React.FC<HangmanQuizProps> = ({
   heartsCountSetter,
 }) => {
   const [answerArray, setAnswerArray] = useState<string[]>([]);
-  const [livesLeft, setLivesLeft] = useState<number>(3);
+  const [livesLeft, setLivesLeft] = useState<number>(heartsCount ?? 3);
   const [solutionArray, setSolutionArray] = useState<string[]>([]);
 
   const questionData: {
@@ -53,6 +54,7 @@ const HangmanQuiz: React.FC<HangmanQuizProps> = ({
     question: question.vraag
       ? question
       : ({ vraag: "vraag niet beschikbaar" } as Vraag),
+    // prefer the tekst of the first Antwoord object, fallback to question.vraag
     options: [
       {
         id: 1,
@@ -64,12 +66,10 @@ const HangmanQuiz: React.FC<HangmanQuizProps> = ({
       },
     ],
   };
-  const questionResetKey = question.vraag;
 
   useEffect(() => {
+    // if parent drives hearts, sync local state with the prop
     if (typeof heartsCount === "number") {
-      console.log("Initial hearts count from props:", heartsCount);
-      console.log("idk anymore", livesLeft);
       setLivesLeft(heartsCount);
     }
 
@@ -89,23 +89,6 @@ const HangmanQuiz: React.FC<HangmanQuizProps> = ({
     const initialDisplay = letters.map((ch) => (/[A-Z]/.test(ch) ? "_" : ch));
     setAnswerArray(initialDisplay);
   }, [question]);
-
-  useEffect(() => {
-    if (!answerArray.includes("_") && answerArray.length > 0) {
-      console.log(answerArray);
-      correctAmountSetter(correctAmount + 1);
-      setLivesLeft(3);
-      heartsCountSetter?.(3);
-      onAnswerSelected?.(true);
-    }
-    if (livesLeft <= 0) {
-      mistakeAmountSetter(mistakeAmount + 1);
-      setLivesLeft(3);
-      heartsCountSetter?.(3);
-      onAnswerSelected?.(false);
-    }
-  }, [answerArray]);
-
   const handleSelect = (option: QuizOption) => {
     const answerText =
       typeof option.formula === "string"
@@ -126,27 +109,42 @@ const HangmanQuiz: React.FC<HangmanQuizProps> = ({
     console.log(`Geselecteerde letter vanuit Hangman: ${letter}`);
     handleSelect(questionData.options[0]);
     var temp = false;
-    const updatedAnswer = [...answerArray];
-    const updatedSolution = [...solutionArray];
-
     for (let i = 0; i < solutionArray.length; i++) {
-      if (updatedSolution[i] === letter) {
-        updatedAnswer[i] = letter;
-        updatedSolution[i] = "0";
+      if (solutionArray[i] === letter) {
+        answerArray[i] = letter;
+        setAnswerArray([...answerArray]);
+        solutionArray[i] = "0";
         temp = true;
       }
     }
-
+    console.log("Lives left:", livesLeft);
     if (!temp) {
-      const temp = livesLeft;
-      setLivesLeft(temp - 1);
-      heartsCountSetter?.(temp - 1);
+      // decrement lives: prefer updating parent via heartsCountSetter if provided
+      setLivesLeft((prev) => {
+        const newLives = prev - 1;
+        if (newLives === 0) {
+          mistakeAmountSetter(mistakeAmount + 1);
+          // reset to default (3)
+          if (heartsCountSetter) {
+            heartsCountSetter(3);
+          } else {
+            setLivesLeft(3);
+          }
+          onAnswerSelected?.(true);
+        } else {
+          if (heartsCountSetter) {
+            heartsCountSetter(newLives);
+          }
+        }
+        return newLives;
+      });
     }
     console.log("Huidige antwoord array:", answerArray);
-
-    setAnswerArray(updatedAnswer);
-    setSolutionArray(updatedSolution);
-    console.log("Lives left:", livesLeft);
+    if (!answerArray.includes("_")) {
+      correctAmountSetter(correctAmount + 1);
+      setLivesLeft(3);
+      onAnswerSelected?.(true);
+    }
   };
 
   return (
@@ -161,7 +159,7 @@ const HangmanQuiz: React.FC<HangmanQuizProps> = ({
           );
         })}
       </View>
-      <Letters onSelect={handleLetterSelect} resetKey={questionResetKey} />
+      <Letters onSelect={handleLetterSelect} />
     </View>
   );
 };
