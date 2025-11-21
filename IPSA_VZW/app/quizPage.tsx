@@ -45,6 +45,11 @@ export default function quiz() {
     return shuffled;
   };
 
+  const dataReady =
+    questionsStandaard.length > 0 &&
+    connectQuestions.length > 0 &&
+    questions.length > 0;
+
   const getRandom18 = async () => {
     try {
       let response;
@@ -156,6 +161,14 @@ export default function quiz() {
     }
   }, [questionsStandaard, connectQuestions]);
 
+  if (!dataReady) {
+    return (
+      <View style={styles.loadingContainer}>
+        <ActivityIndicator size="large" />
+      </View>
+    );
+  }
+
   const openQuestion = () => {
     if (loading) {
       return (
@@ -186,9 +199,12 @@ export default function quiz() {
     console.log('Current question:', question);
 
     if (!question) {
-      return (
-        <Score correctAmount={correctAmount} mistakesAmount={mistakeAmount} />
-      );
+      if (dataReady) {
+        return (
+          <Score correctAmount={correctAmount} mistakesAmount={mistakeAmount} />
+        );
+      }
+      return null;
     }
 
     if (question.type === "standaard-choice") {
@@ -281,6 +297,11 @@ export default function quiz() {
 
 const styles = StyleSheet.create({
   container: { flex: 1, position: "relative", marginTop: 35 },
+  loadingContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
   content: {
     flex: 1,
     justifyContent: "center",
