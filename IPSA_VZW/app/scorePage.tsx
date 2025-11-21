@@ -43,7 +43,7 @@ const ScorePage: React.FC = () => {
         <Pressable  onPress={() => router.push("/")}>
           <Text style={styles.buttonText}>Foute Antwoorden</Text></Pressable>
       </LinearGradient>
-
+    <Pressable onPress={() => router.push("/")}>
       <LinearGradient
         colors={["#FFD285", "#CE9935"]}
         start={{ x: 0, y: 0 }}
@@ -53,8 +53,9 @@ const ScorePage: React.FC = () => {
 
 
       >
-        <Pressable onPress={() => router.push("/")}><Text style={styles.buttonText}>Terug</Text></Pressable>
+        <Text style={styles.buttonText}>Terug</Text>
       </LinearGradient>
+      </Pressable>
     </View>
   );
 };
