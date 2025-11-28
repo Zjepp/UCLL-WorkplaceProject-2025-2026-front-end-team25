@@ -99,8 +99,6 @@ const Nieuwevraag = () => {
       const response = await quizService.addQuestions(payload);
       if (!response.ok) throw new Error("Serverfout");
 
-      Alert.alert("Succes", "Vraag opgeslagen!");
-
       // Reset alles
       setVraag("");
       setTijd("");
@@ -109,6 +107,7 @@ const Nieuwevraag = () => {
       setFout2("");
       setFout3("");
       setVraagType(null);
+      router.push("/vragen");
     } catch (err) {
       Alert.alert("Error", "Kon vraag niet opslaan.");
     }
@@ -225,7 +224,7 @@ const Nieuwevraag = () => {
               <View style={{ flexDirection: "row", gap: 20, marginTop: 30 }}>
                 <Pressable
                   style={[styles.saveBtn, { backgroundColor: "#6c757d" }]}
-                  onPress={() => router.back()}
+                  onPress={() => router.push("/vragen")}
                 >
                   <Text style={styles.saveBtnText}>Annuleren</Text>
                 </Pressable>
