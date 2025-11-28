@@ -1,4 +1,4 @@
-import { LoginUserResponse } from "@/types";
+import { LoginUserResponse, Vraag } from "@/types";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const apiUrl = "http://10.0.2.2:8080";
@@ -35,9 +35,93 @@ const get8Questions = async () => {
   });
 };
 
+const addQuestions = async (payload: Vraag) => {
+  const userValue = await AsyncStorage.getItem("loggedInUser");
+  let token = "";
+  if (userValue) {
+    const user: LoginUserResponse = JSON.parse(userValue);
+    token = user.token;
+  }
+    return await fetch(apiUrl + '/vragen', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(payload)
+    });
+};
+
+const deleteQuestions = async (id: number) => {
+  const userValue = await AsyncStorage.getItem("loggedInUser");
+  let token = "";
+  if (userValue) {
+    const user: LoginUserResponse = JSON.parse(userValue);
+    token = user.token;
+  }
+    return await fetch(apiUrl + '/vragen/' + id, {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+        }
+    });
+};
+
+const getAll = async () => {
+  const userValue = await AsyncStorage.getItem("loggedInUser");
+  let token = "";
+  if (userValue) {
+    const user: LoginUserResponse = JSON.parse(userValue);
+    token = user.token;
+  }
+    return await fetch(apiUrl + '/vragen/all', {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+        },
+    });
+};
+
+const getQuestionById= async(id: number) =>{
+  const userValue = await AsyncStorage.getItem("loggedInUser");
+  let token = "";
+  if (userValue) {
+    const user: LoginUserResponse = JSON.parse(userValue);
+    token = user.token;
+  }
+  return fetch(apiUrl + '/vragen/' + id, {
+    method: "GET",  // ← hier stond PUT!
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+  });
+}
+
+const updateQuestion = async(vraag: Vraag) =>{
+  const userValue = await AsyncStorage.getItem("loggedInUser");
+  let token = "";
+  if (userValue) {
+    const user: LoginUserResponse = JSON.parse(userValue);
+    token = user.token;
+  }
+  return fetch(`${apiUrl}/vragen`, {
+    method: "PUT",
+    headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
+    body: JSON.stringify(vraag),
+  });
+}
+
 const quizService = {
-  get18Questions,
-  get8Questions,
+    getAll,
+    addQuestions,
+    deleteQuestions,
+    updateQuestion,
+    getQuestionById,
+    get18Questions,
+    get8Questions,
 };
 
 export default quizService;
