@@ -36,26 +36,93 @@ const get8Questions = async () => {
   });
 };
 
-const getQuestionsByCategory = async (category: string) => {
+const addQuestions = async (payload: Vraag) => {
   const userValue = await AsyncStorage.getItem("loggedInUser");
   let token = "";
   if (userValue) {
     const user: LoginUserResponse = JSON.parse(userValue);
     token = user.token;
   }
-  return await fetch(apiUrl + `/vragen/category/${category}`, {
-    method: "GET",
+    return await fetch(apiUrl + '/vragen', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(payload)
+    });
+};
+
+const deleteQuestions = async (id: number) => {
+  const userValue = await AsyncStorage.getItem("loggedInUser");
+  let token = "";
+  if (userValue) {
+    const user: LoginUserResponse = JSON.parse(userValue);
+    token = user.token;
+  }
+    return await fetch(apiUrl + '/vragen/' + id, {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+        }
+    });
+};
+
+const getAll = async () => {
+  const userValue = await AsyncStorage.getItem("loggedInUser");
+  let token = "";
+  if (userValue) {
+    const user: LoginUserResponse = JSON.parse(userValue);
+    token = user.token;
+  }
+    return await fetch(apiUrl + '/vragen/all', {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+        },
+    });
+};
+
+const getQuestionById= async(id: number) =>{
+  const userValue = await AsyncStorage.getItem("loggedInUser");
+  let token = "";
+  if (userValue) {
+    const user: LoginUserResponse = JSON.parse(userValue);
+    token = user.token;
+  }
+  return fetch(apiUrl + '/vragen/' + id, {
+    method: "GET",  // ← hier stond PUT!
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${token}`,
     },
   });
-};
+}
+
+const updateQuestion = async(vraag: Vraag) =>{
+  const userValue = await AsyncStorage.getItem("loggedInUser");
+  let token = "";
+  if (userValue) {
+    const user: LoginUserResponse = JSON.parse(userValue);
+    token = user.token;
+  }
+  return fetch(`${apiUrl}/vragen`, {
+    method: "PUT",
+    headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
+    body: JSON.stringify(vraag),
+  });
+}
 
 const quizService = {
-  get18Questions,
-  get8Questions,
-  getQuestionsByCategory,
+    getAll,
+    addQuestions,
+    deleteQuestions,
+    updateQuestion,
+    getQuestionById,
+    get18Questions,
+    get8Questions,
 };
 
 export default quizService;

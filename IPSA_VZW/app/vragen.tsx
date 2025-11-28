@@ -11,7 +11,7 @@ import { useRouter } from "expo-router";
 import quizService from "@/services/quizService";
 
 import { MaterialIcons } from "@expo/vector-icons";
-import { Antwoord } from "../../types";
+import { Antwoord } from "@/types";
 
 // Je type (pas aan als nodig)
 type Vraag = {
