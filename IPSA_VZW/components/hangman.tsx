@@ -187,7 +187,7 @@ const styles = StyleSheet.create({
     fontSize: 30,
   },
   title: {
-    marginTop: 0,
+    marginTop: 70,
     marginBottom: 70,
     fontSize: 24,
     width: "95%",
