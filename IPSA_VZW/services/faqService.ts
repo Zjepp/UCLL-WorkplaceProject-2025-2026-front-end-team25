@@ -1,4 +1,3 @@
-import { LoginUserResponse } from "@/types";
 import { Platform } from "react-native";
 import { Faq, LoginUserResponse } from "@/types";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -23,23 +22,23 @@ const getFaqs = async () => {
   });
 };
 
-const getFaqById= async(id: number) =>{
+const getFaqById = async (id: number) => {
   const userValue = await AsyncStorage.getItem("loggedInUser");
   let token = "";
   if (userValue) {
     const user: LoginUserResponse = JSON.parse(userValue);
     token = user.token;
   }
-  return fetch(apiUrl + '/faq/' + id, {
-    method: "GET",  // ← hier stond PUT!
+  return fetch(apiUrl + "/faq/" + id, {
+    method: "GET", // ← hier stond PUT!
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${token}`,
     },
   });
-}
+};
 
-const updateFaq = async(faq: Faq) =>{
+const updateFaq = async (faq: Faq) => {
   const userValue = await AsyncStorage.getItem("loggedInUser");
   let token = "";
   if (userValue) {
@@ -48,10 +47,13 @@ const updateFaq = async(faq: Faq) =>{
   }
   return fetch(`${apiUrl}/faq`, {
     method: "PUT",
-    headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
     body: JSON.stringify(faq),
   });
-}
+};
 
 const addQuestions = async (payload: Faq) => {
   const userValue = await AsyncStorage.getItem("loggedInUser");
@@ -60,14 +62,14 @@ const addQuestions = async (payload: Faq) => {
     const user: LoginUserResponse = JSON.parse(userValue);
     token = user.token;
   }
-    return await fetch(apiUrl + '/faq', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify(payload)
-    });
+  return await fetch(apiUrl + "/faq", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify(payload),
+  });
 };
 
 const deleteQuestions = async (id: number) => {
@@ -77,21 +79,21 @@ const deleteQuestions = async (id: number) => {
     const user: LoginUserResponse = JSON.parse(userValue);
     token = user.token;
   }
-    return await fetch(apiUrl + '/faq/' + id, {
-        method: 'DELETE',
-        headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${token}`,
-        }
-    });
+  return await fetch(apiUrl + "/faq/" + id, {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+  });
 };
 
 const faqService = {
-    getFaqs,
-    updateFaq,
-    getFaqById,
-    addQuestions,
-    deleteQuestions
+  getFaqs,
+  updateFaq,
+  getFaqById,
+  addQuestions,
+  deleteQuestions,
 };
 
 export default faqService;
