@@ -49,7 +49,7 @@ const Wijzigvraag = () => {
     const loadVraag = async () => {
       if (!id) {
         Alert.alert("Fout", "Geen ID gevonden");
-        router.back();
+        router.push("/vragen");
         return;
       }
 
@@ -85,7 +85,7 @@ const Wijzigvraag = () => {
         }
       } catch (err) {
         Alert.alert("Fout");
-        router.back();
+        router.push("/vragen");
       } finally {
         setLoading(false);
       }
@@ -157,9 +157,7 @@ const Wijzigvraag = () => {
       const res = await quizService.updateQuestion(payload);
       if (!res.ok) throw new Error();
 
-      Alert.alert("Succes", "Vraag gewijzigd!", [
-        { text: "OK", onPress: () => router.back() },
-      ]);
+      router.push("/vragen");
     } catch {
       Alert.alert("Fout", "Kon niet opslaan");
     }
