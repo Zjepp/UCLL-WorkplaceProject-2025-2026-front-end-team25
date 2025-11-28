@@ -1,19 +1,38 @@
 import { useRouter } from "expo-router";
 import React from "react";
-import { Text, View, StyleSheet, Pressable, ScrollView } from "react-native";
+import { Text, View, StyleSheet, Pressable, FlatList } from "react-native";
 
 export default function CategoryPage() {
   const router = useRouter();
 
   const categories = [
-    { name: "Bloedruk", color: "#28A0A0" },     
-    { name: "Autisme", color: "#FED57A" },       
-    { name: "Verkoudheid", color: "#E73E07" },   
-    { name: "Griep", color: "#B196C7" },         
-    { name: "Spasmes", color: "#28A0A0" },       
-    { name: "Kofie", color: "#FED57A" },         
-    { name: "Thee", color: "#E73E07" },          
-    { name: "Appelsap", color: "#B196C7" },     
+    { name: "Cardiovasculair", color: "#28A0A0" },     
+    { name: "Gastro-intestinaal", color: "#FED57A" },       
+    { name: "Respiratoir stelsel", color: "#E73E07" },   
+    { name: "Hormonaal stelsel", color: "#B196C7" },         
+    { name: "Pijn", color: "#28A0A0" },       
+    { name: "Centraal zenuwstelsel", color: "#FED57A" },         
+    { name: "Infecties & immuniteit", color: "#E73E07" },          
+    { name: "Uro-genitaal stelsel", color: "#B196C7" },
+    { name: "Osteo-articulaire aandoeningen", color: "#28A0A0" },
+    { name: "Kanker", color: "#FED57A" },
+    { name: "Dermatologie", color: "#E73E07" },
+    { name: "Oftalmologie", color: "#B196C7" },
+    { name: "Toxicomanie", color: "#28A0A0" },
+    { name: "Mentaal welzijn", color: "#FED57A" },
+    { name: "Veterinair", color: "#E73E07" },
+    { name: "Gezonde levensstijl", color: "#B196C7" },
+    { name: "Geriatrische patiënt", color: "#28A0A0" },
+    { name: "Pediatrische patiënt", color: "#FED57A" },
+    { name: "Zwangerschap & borstvoeding", color: "#E73E07" },
+    { name: "Fytotherapeutica", color: "#B196C7" },
+    { name: "Vaccinatie", color: "#28A0A0" },
+    { name: "Medicatienazicht", color: "#FED57A" },
+    { name: "Medische materialen", color: "#E73E07" },
+    { name: "Communicatie", color: "#B196C7" },
+    { name: "GGG: Goed geneesmiddelengebruik", color: "#28A0A0" },
+    { name: "Magistrale bereidingen", color: "#FED57A" },
+    { name: "Actua", color: "#E73E07" },
   ];
 
   const handleCategoryPress = (category: string) => {
@@ -26,24 +45,32 @@ export default function CategoryPage() {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Categorie</Text>
+      <View style={styles.header}>
+        <Pressable 
+          style={styles.backButton}
+          onPress={() => router.back()}
+        >
+          <Text style={styles.backButtonText}>← Terug</Text>
+        </Pressable>
+        <Text style={styles.title}>Categorie</Text>
+      </View>
       
-      <ScrollView 
-        contentContainerStyle={styles.scrollContent}
+      <FlatList
+        data={categories}
+        numColumns={2}
+        keyExtractor={(item, index) => index.toString()}
+        renderItem={({ item }) => (
+          <Pressable
+            style={[styles.categoryButton, { backgroundColor: item.color }]}
+            onPress={() => handleCategoryPress(item.name)}
+          >
+            <Text style={styles.categoryText}>{item.name}</Text>
+          </Pressable>
+        )}
+        columnWrapperStyle={styles.row}
         showsVerticalScrollIndicator={false}
-      >
-        <View style={styles.gridContainer}>
-          {categories.map((category, index) => (
-            <Pressable
-              key={index}
-              style={[styles.categoryButton, { backgroundColor: category.color }]}
-              onPress={() => handleCategoryPress(category.name)}
-            >
-              <Text style={styles.categoryText}>{category.name}</Text>
-            </Pressable>
-          ))}
-        </View>
-      </ScrollView>
+        contentContainerStyle={styles.listContent}
+      />
     </View>
   );
 }
@@ -55,22 +82,30 @@ const styles = StyleSheet.create({
     paddingTop: 60,
     paddingHorizontal: 20,
   },
+  header: {
+    marginBottom: 20,
+  },
+  backButton: {
+    alignSelf: "flex-start",
+    marginBottom: 10,
+  },
+  backButtonText: {
+    fontSize: 18,
+    color: "#28A0A0",
+    fontWeight: "500",
+  },
   title: {
     fontSize: 42,
     fontWeight: "400",
     textAlign: "center",
-    marginBottom: 30,
     color: "#000000",
   },
-  scrollContent: {
-    flexGrow: 1,
-    paddingBottom: 40,
+  listContent: {
+    paddingBottom: 20,
   },
-  gridContainer: {
-    flexDirection: "row",
-    flexWrap: "wrap",
+  row: {
     justifyContent: "space-between",
-    gap: 20,
+    marginBottom: 20,
   },
   categoryButton: {
     width: "47%",
@@ -88,9 +123,10 @@ const styles = StyleSheet.create({
     elevation: 3,
   },
   categoryText: {
-    fontSize: 28,
+    fontSize: 18,
     color: "#333333",
     fontWeight: "400",
     textAlign: "center",
+    paddingHorizontal: 8,
   },
 });
