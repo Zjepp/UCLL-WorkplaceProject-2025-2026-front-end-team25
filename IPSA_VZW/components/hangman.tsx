@@ -6,6 +6,7 @@ import {
   StyleSheet,
   Dimensions,
   Pressable,
+  useWindowDimensions,
 } from "react-native";
 import { Antwoord, Vraag } from "@/types";
 import Letters from "./letters";
@@ -43,6 +44,13 @@ const HangmanQuiz: React.FC<HangmanQuizProps> = ({
   const [answerArray, setAnswerArray] = useState<string[]>([]);
   const [livesLeft, setLivesLeft] = useState<number>(3);
   const [solutionArray, setSolutionArray] = useState<string[]>([]);
+  const { width, height } = useWindowDimensions();
+  const base = Math.min(width, height);
+
+  // Bigger sizes than before
+  const titleFont = base * 0.075; // question text
+  const hangmanFont = base * 0.07; // revealed/hidden letters
+  const letterMargin = base * 0.04;
 
   const questionData: {
     title: string;
@@ -151,11 +159,24 @@ const HangmanQuiz: React.FC<HangmanQuizProps> = ({
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>{questionData.question.vraag}</Text>
+      <Text
+        style={[
+          styles.title,
+          { fontSize: titleFont, marginBottom: base * 0.05 },
+        ]}
+      >
+        {questionData.question.vraag}
+      </Text>
       <View style={styles.hangmanArray}>
         {answerArray.map((ch, index) => {
           return (
-            <Text style={styles.hangmanLetter} key={index}>
+            <Text
+              style={[
+                styles.hangmanLetter,
+                { fontSize: hangmanFont, margin: letterMargin },
+              ]}
+              key={index}
+            >
               {ch}
             </Text>
           );
@@ -184,22 +205,13 @@ const styles = StyleSheet.create({
   },
   hangmanLetter: {
     margin: "5%",
-    fontSize: 30,
   },
   title: {
-    marginTop: 0,
+    marginTop: 40,
     marginBottom: 70,
     fontSize: 24,
     width: "95%",
     textAlign: "center",
-  },
-  heartIcon: {
-    width: 30,
-    height: 30,
-    marginHorizontal: 4,
-    top: 0,
-    position: "absolute",
-    marginTop: 0,
   },
 });
 
