@@ -1,7 +1,9 @@
 import { LoginUserResponse, Vraag } from "@/types";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { API_URL } from "@/config";
+import { get } from "react-native/Libraries/TurboModule/TurboModuleRegistry";
 
-const apiUrl = "http://10.0.2.2:8080";
+const apiUrl = API_URL;
 
 const get18Questions = async () => {
   const userValue = await AsyncStorage.getItem("loggedInUser");
@@ -42,14 +44,14 @@ const addQuestions = async (payload: Vraag) => {
     const user: LoginUserResponse = JSON.parse(userValue);
     token = user.token;
   }
-    return await fetch(apiUrl + '/vragen', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify(payload)
-    });
+  return await fetch(apiUrl + "/vragen", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify(payload),
+  });
 };
 
 const deleteQuestions = async (id: number) => {
@@ -59,13 +61,13 @@ const deleteQuestions = async (id: number) => {
     const user: LoginUserResponse = JSON.parse(userValue);
     token = user.token;
   }
-    return await fetch(apiUrl + '/vragen/' + id, {
-        method: 'DELETE',
-        headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${token}`,
-        }
-    });
+  return await fetch(apiUrl + "/vragen/" + id, {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+  });
 };
 
 const getAll = async () => {
@@ -75,32 +77,32 @@ const getAll = async () => {
     const user: LoginUserResponse = JSON.parse(userValue);
     token = user.token;
   }
-    return await fetch(apiUrl + '/vragen/all', {
-        method: 'GET',
-        headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${token}`,
-        },
-    });
+  return await fetch(apiUrl + "/vragen/all", {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+  });
 };
 
-const getQuestionById= async(id: number) =>{
+const getQuestionById = async (id: number) => {
   const userValue = await AsyncStorage.getItem("loggedInUser");
   let token = "";
   if (userValue) {
     const user: LoginUserResponse = JSON.parse(userValue);
     token = user.token;
   }
-  return fetch(apiUrl + '/vragen/' + id, {
-    method: "GET",  // ← hier stond PUT!
+  return fetch(apiUrl + "/vragen/" + id, {
+    method: "GET", // ← hier stond PUT!
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${token}`,
     },
   });
-}
+};
 
-const updateQuestion = async(vraag: Vraag) =>{
+const updateQuestion = async (vraag: Vraag) => {
   const userValue = await AsyncStorage.getItem("loggedInUser");
   let token = "";
   if (userValue) {
@@ -109,19 +111,39 @@ const updateQuestion = async(vraag: Vraag) =>{
   }
   return fetch(`${apiUrl}/vragen`, {
     method: "PUT",
-    headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
     body: JSON.stringify(vraag),
   });
-}
+};
+
+const getQuestionsByCategory = async (category: string) => {
+  const userValue = await AsyncStorage.getItem("loggedInUser");
+  let token = "";
+  if (userValue) {
+    const user: LoginUserResponse = JSON.parse(userValue);
+    token = user.token;
+  }
+  return await fetch(apiUrl + `/vragen/category/${category}`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+  });
+};
 
 const quizService = {
-    getAll,
-    addQuestions,
-    deleteQuestions,
-    updateQuestion,
-    getQuestionById,
-    get18Questions,
-    get8Questions,
+  getAll,
+  addQuestions,
+  deleteQuestions,
+  updateQuestion,
+  getQuestionById,
+  get18Questions,
+  get8Questions,
+  getQuestionsByCategory,
 };
 
 export default quizService;

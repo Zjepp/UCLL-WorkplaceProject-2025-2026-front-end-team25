@@ -1,11 +1,11 @@
 import { LoginUser, LoginUserResponse, User } from "@/types";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { API_URL } from "@/config";
 
-const apiUrl = 'http://10.0.2.2:8080'
-
+const apiUrl = API_URL;
 
 const login = async (user: LoginUser) => {
-  return await fetch(apiUrl+"/auth/login", {
+  return await fetch(apiUrl + "/auth/login", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
