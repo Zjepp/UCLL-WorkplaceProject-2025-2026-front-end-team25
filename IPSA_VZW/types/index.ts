@@ -29,3 +29,17 @@ export type StatusMessage = {
   message: string;
   type: 'error' | 'success';
 }
+
+export type LoginUser = {
+    email: string;
+    password: string;
+};
+
+export type Role = 'USER' | 'ADMIN';
+
+export type LoginUserResponse = {
+    email: string;
+    role: Role;
+    username: String;
+    token: string;
+};
