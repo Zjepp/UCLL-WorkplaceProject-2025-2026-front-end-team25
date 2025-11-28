@@ -1,7 +1,6 @@
-import { Platform } from "react-native";
+import { API_URL } from "@/config";
 import { Faq, LoginUserResponse } from "@/types";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { API_URL } from "@/config";
 
 const apiUrl = API_URL;
 

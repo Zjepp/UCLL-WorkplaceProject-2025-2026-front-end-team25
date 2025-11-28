@@ -77,6 +77,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingVertical: 10,
     backgroundColor: "#ffffff",
+    width: "100%",
   },
   row: {
     flexDirection: "row",
@@ -86,8 +87,7 @@ const styles = StyleSheet.create({
     width: "100%",
   },
   key: {
-    flexBasis: "9%", // 9–10% gives you 10 keys per row
-    maxWidth: "9%",
+    maxWidth: "8.9%",
     borderRadius: 4,
     paddingVertical: 12,
     marginHorizontal: 2,

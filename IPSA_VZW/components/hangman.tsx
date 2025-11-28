@@ -195,6 +195,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     paddingTop: 0,
     marginTop: 0,
+    width: "100%",
   },
   hangmanArray: {
     flexDirection: "row",
@@ -207,10 +208,9 @@ const styles = StyleSheet.create({
     margin: "5%",
   },
   title: {
-    marginTop: 40,
+    marginTop: 30,
     marginBottom: 70,
     fontSize: 24,
-    width: "95%",
     textAlign: "center",
   },
 });

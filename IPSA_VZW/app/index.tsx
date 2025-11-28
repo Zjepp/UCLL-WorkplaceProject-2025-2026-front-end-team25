@@ -1,10 +1,10 @@
 import Login from "@/components/login";
 import { LoginUserResponse } from "@/types";
-import { useRouter } from "expo-router";
-import React, { use, useEffect, useState } from "react";
-import { Text, View, StyleSheet, Pressable } from "react-native";
-import { LinearGradient } from "expo-linear-gradient";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { LinearGradient } from "expo-linear-gradient";
+import { useRouter } from "expo-router";
+import React, { useEffect, useState } from "react";
+import { Pressable, StyleSheet, Text, View } from "react-native";
 
 export default function HomePage() {
   const router = useRouter();

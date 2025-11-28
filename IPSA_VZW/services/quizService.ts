@@ -1,7 +1,6 @@
 import { LoginUserResponse, Vraag } from "@/types";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { API_URL } from "@/config";
-import { get } from "react-native/Libraries/TurboModule/TurboModuleRegistry";
 
 const apiUrl = API_URL;
 
@@ -12,6 +11,7 @@ const get18Questions = async () => {
     const user: LoginUserResponse = JSON.parse(userValue);
     token = user.token;
   }
+
   return await fetch(apiUrl + "/vragen/random18", {
     method: "GET",
     headers: {
