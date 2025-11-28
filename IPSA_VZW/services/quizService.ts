@@ -1,7 +1,8 @@
 import { LoginUserResponse, Vraag } from "@/types";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { API_URL } from "@/config";
 
-const apiUrl = "http://10.0.2.2:8080";
+const apiUrl = API_URL;
 
 const get18Questions = async () => {
   const userValue = await AsyncStorage.getItem("loggedInUser");
