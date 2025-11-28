@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Dimensions, Pressable } from 'react-native';
-import { Antwoord, Vraag } from '../../types';
+import { Antwoord, Vraag } from '@/types';
 
 interface QuizOption {
   id: number;
@@ -94,7 +94,6 @@ return (
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    //padding: 20,
     backgroundColor: '#FFFFFF',
     justifyContent: 'flex-start',
   },
