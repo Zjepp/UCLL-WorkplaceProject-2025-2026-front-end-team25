@@ -36,19 +36,19 @@ const get8Questions = async () => {
 };
 
 const getQuestionsByCategory = async (category: string) => {
-    const userValue = await AsyncStorage.getItem('loggedInUser');
-    let token = "";
-    if (userValue) {
-        const user: LoginUserResponse = JSON.parse(userValue);
-        token = user.token;
-    }
-    return await fetch(apiUrl + `/vragen/category/${category}`, {
-        method: 'GET',
-        headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${token}`,
-        },
-    });
+  const userValue = await AsyncStorage.getItem("loggedInUser");
+  let token = "";
+  if (userValue) {
+    const user: LoginUserResponse = JSON.parse(userValue);
+    token = user.token;
+  }
+  return await fetch(apiUrl + `/vragen/category/${category}`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+  });
 };
 
 const quizService = {
