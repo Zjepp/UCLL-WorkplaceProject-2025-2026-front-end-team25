@@ -1,13 +1,7 @@
 import quizService from "@/services/quizService";
 import { useRouter, useLocalSearchParams } from "expo-router";
 import React, { useEffect, useState } from "react";
-import {
-  View,
-  Text,
-  StyleSheet,
-  ActivityIndicator,
-  Image,
-} from "react-native";
+import { View, Text, StyleSheet, ActivityIndicator, Image } from "react-native";
 import { Vraag } from "@/types";
 import QuizMultipleChoice from "@/components/memoryChoice";
 import QuizMemoryChoice from "@/components/memoryChoice";
@@ -45,47 +39,60 @@ export default function quiz() {
     return shuffled;
   };
 
+  const dataReady =
+    questionsStandaard.length > 0 &&
+    connectQuestions.length > 0 &&
+    questions.length > 0;
+
   const getRandom18 = async () => {
     try {
       let response;
-      
+
       // If category is provided, use category endpoint
-      if (category && typeof category === 'string') {
-        console.log('Fetching questions for category:', category);
+      if (category && typeof category === "string") {
+        console.log("Fetching questions for category:", category);
         response = await quizService.getQuestionsByCategory(category);
       } else {
         // If no category, use the random endpoints
-        console.log('Fetching random questions without category');
+        console.log("Fetching random questions without category");
         const [response18, response8] = await Promise.all([
           quizService.get18Questions(),
-          quizService.get8Questions()
+          quizService.get8Questions(),
         ]);
-        
+
         if (response18.status === 200 && response8.status === 200) {
           const vragen18: Vraag[] = await response18.json();
           const vragen8: Vraag[] = await response8.json();
           const vragen = [...vragen18, ...vragen8];
-          
-          console.log('Received questions:', vragen.length);
-          
+
+          console.log("Received questions:", vragen.length);
+
           // Shuffle the arrays before setting them
           setStandaardQuestions(shuffleArray(vragen18));
-          
+
           // Group connect questions in sets of 4
           if (vragen8.length >= 4) {
             const shuffledConnect = shuffleArray(vragen8);
             const con1 = shuffledConnect.slice(0, 4);
             const con2 = shuffledConnect.slice(4, 8);
             const connects: Connect[] = [];
-            if (con1.length === 4) connects.push({ type: "connect", vragen: con1 });
-            if (con2.length === 4) connects.push({ type: "connect", vragen: con2 });
+            if (con1.length === 4)
+              connects.push({ type: "connect", vragen: con1 });
+            if (con2.length === 4)
+              connects.push({ type: "connect", vragen: con2 });
             setConnectQuestions(connects);
           }
           setLoading(false);
           return;
         } else {
-          console.log("Ophalen van vragen mislukt, status:", response18.status, response8.status);
-          setError(`Kon geen vragen ophalen. Status: ${response18.status}, ${response8.status}`);
+          console.log(
+            "Ophalen van vragen mislukt, status:",
+            response18.status,
+            response8.status
+          );
+          setError(
+            `Kon geen vragen ophalen. Status: ${response18.status}, ${response8.status}`
+          );
           setLoading(false);
           return;
         }
@@ -93,30 +100,34 @@ export default function quiz() {
 
       if (response.status === 200) {
         const vragen: Vraag[] = await response.json();
-        console.log('Received questions:', vragen.length);
-        
+        console.log("Received questions:", vragen.length);
+
         if (vragen.length === 0) {
-          console.log('No questions found for category:', category);
+          console.log("No questions found for category:", category);
           setError(`Geen vragen gevonden voor categorie "${category}"`);
           setLoading(false);
           return;
         }
-        
+
         // Filter out connect-choice questions for standaard questions
-        const standaardVragen = vragen.filter(v => v.type !== 'connect-choice');
-        const connectVragen = vragen.filter(v => v.type === 'connect-choice');
-        
+        const standaardVragen = vragen.filter(
+          (v) => v.type !== "connect-choice"
+        );
+        const connectVragen = vragen.filter((v) => v.type === "connect-choice");
+
         // Shuffle the arrays before setting them
         setStandaardQuestions(shuffleArray(standaardVragen));
-        
+
         // Group connect questions in sets of 4
         if (connectVragen.length >= 4) {
           const shuffledConnect = shuffleArray(connectVragen);
           const con1 = shuffledConnect.slice(0, 4);
           const con2 = shuffledConnect.slice(4, 8);
           const connects: Connect[] = [];
-          if (con1.length === 4) connects.push({ type: "connect", vragen: con1 });
-          if (con2.length === 4) connects.push({ type: "connect", vragen: con2 });
+          if (con1.length === 4)
+            connects.push({ type: "connect", vragen: con1 });
+          if (con2.length === 4)
+            connects.push({ type: "connect", vragen: con2 });
           setConnectQuestions(connects);
         }
       } else {
@@ -130,7 +141,7 @@ export default function quiz() {
         setLoading(false);
       }
     } catch (error) {
-      console.log('Error fetching questions:', error);
+      console.log("Error fetching questions:", error);
       setError(`Fout bij ophalen vragen: ${error}`);
       setLoading(false);
     }
@@ -152,9 +163,20 @@ export default function quiz() {
       const combined = [...connectQuestions, ...questionsStandaard];
       setQuestions(shuffleArray(combined));
       setLoading(false);
-      console.log('Total questions loaded:', connectQuestions.length + questionsStandaard.length);
+      console.log(
+        "Total questions loaded:",
+        connectQuestions.length + questionsStandaard.length
+      );
     }
   }, [questionsStandaard, connectQuestions]);
+
+  if (!dataReady) {
+    return (
+      <View style={styles.loadingContainer}>
+        <ActivityIndicator size="large" />
+      </View>
+    );
+  }
 
   const openQuestion = () => {
     if (loading) {
@@ -169,11 +191,18 @@ export default function quiz() {
     if (error) {
       return (
         <View style={styles.center}>
-          <Text style={{ fontSize: 18, color: 'red', textAlign: 'center', marginHorizontal: 20 }}>
+          <Text
+            style={{
+              fontSize: 18,
+              color: "red",
+              textAlign: "center",
+              marginHorizontal: 20,
+            }}
+          >
             {error}
           </Text>
-          <Text 
-            style={[styles.link, { marginTop: 20 }]} 
+          <Text
+            style={[styles.link, { marginTop: 20 }]}
             onPress={() => router.back()}
           >
             Terug
@@ -183,12 +212,16 @@ export default function quiz() {
     }
 
     const question = questions[currentIndex];
-    console.log('Current question:', question);
+    console.log("Current question:", question);
 
     if (!question) {
-      return (
-        <Score correctAmount={correctAmount} mistakesAmount={mistakeAmount} />
-      );
+      if (dataReady) {
+        return (
+          <Score correctAmount={correctAmount} mistakesAmount={mistakeAmount} />
+        );
+      }
+
+      return null;
     }
 
     if (question.type === "standaard-choice") {
@@ -229,6 +262,10 @@ export default function quiz() {
           questionc={conn[2]}
           questiond={conn[3]}
           onAnswerSelected={() => setCurrentIndex((i) => i + 1)}
+          mistakeAmount={mistakeAmount}
+          mistakeAmountSetter={setMistakeAmount}
+          correctAmount={correctAmount}
+          correctAmountSetter={setCorrectAmount}
         />
       );
     }
@@ -267,6 +304,7 @@ export default function quiz() {
         <View style={styles.heartContainer} pointerEvents="none">
           {Array.from({ length: heartsCount }).map((_, i) => (
             <Image
+              key={i}
               source={HeartIcon}
               style={styles.heartIcon}
               resizeMode="contain"
@@ -281,6 +319,11 @@ export default function quiz() {
 
 const styles = StyleSheet.create({
   container: { flex: 1, position: "relative", marginTop: 35 },
+  loadingContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
   content: {
     flex: 1,
     justifyContent: "center",
@@ -292,7 +335,7 @@ const styles = StyleSheet.create({
   link: { color: "blue", textDecorationLine: "underline" },
   heartContainer: {
     position: "absolute",
-    top: 50,
+    top: 20,
     left: 0,
     right: 0,
     flexDirection: "row",
