@@ -2,30 +2,24 @@ import React from "react";
 import { Pressable, Text, View, StyleSheet } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { useRouter } from "expo-router";
+import WrongAnswers from "@/components/wrongAnswers";
 
-const WrongAnswers: React.FC<{ onClose: () => void }> = ({ onClose }) => (
-  <View style={styles.overlay}>
-    <View style={styles.modalContent}>
-      <Text style={styles.modalTitle}>Foute Antwoorden</Text>
-      <Text style={{ color: "#333", marginVertical: 10 }}>1. Vraag 2 — Antwoord B</Text>
-      <Text style={{ color: "#333", marginBottom: 20 }}>2. Vraag 5 — Antwoord C</Text>
-      <Pressable onPress={onClose}>
-        <LinearGradient
-          colors={["#FFD285", "#CE9935"]}
-          start={{ x: 0, y: 0 }}
-          end={{ x: 1, y: 0 }}
-          style={styles.button}
-        >
-          <Text style={styles.buttonText}>Sluiten</Text>
-        </LinearGradient>
-      </Pressable>
-    </View>
-  </View>
-);
+interface ScorePageProps {
+  correctAmount: number;
+  mistakesAmount: number;
+}
 
-const ScorePage: React.FC = () => {
-    const router = useRouter();
-    const [showWrong, setShowWrong] = React.useState(false);
+const ScorePage: React.FC<ScorePageProps> = ({ 
+  correctAmount, 
+  mistakesAmount 
+}) => {
+  const router = useRouter();
+  const [showWrong, setShowWrong] = React.useState(false);
+  
+  const total = correctAmount + mistakesAmount;
+
+
+
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Resultaten</Text>
@@ -37,8 +31,9 @@ const ScorePage: React.FC = () => {
         locations={[0.5, 0.5]}
         style={styles.button}
       >
-        <Pressable  onPress={() => router.push("/")}>
-          <Text style={styles.buttonText}>Score Bord</Text></Pressable>
+        <Pressable onPress={() => router.push("/")}>
+          <Text style={styles.buttonText}>Score Bord</Text>
+        </Pressable>
       </LinearGradient>
 
       <LinearGradient
@@ -48,12 +43,11 @@ const ScorePage: React.FC = () => {
         locations={[0.5, 0.5]}
         style={styles.scoreContainer}
       >
-        <Text style={styles.scoreNumberLeft}>14</Text>
+        <Text style={styles.scoreNumberLeft}>{correctAmount}</Text>
         <Text style={styles.scoreBar}>|</Text>
-        <Text style={styles.scoreNumberRight}>20</Text>
+        <Text style={styles.scoreNumberRight}>{total}</Text>
       </LinearGradient>
 
-      <Pressable  onPress={() => setShowWrong(true)}>
       <LinearGradient
         colors={["#A5BCBC", "#1CA0A0"]}
         start={{ x: 0, y: 0 }}
@@ -61,20 +55,23 @@ const ScorePage: React.FC = () => {
         locations={[0.5, 0.5]}
         style={styles.button}
       >
+        <Pressable onPress={() => setShowWrong(true)} style={styles.buttonPressable}>
           <Text style={styles.buttonText}>Foute Antwoorden</Text>
+        </Pressable>
+      </LinearGradient>
+
+      <Pressable onPress={() => router.push("/")}>
+        <LinearGradient
+          colors={["#FFD285", "#CE9935"]}
+          start={{ x: 0, y: 0 }}
+          end={{ x: 1, y: 0 }}
+          locations={[0.5, 0.5]}
+          style={styles.button}
+        >
+          <Text style={styles.buttonText}>Terug</Text>
         </LinearGradient>
       </Pressable>
-    <Pressable onPress={() => router.push("/")}>
-      <LinearGradient
-        colors={["#FFD285", "#CE9935"]}
-        start={{ x: 0, y: 0 }}
-        end={{ x: 1, y: 0 }}
-        locations={[0.5, 0.5]}
-        style={styles.button}
-      >
-        <Text style={styles.buttonText}>Terug</Text>
-      </LinearGradient>
-      </Pressable>
+
       {showWrong && <WrongAnswers onClose={() => setShowWrong(false)} />}
     </View>
   );
@@ -101,6 +98,12 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     marginVertical: 15,
+  },
+  buttonPressable: {
+    width: "100%",
+    height: "100%",
+    alignItems: "center",
+    justifyContent: "center",
   },
   buttonText: {
     color: "#FFFFFF",
@@ -137,37 +140,6 @@ const styles = StyleSheet.create({
     fontSize: 50,
     color: "#FFFFFF",
     position: "absolute",
-  },
-  overlay: {
-    position: "absolute",
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    backgroundColor: "rgba(0,0,0,0.45)",
-    justifyContent: "center",
-    alignItems: "center",
-    zIndex: 1000,
-    elevation: 20, // android
-  },
-  modalContent: {
-    width: 320,
-    paddingVertical: 20,
-    paddingHorizontal: 18,
-    borderRadius: 14,
-    backgroundColor: "#FFF",
-    alignItems: "center",
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 6 },
-    shadowOpacity: 0.15,
-    shadowRadius: 12,
-    elevation: 10,
-  },
-  modalTitle: {
-    fontSize: 22,
-    fontWeight: "700",
-    color: "#222",
-    marginBottom: 12,
   },
 });
 

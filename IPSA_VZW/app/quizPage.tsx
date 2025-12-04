@@ -44,6 +44,7 @@ export default function quiz() {
         setStandaardQuestions(vragen);
         console.log(vragen);
       } else {
+        //console.log(response.status);
         console.log("Ophalen van vragen mislukt");
       }
     } catch (error) {
