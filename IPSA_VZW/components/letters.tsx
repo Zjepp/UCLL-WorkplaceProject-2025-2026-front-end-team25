@@ -66,7 +66,7 @@ const Letters: React.FC<LettersProps> = ({ onSelect, resetKey }) => {
     <View style={styles.container}>
       <View style={styles.row}>{renderRow(rij_1, row1Start)}</View>
       <View style={styles.row}>{renderRow(rij_2, row2Start)}</View>
-      <View style={styles.row}>{renderRow(rij_3, row3Start)}</View>
+      <View style={styles.row3}>{renderRow(rij_3, row3Start)}</View>
     </View>
   );
 };
@@ -82,6 +82,14 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "center",
     marginVertical: 4,
+    flexWrap: "wrap",
+    width: "100%",
+  },
+  row3: {
+    flexDirection: "row",
+    justifyContent: "center",
+    marginVertical: 4,
+    marginRight: "20%",
     flexWrap: "wrap",
     width: "100%",
   },
