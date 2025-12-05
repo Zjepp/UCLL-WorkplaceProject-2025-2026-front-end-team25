@@ -119,16 +119,16 @@ const QuizMemoryChoice: React.FC<MultipleChoiceProps> = ({
   };
 
   const shuffleArray = (array: any[]) => {
-      return array
-        .map((item) => ({ item, sort: Math.random() }))
-        .sort((a, b) => a.sort - b.sort)
-        .map(({ item }) => item);
-    };
-  
-    useEffect(() => {
-        const shuffledOptions = shuffleArray(questionData.options);
-        setShuffledOptions(shuffledOptions);
-      });
+    return [...array]
+      .map((item) => ({ item, sort: Math.random() }))
+      .sort((a, b) => a.sort - b.sort)
+      .map(({ item }) => item);
+  };
+
+  useEffect(() => {
+    const shuffledOptions = shuffleArray(questionData.options);
+    setShuffledOptions(shuffledOptions);
+  }, [questionData.options]);
 
   const progressWidth = ((10 - timeLeft) / 10) * 100;
   const progressColor = phase === "view" ? "#acece6ff" : "#FF4F21";

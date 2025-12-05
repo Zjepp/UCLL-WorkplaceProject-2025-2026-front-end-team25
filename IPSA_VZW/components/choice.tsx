@@ -91,16 +91,16 @@ const QuizChoice: React.FC<MultipleChoiceProps> = ({
     onAnswerSelected?.(true);
   };
   const shuffleArray = (array: any[]) => {
-    return array
+    return [...array]
       .map((item) => ({ item, sort: Math.random() }))
       .sort((a, b) => a.sort - b.sort)
       .map(({ item }) => item);
   };
 
   useEffect(() => {
-      const shuffledOptions = shuffleArray(questionData.options);
-      setShuffledOptions(shuffledOptions);
-    });
+    const shuffledOptions = shuffleArray(questionData.options);
+    setShuffledOptions(shuffledOptions);
+  }, [questionData.options]);
 
   return (
     <View style={styles.container}>
