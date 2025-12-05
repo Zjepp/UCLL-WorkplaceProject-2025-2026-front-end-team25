@@ -51,7 +51,11 @@ const QuizMemoryChoice: React.FC<MultipleChoiceProps> = ({
             setPhase("answer");
             setTimeLeft(10);
           } else {
-            setVisible(false);
+            mistakeAmountSetter(mistakeAmount + 1);
+            setTimeLeft(10);
+            setVisible(true);
+            setPhase("view");
+            onAnswerSelected?.(true);
           }
           return 0;
         }
@@ -106,10 +110,11 @@ const QuizMemoryChoice: React.FC<MultipleChoiceProps> = ({
         mistakeAmountSetter(mistakeAmount + 1);
       }
     }
-    onAnswerSelected?.(true);
     setTimeLeft(10);
     setVisible(true);
     setPhase("view");
+    onAnswerSelected?.(true);
+  
   };
 
   const progressWidth = ((10 - timeLeft) / 10) * 100;
