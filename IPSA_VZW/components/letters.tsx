@@ -1,89 +1,105 @@
-import React from 'react';
-import { View, Text, Pressable, StyleSheet } from 'react-native';
+import React, { useEffect } from "react";
+import { View, Text, Pressable, StyleSheet, Dimensions } from "react-native";
 
 interface LettersProps {
-    onSelect?: (letter: string) => void;
+  onSelect?: (letter: string) => void;
+  resetKey?: string;
 }
 
-const Letters: React.FC<LettersProps> = ({ onSelect }) => {
-    const [selectedLetters, setSelectedLetters] = React.useState<string[]>([]);
-    const grijs = '#404040ff';
+const Letters: React.FC<LettersProps> = ({ onSelect, resetKey }) => {
+  const [selectedLetters, setSelectedLetters] = React.useState<string[]>([]);
+  const grijs = "#404040ff";
 
-    const paars = '#A395CA';
-    const oranje = '#FF4F21';
-    const blauw = '#A1C2C2' ;
-    const geel = '#FDCE7E' ;
+  const paars = "#A395CA";
+  const oranje = "#FF4F21";
+  const blauw = "#A1C2C2";
+  const geel = "#FDCE7E";
 
-    const colors = [paars, oranje, blauw, geel];
-      const handleSelect = (letter: string) => {
-        setSelectedLetters((prev) => [...prev, letter]);
-        onSelect?.(letter);
-      };
-        const letters = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'];
-        return (
-          <View style={styles.container}>
-              {letters.map((letter, index) => {
-                
-                const isSelected = selectedLetters.includes(letter);
-                const backgroundColor = isSelected ? grijs : colors[index % colors.length];
-                const opacity = isSelected ? 0.5 : 1.0;
+  const colors = [paars, oranje, blauw, geel]; // index 0,1,2,3
 
-                return (
-                  <Pressable
-                    key={letter}
-                    onPress={() => handleSelect(letter)}
-                    style={[styles.key, { backgroundColor, opacity }]}
-                    disabled={isSelected}
-                  >
-                    <Text style={styles.letter}>{letter}</Text>
-                  </Pressable>
-                );
-            })}
-          </View>
-        );
-        
-}
+  useEffect(() => {
+    setSelectedLetters([]);
+  }, [resetKey]);
+
+  const handleSelect = (letter: string) => {
+    setSelectedLetters((prev) => [...prev, letter]);
+    onSelect?.(letter);
+  };
+
+  // Alphabet rows
+  const rij_1 = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J"];
+  const rij_2 = ["K", "L", "M", "N", "O", "P", "Q", "R", "S", "T"];
+  const rij_3 = ["U", "V", "W", "X", "Y", "Z"];
+
+  const { width } = Dimensions.get("window");
+  const keyWidth = (width - 20) / 10 - 4;
+
+  // Renders a row with a specific starting color index
+  const renderRow = (letters: string[], startIndex: number) => {
+    return letters.map((letter, index) => {
+      const isSelected = selectedLetters.includes(letter);
+
+      const colorIndex = (startIndex + index) % colors.length;
+
+      const backgroundColor = isSelected ? grijs : colors[colorIndex];
+      const opacity = isSelected ? 0.5 : 1;
+
+      return (
+        <Pressable
+          key={letter}
+          onPress={() => handleSelect(letter)}
+          disabled={isSelected}
+          style={[styles.key, { backgroundColor, opacity, width: keyWidth }]}
+        >
+          <Text style={styles.letter}>{letter}</Text>
+        </Pressable>
+      );
+    });
+  };
+
+  // Row start colors shift backwards each row
+  const row1Start = 0;
+  const row2Start = 3;
+  const row3Start = 0;
+
+  return (
+    <View style={styles.container}>
+      <View style={styles.row}>{renderRow(rij_1, row1Start)}</View>
+      <View style={styles.row}>{renderRow(rij_2, row2Start)}</View>
+      <View style={styles.row}>{renderRow(rij_3, row3Start)}</View>
+    </View>
+  );
+};
+
 const styles = StyleSheet.create({
-   container: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    position: 'absolute',
-    justifyContent: 'center',
-    padding: 0,
-    backgroundColor: '#ffffff',
-    maxWidth: '100%',
-    height: '35%',
-    bottom: 0,
-    paddingTop: 50,
-    margin: 0,
+  container: {
+    justifyContent: "center",
+    alignItems: "center",
+    paddingVertical: 10,
+    backgroundColor: "#ffffff",
+  },
+  row: {
+    flexDirection: "row",
+    justifyContent: "center",
+    marginVertical: 4,
+    flexWrap: "wrap",
+    width: "100%",
   },
   key: {
+    flexBasis: "9%", // 9–10% gives you 10 keys per row
+    maxWidth: "9%",
     borderRadius: 4,
-    paddingVertical: 10,
-    paddingHorizontal: 12,
+    paddingVertical: 12,
     marginHorizontal: 2,
-    marginVertical: 4,
+    alignItems: "center",
+    justifyContent: "center",
     height: 60,
-    width: 40,
-    alignItems: 'center',
-    justifyContent: 'center',
-    // borderWidth: 0.5,
-    // borderColor: '#000000',
-    // shadowColor: '#000',
-    // shadowOffset: {
-    //   width: 0,
-    //   height: 1,
-    // },
-    // shadowOpacity: 0.5,
-    // shadowRadius: 3,
-    // elevation: 4,
   },
   letter: {
     fontSize: 20,
-    fontWeight: '700',
-    color: '#ffffffff',
+    fontWeight: "700",
+    color: "#ffffff",
   },
 });
 
 export default Letters;
-

@@ -6,6 +6,7 @@ import {
   StyleSheet,
   Dimensions,
   Pressable,
+  useWindowDimensions,
 } from "react-native";
 import { Antwoord, Vraag } from "@/types";
 import Letters from "./letters";
@@ -23,7 +24,6 @@ interface HangmanQuizProps {
   mistakeAmountSetter: (amount: number) => void;
   correctAmount: number;
   correctAmountSetter: (amount: number) => void;
-  // when true the parent (page) will render hearts; hangman will update counts via heartsCountSetter
   showHearts?: boolean;
   heartsCount?: number;
   heartsCountSetter?: (amount: number) => void;
@@ -42,8 +42,15 @@ const HangmanQuiz: React.FC<HangmanQuizProps> = ({
   heartsCountSetter,
 }) => {
   const [answerArray, setAnswerArray] = useState<string[]>([]);
-  const [livesLeft, setLivesLeft] = useState<number>(heartsCount ?? 3);
+  const [livesLeft, setLivesLeft] = useState<number>(3);
   const [solutionArray, setSolutionArray] = useState<string[]>([]);
+  const { width, height } = useWindowDimensions();
+  const base = Math.min(width, height);
+
+  // Bigger sizes than before
+  const titleFont = base * 0.075; // question text
+  const hangmanFont = base * 0.07; // revealed/hidden letters
+  const letterMargin = base * 0.04;
 
   const questionData: {
     title: string;
@@ -54,7 +61,6 @@ const HangmanQuiz: React.FC<HangmanQuizProps> = ({
     question: question.vraag
       ? question
       : ({ vraag: "vraag niet beschikbaar" } as Vraag),
-    // prefer the tekst of the first Antwoord object, fallback to question.vraag
     options: [
       {
         id: 1,
@@ -62,14 +68,16 @@ const HangmanQuiz: React.FC<HangmanQuizProps> = ({
           question.antwoorden?.[0]?.antwoord ??
           question.vraag ??
           "antwoord niet beschikbaar",
-        color: "#26A69Aff",
+        color: "#28A0A0",
       },
     ],
   };
+  const questionResetKey = question.vraag;
 
   useEffect(() => {
-    // if parent drives hearts, sync local state with the prop
     if (typeof heartsCount === "number") {
+      console.log("Initial hearts count from props:", heartsCount);
+      console.log("idk anymore", livesLeft);
       setLivesLeft(heartsCount);
     }
 
@@ -89,6 +97,23 @@ const HangmanQuiz: React.FC<HangmanQuizProps> = ({
     const initialDisplay = letters.map((ch) => (/[A-Z]/.test(ch) ? "_" : ch));
     setAnswerArray(initialDisplay);
   }, [question]);
+
+  useEffect(() => {
+    if (!answerArray.includes("_") && answerArray.length > 0) {
+      console.log(answerArray);
+      correctAmountSetter(correctAmount + 1);
+      setLivesLeft(3);
+      heartsCountSetter?.(3);
+      onAnswerSelected?.(true);
+    }
+    if (livesLeft <= 0) {
+      mistakeAmountSetter(mistakeAmount + 1);
+      setLivesLeft(3);
+      heartsCountSetter?.(3);
+      onAnswerSelected?.(false);
+    }
+  }, [answerArray]);
+
   const handleSelect = (option: QuizOption) => {
     const answerText =
       typeof option.formula === "string"
@@ -109,57 +134,55 @@ const HangmanQuiz: React.FC<HangmanQuizProps> = ({
     console.log(`Geselecteerde letter vanuit Hangman: ${letter}`);
     handleSelect(questionData.options[0]);
     var temp = false;
+    const updatedAnswer = [...answerArray];
+    const updatedSolution = [...solutionArray];
+
     for (let i = 0; i < solutionArray.length; i++) {
-      if (solutionArray[i] === letter) {
-        answerArray[i] = letter;
-        setAnswerArray([...answerArray]);
-        solutionArray[i] = "0";
+      if (updatedSolution[i] === letter) {
+        updatedAnswer[i] = letter;
+        updatedSolution[i] = "0";
         temp = true;
       }
     }
-    console.log("Lives left:", livesLeft);
+
     if (!temp) {
-      // decrement lives: prefer updating parent via heartsCountSetter if provided
-      setLivesLeft((prev) => {
-        const newLives = prev - 1;
-        if (newLives === 0) {
-          mistakeAmountSetter(mistakeAmount + 1);
-          // reset to default (3)
-          if (heartsCountSetter) {
-            heartsCountSetter(3);
-          } else {
-            setLivesLeft(3);
-          }
-          onAnswerSelected?.(true);
-        } else {
-          if (heartsCountSetter) {
-            heartsCountSetter(newLives);
-          }
-        }
-        return newLives;
-      });
+      const temp = livesLeft;
+      setLivesLeft(temp - 1);
+      heartsCountSetter?.(temp - 1);
     }
     console.log("Huidige antwoord array:", answerArray);
-    if (!answerArray.includes("_")) {
-      correctAmountSetter(correctAmount + 1);
-      setLivesLeft(3);
-      onAnswerSelected?.(true);
-    }
+
+    setAnswerArray(updatedAnswer);
+    setSolutionArray(updatedSolution);
+    console.log("Lives left:", livesLeft);
   };
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>{questionData.question.vraag}</Text>
+      <Text
+        style={[
+          styles.title,
+          { fontSize: titleFont, marginBottom: base * 0.05 },
+        ]}
+      >
+        {questionData.question.vraag}
+      </Text>
       <View style={styles.hangmanArray}>
         {answerArray.map((ch, index) => {
           return (
-            <Text style={styles.hangmanLetter} key={index}>
+            <Text
+              style={[
+                styles.hangmanLetter,
+                { fontSize: hangmanFont, margin: letterMargin },
+              ]}
+              key={index}
+            >
               {ch}
             </Text>
           );
         })}
       </View>
-      <Letters onSelect={handleLetterSelect} />
+      <Letters onSelect={handleLetterSelect} resetKey={questionResetKey} />
     </View>
   );
 };
@@ -171,7 +194,6 @@ const styles = StyleSheet.create({
     flexWrap: "wrap",
     justifyContent: "center",
     paddingTop: 0,
-    marginTop: 0,
   },
   hangmanArray: {
     flexDirection: "row",
@@ -182,22 +204,13 @@ const styles = StyleSheet.create({
   },
   hangmanLetter: {
     margin: "5%",
-    fontSize: 30,
   },
   title: {
-    marginTop: 0,
+    marginTop: 40,
     marginBottom: 70,
     fontSize: 24,
     width: "95%",
     textAlign: "center",
-  },
-  heartIcon: {
-    width: 30,
-    height: 30,
-    marginHorizontal: 4,
-    top: 0,
-    position: "absolute",
-    marginTop: 0,
   },
 });
 

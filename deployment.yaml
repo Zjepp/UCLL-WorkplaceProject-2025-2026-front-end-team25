@@ -23,6 +23,20 @@ spec:
         env:
         - name: EXPO_PUBLIC_API_URL
           value: "https://back-end-team25-wpp-team-25.apps.okd.ucll.cloud"
+        resources:
+          requests:
+            memory: "128Mi"
+            cpu: "100m"
+          limits:
+            memory: "512Mi"
+            cpu: "500m"
+        securityContext:
+          runAsNonRoot: true
+          runAsUser: 101
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop:
+              - ALL
 ---
 apiVersion: v1
 kind: Service

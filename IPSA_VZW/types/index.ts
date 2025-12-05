@@ -43,3 +43,9 @@ export type LoginUserResponse = {
     username: String;
     token: string;
 };
+
+export type Faq = {
+  id?: number,
+  question: string;
+  answer: string;
+};

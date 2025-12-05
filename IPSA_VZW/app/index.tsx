@@ -6,17 +6,17 @@ import { Text, View, StyleSheet, Pressable } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-export default function Index() {
+export default function HomePage() {
   const router = useRouter();
   const [user, setUser] = useState<LoginUserResponse | null>(null);
 
   const fetchUser = async () => {
-    const userValue = await AsyncStorage.getItem('loggedInUser');
+    const userValue = await AsyncStorage.getItem("loggedInUser");
     if (userValue) {
-        const fetchedUser: LoginUserResponse = JSON.parse(userValue);
-        setUser(fetchedUser);
+      const fetchedUser: LoginUserResponse = JSON.parse(userValue);
+      setUser(fetchedUser);
     }
-  }
+  };
 
   useEffect(() => {
     fetchUser();
@@ -24,54 +24,141 @@ export default function Index() {
 
   return (
     <View style={styles.container}>
-      {user == null && <Login user={user} setUser={setUser}/>}
-      {user && <View style={[styles.container, { marginTop: 35 }]}>
+      {user == null && <Login user={user} setUser={setUser} />}
+      {user && user.role == "USER" && (
+        <View style={[styles.container, { marginTop: 35 }]}>
+          <View style={styles.headerContainer}>
+            <View>
+              <Text style={styles.headerText}>Plaats</Text>
 
-        <View style={styles.headerContainer}>
-          <View>
-            <Text style={styles.headerText}>Dagen</Text>
+              <View
+                style={[
+                  styles.headerCounterLayout,
+                  styles.headerCounterLayoutDagen,
+                ]}
+              >
+                <Text style={styles.headerTextBoxPlaats}>234</Text>
+              </View>
+            </View>
 
-            <View style={[styles.headerCounterLayout, styles.headerCounterLayoutDagen]}>
-              <Text style={styles.headerTextBox}>23</Text>
+            <View>
+              <Text style={styles.headerText}>Score</Text>
+
+              <View
+                style={[
+                  styles.headerCounterLayout,
+                  styles.headerCounterLayoutPlaats,
+                ]}
+              >
+                <Text style={styles.headerTextBoxPlaats}>76800</Text>
+              </View>
             </View>
           </View>
 
-          <View>
-            <Text style={styles.headerText}>Plaats 345</Text>
+          <View style={styles.buttonContainer}>
+            <Pressable
+              onPress={() => router.push("/categoryPage" as any)}
+              style={[styles.button, styles.quizButton]}
+            >
+              <Text style={styles.buttonText}>Quiz</Text>
+            </Pressable>
 
-            <View style={[styles.headerCounterLayout, styles.headerCounterLayoutPlaats]}>
-              <Text style={styles.headerTextBoxPlaats}>76800</Text>
-            </View>
+            <Pressable style={[styles.button, styles.scoreBordButton]}>
+              <Text style={styles.buttonText}>Score Bord</Text>
+            </Pressable>
+
+            <Pressable style={[styles.button, styles.overzichtButton]}>
+              <Text style={styles.buttonText}>Overzicht</Text>
+            </Pressable>
+
+            <Pressable
+              onPress={() => router.push("/faq" as any)}
+              style={[styles.button, styles.faqButton]}
+            >
+              <Text style={styles.buttonText}>Faq</Text>
+            </Pressable>
+
+            <Pressable
+              style={[styles.button, styles.logoutButton]}
+              onPress={async () => {
+                await AsyncStorage.removeItem("loggedInUser");
+                setUser(null);
+              }}
+            >
+              <Text style={styles.buttonText}>Log out</Text>
+            </Pressable>
           </View>
         </View>
+      )}
 
+      {user && user.role == "ADMIN" && (
+        <View
+          style={[
+            styles.container,
+            { marginTop: 35, justifyContent: "center", alignItems: "center" },
+          ]}
+        >
+          <Text style={styles.title}>Admin Paneel</Text>
 
-        <View style={styles.buttonContainer}>
-            <Text style={styles.headerText}>Welkom {user?.username}</Text>
+          <LinearGradient
+            colors={["#A89BC7", "#5B4D9F"]}
+            start={{ x: 0, y: 0 }}
+            end={{ x: 1, y: 0 }}
+            locations={[0.5, 0.5]}
+            style={styles.button}
+          >
+            <Pressable onPress={() => router.push("/users")}>
+              <Text style={styles.buttonText}>Gebruikers</Text>
+            </Pressable>
+          </LinearGradient>
 
-          <Pressable style={[styles.button, styles.scoreBordButton]}>
-            <Text style={styles.buttonText}>Score Bord</Text>
-          </Pressable>
+          <LinearGradient
+            colors={["#FF4928", "#A91E00"]}
+            start={{ x: 0, y: 0 }}
+            end={{ x: 1, y: 0 }}
+            locations={[0.5, 0.5]}
+            style={styles.button}
+          >
+            <Pressable onPress={() => router.push("/scorebord")}>
+              <Text style={styles.buttonText}>Scorebord</Text>
+            </Pressable>
+          </LinearGradient>
 
-          <Pressable onPress={() => router.push("/quizPage")} style={[styles.quizButton]}>
-            <Text style={styles.buttonQuizText}>Quiz</Text>
-          </Pressable>
+          <LinearGradient
+            colors={["#A5BCBC", "#1CA0A0"]}
+            start={{ x: 0, y: 0 }}
+            end={{ x: 1, y: 0 }}
+            locations={[0.5, 0.5]}
+            style={styles.button}
+          >
+            <Pressable onPress={() => router.push("/vragen")}>
+              <Text style={styles.buttonText}>Vragen</Text>
+            </Pressable>
+          </LinearGradient>
 
-          <Pressable style={[styles.button, styles.overzichtButton]}>
-            <Text style={styles.buttonText}>Overzicht</Text>
-          </Pressable>
+          <LinearGradient
+            colors={["#FFD285", "#CE9935"]}
+            start={{ x: 0, y: 0 }}
+            end={{ x: 1, y: 0 }}
+            locations={[0.5, 0.5]}
+            style={styles.button}
+          >
+            <Pressable onPress={() => router.push("/faqovervieuw")}>
+              <Text style={styles.buttonText}>FAQ</Text>
+            </Pressable>
+          </LinearGradient>
 
-          <Pressable onPress={() => router.push("/faq" as any)} style={[styles.button, styles.faqButton]}>
-            <Text style={styles.buttonText}>Faq</Text>
-          </Pressable>
-
-          <Pressable style={[styles.button, styles.logoutButton]} onPress={async () => {
-            await AsyncStorage.removeItem('loggedInUser');
-            setUser(null);}}>
+          <Pressable
+            style={[styles.button, styles.logoutButton]}
+            onPress={async () => {
+              await AsyncStorage.removeItem("loggedInUser");
+              setUser(null);
+            }}
+          >
             <Text style={styles.buttonText}>Log out</Text>
           </Pressable>
         </View>
-      </View>}
+      )}
     </View>
   );
 }
@@ -80,7 +167,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     flexDirection: "column",
-    backgroundColor: "#ffffff"
+    backgroundColor: "#ffffff",
   },
   headerContainer: {
     flexDirection: "row",
@@ -89,13 +176,14 @@ const styles = StyleSheet.create({
   },
   headerText: {
     fontSize: 20,
+    textAlign: "center",
   },
   headerTextBox: {
     fontSize: 24,
   },
-  headerTextBoxPlaats:{
+  headerTextBoxPlaats: {
     fontSize: 24,
-    color: "white"
+    color: "white",
   },
   headerCounterLayout: {
     borderRadius: 7,
@@ -105,52 +193,58 @@ const styles = StyleSheet.create({
   },
   headerCounterLayoutDagen: {
     marginTop: 7,
-    backgroundColor: "#FFD07F"
+    paddingHorizontal: 5,
+    backgroundColor: "#28A0A0",
   },
   headerCounterLayoutPlaats: {
     marginTop: 7,
-    backgroundColor: "#A496CB"
+    paddingHorizontal: 5,
+    backgroundColor: "#FF4F21",
   },
   buttonContainer: {
     flex: 1,
+    backgroundColor: "#FFFFFF",
     justifyContent: "center",
     alignItems: "center",
-    gap: 20,
+    paddingHorizontal: 20,
+  },
+  title: {
+    fontSize: 30,
+    color: "#ffffffff",
+    marginBottom: 50,
+    fontWeight: "400",
   },
   button: {
-    borderRadius: 50,
+    width: 280,
     height: 75,
-    width: 250,
-    justifyContent: "center",
+    borderRadius: 40,
     alignItems: "center",
-  },
-  scoreBordButton: {
-    backgroundColor: "#A395CA",
-  },
-  quizButton: {
-    borderRadius: 50,
-    height: 100,
-    width: 295,
     justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "#FF4F21",
-  },
-  overzichtButton: {
-    backgroundColor: "#A1C2C2"
-  },
-  faqButton: {
-    backgroundColor: "#FDCE7E"
+    marginVertical: 10,
   },
   logoutButton: {
-    backgroundColor: "#FF4F21"
+    backgroundColor: "#B196C7",
   },
   buttonText: {
-    color: "white",
-    fontSize: 26,
-    marginHorizontal: 5,
+    color: "#FFFFFF",
+    fontSize: 30,
+    fontWeight: "400",
+    marginRight: 10,
   },
   buttonQuizText: {
     fontSize: 46,
     color: "white",
-  }
+  },
+  overzichtButton: {
+    backgroundColor: "#e8bf4fff",
+  },
+  scoreBordButton: {
+    backgroundColor: "#B196C7",
+  },
+  quizButton: {
+    backgroundColor: "#FF4F21",
+  },
+  faqButton: {
+    backgroundColor: "#28A0A0",
+  },
 });

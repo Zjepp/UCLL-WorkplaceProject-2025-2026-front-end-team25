@@ -38,7 +38,7 @@ const ScorePage: React.FC<ScorePageProps> = ({
       <Text style={styles.title}>Resultaten</Text>
 
       <LinearGradient
-        colors={["#A89BC7", "#5B4D9F"]}
+        colors={["#B196C7", "#B196C7"]}
         start={{ x: 0, y: 0 }}
         end={{ x: 1, y: 0 }}
         locations={[0.5, 0.5]}
@@ -47,22 +47,27 @@ const ScorePage: React.FC<ScorePageProps> = ({
         <Pressable onPress={() => router.push("/")}>
           <Text style={styles.buttonText}>Score Bord</Text>
         </Pressable>
+        <Pressable onPress={() => router.push("/")}>
+          <Text style={styles.buttonText}>Score Bord</Text>
+        </Pressable>
       </LinearGradient>
 
       <LinearGradient
-        colors={["#FF4928", "#A91E00"]}
+        colors={["#FF4F21", "#FF4F21"]}
         start={{ x: 0, y: 0 }}
         end={{ x: 1, y: 0 }}
         locations={[0.5, 0.5]}
-        style={styles.scoreContainer}
+        style={styles.button}
       >
         <Text style={styles.scoreNumberLeft}>{correctAmount}</Text>
         <Text style={styles.scoreBar}>|</Text>
-        <Text style={styles.scoreNumberRight}>{wrongAnswers.length}</Text>
+        <Text style={styles.scoreNumberRight}>
+          {correctAmount + mistakesAmount}
+        </Text>
       </LinearGradient>
 
       <LinearGradient
-        colors={["#A5BCBC", "#1CA0A0"]}
+        colors={["#28A0A0", "#28A0A0"]}
         start={{ x: 0, y: 0 }}
         end={{ x: 1, y: 0 }}
         locations={[0.5, 0.5]}
@@ -138,7 +143,7 @@ const styles = StyleSheet.create({
     marginVertical: 20,
   },
   scoreNumberLeft: {
-    fontSize: 70,
+    fontSize: 30,
     color: "#FFFFFF",
     fontWeight: "bold",
     marginHorizontal: 30,
@@ -146,7 +151,7 @@ const styles = StyleSheet.create({
     right: 150,
   },
   scoreNumberRight: {
-    fontSize: 70,
+    fontSize: 30,
     color: "#FFFFFF",
     fontWeight: "bold",
     marginHorizontal: 30,
@@ -154,7 +159,7 @@ const styles = StyleSheet.create({
     left: 150,
   },
   scoreBar: {
-    fontSize: 50,
+    fontSize: 30,
     color: "#FFFFFF",
     position: "absolute",
   },
