@@ -85,7 +85,7 @@ const Faq: React.FC = () => {
           onPress={() => router.push("/")}
           hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
         >
-          <Text style={styles.terugButtonText}>← Terug</Text>
+          <Text style={styles.terugButtonText}>Terug</Text>
         </Pressable>
 
         <Pressable
