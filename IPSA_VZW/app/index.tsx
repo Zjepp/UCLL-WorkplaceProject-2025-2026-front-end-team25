@@ -95,13 +95,13 @@ export default function HomePage() {
         <View
           style={[
             styles.container,
-            { marginTop: 35, justifyContent: "center", alignItems: "center" },
+            { marginTop: -50, justifyContent: "center", alignItems: "center" },
           ]}
         >
           <Text style={styles.title}>Admin Paneel</Text>
 
           <LinearGradient
-            colors={["#A89BC7", "#5B4D9F"]}
+            colors={["#B196C7", "#B196C7"]}
             start={{ x: 0, y: 0 }}
             end={{ x: 1, y: 0 }}
             locations={[0.5, 0.5]}
@@ -113,7 +113,7 @@ export default function HomePage() {
           </LinearGradient>
 
           <LinearGradient
-            colors={["#FF4928", "#A91E00"]}
+            colors={["#FF4F21", "#FF4F21"]}
             start={{ x: 0, y: 0 }}
             end={{ x: 1, y: 0 }}
             locations={[0.5, 0.5]}
@@ -125,7 +125,7 @@ export default function HomePage() {
           </LinearGradient>
 
           <LinearGradient
-            colors={["#A5BCBC", "#1CA0A0"]}
+            colors={["#28A0A0", "#28A0A0"]}
             start={{ x: 0, y: 0 }}
             end={{ x: 1, y: 0 }}
             locations={[0.5, 0.5]}
@@ -137,7 +137,7 @@ export default function HomePage() {
           </LinearGradient>
 
           <LinearGradient
-            colors={["#FFD285", "#CE9935"]}
+            colors={["#e8bf4fff", "#e8bf4fff"]}
             start={{ x: 0, y: 0 }}
             end={{ x: 1, y: 0 }}
             locations={[0.5, 0.5]}
