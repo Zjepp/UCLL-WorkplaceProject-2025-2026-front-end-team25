@@ -208,7 +208,9 @@ const QuizConnect: React.FC<ConnectProps> = ({
             const connection = connections.find(
               (c) => c.questionId === question.id
             );
-            const backgroundColor = connection?.color || "#a1a1a1ff";
+            const backgroundColor =
+              connection?.color ||
+              (selectedQuestion === question.id ? question.color : "#a1a1a1ff");
             const selected = selectedQuestion === question.id;
 
             return (
@@ -216,8 +218,13 @@ const QuizConnect: React.FC<ConnectProps> = ({
                 key={question.id}
                 style={[
                   styles.questionBox,
-                  { backgroundColor },
-                  selected && styles.selected,
+                  {
+                    backgroundColor:
+                      connection?.color ||
+                      (selectedQuestion === question.id
+                        ? question.color
+                        : "#a1a1a1ff"),
+                  },
                 ]}
                 onPress={() => handleQuestionSelect(question.id)}
               >
@@ -232,7 +239,10 @@ const QuizConnect: React.FC<ConnectProps> = ({
             const connection = connections.find(
               (c) => c.optionId === option.id
             );
-            const backgroundColor = connection?.color || "#a1a1a1ff";
+            const backgroundColor =
+              connection?.color ||
+              (selectedOption === option.id ? option.color : "#a1a1a1ff");
+
             const selected = selectedOption === option.id;
 
             return (
@@ -240,8 +250,13 @@ const QuizConnect: React.FC<ConnectProps> = ({
                 key={option.id}
                 style={[
                   styles.optionBox,
-                  { backgroundColor },
-                  selected && styles.selected,
+                  {
+                    backgroundColor:
+                      connection?.color ||
+                      (selectedOption === option.id
+                        ? option.color
+                        : "#a1a1a1ff"),
+                  },
                 ]}
                 onPress={() => handleOptionSelect(option.id)}
               >
@@ -283,7 +298,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
   },
   questionsAndAnswers: {
-    width: "32%",
+    width: "37%",
     margin: 20,
   },
   question: {
@@ -312,10 +327,7 @@ const styles = StyleSheet.create({
     marginBottom: 30,
     height: 140,
   },
-  selected: {
-    borderWidth: 3,
-    borderColor: "#000000",
-  },
+
   connected: {
     opacity: 0.5,
   },
