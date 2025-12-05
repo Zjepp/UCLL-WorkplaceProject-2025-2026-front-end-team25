@@ -27,6 +27,7 @@ export default function HomePage() {
       {user == null && <Login user={user} setUser={setUser} />}
       {user && user.role == "USER" && (
         <View style={[styles.container, { marginTop: 35 }]}>
+          
           <View style={styles.headerContainer}>
             <View>
               <Text style={styles.headerText}>Dagen</Text>

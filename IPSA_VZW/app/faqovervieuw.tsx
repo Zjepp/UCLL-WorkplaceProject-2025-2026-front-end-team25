@@ -78,8 +78,16 @@ const Faq: React.FC = () => {
   const rowColors = ["#A89BC7", "#6FA8DC"];
 
   return (
-    <View style={styles.container}>
+    <ScrollView style={styles.container}>
       <View style={styles.container2}>
+        <Pressable
+          style={styles.terugButton}
+          onPress={() => router.push("/")}
+          hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+        >
+          <Text style={styles.terugButtonText}>← Terug</Text>
+        </Pressable>
+
         <Pressable
           style={styles.nieuwButton}
           onPress={() => router.push("/nieuwefaq")}
@@ -88,62 +96,59 @@ const Faq: React.FC = () => {
         </Pressable>
       </View>
 
-      <ScrollView
-        showsVerticalScrollIndicator={false}
-        contentContainerStyle={styles.scrollContent}
-      >
-        <Text style={styles.title}>Faq</Text>
-        {questions.length === 0 ? (
-          <Text style={{ textAlign: "center", marginTop: 50, fontSize: 18 }}>
-            Nog geen vragen...
-          </Text>
-        ) : (
-          questions.map((faq, index) => {
-            const backgroundColor = rowColors[index % 2];
+      <Text style={styles.title}>Faq</Text>
+      {questions.length === 0 ? (
+        <Text style={{ textAlign: "center", marginTop: 50, fontSize: 18 }}>
+          Nog geen vragen...
+        </Text>
+      ) : (
+        questions.map((faq, index) => {
+          const backgroundColor = rowColors[index % 2];
 
-            return (
-              <View key={faq.id} style={[styles.row, { backgroundColor }]}>
-                <Text style={styles.faq} numberOfLines={3}>
-                  {faq.question}
-                </Text>
+          return (
+            <View key={faq.id} style={[styles.row, { backgroundColor }]}>
+              <Text style={styles.faq} numberOfLines={3}>
+                {faq.question}
+              </Text>
 
-                <View style={styles.iconRow}>
-                  {/* DELETE – nu correct aangeroepen */}
-                  <Pressable
-                    style={styles.iconButton1}
-                    hitSlop={20}
-                    onPress={() => deleteFaq(faq.id)} // ← hier was de fout!
-                  >
-                    <MaterialIcons name="delete" size={30} color="#000000ff" />
-                  </Pressable>
+              <View style={styles.iconRow}>
+                {/* DELETE – nu correct aangeroepen */}
+                <Pressable
+                  style={styles.iconButton1}
+                  hitSlop={20}
+                  onPress={() => deleteFaq(faq.id)} // ← hier was de fout!
+                >
+                  <MaterialIcons name="delete" size={30} color="#000000ff" />
+                </Pressable>
 
-                  {/* EDIT */}
-                  <Pressable
-                    style={styles.iconButton2}
-                    hitSlop={20}
-                    onPress={() =>
-                      router.push({
-                        pathname: "/wijzigFaq/[id]",
-                        params: { id: faq.id.toString() },
-                      })
-                    }
-                  >
-                    <MaterialIcons name="edit" size={30} color="#000000" />
-                  </Pressable>
-                </View>
+                {/* EDIT */}
+                <Pressable
+                  style={styles.iconButton2}
+                  hitSlop={20}
+                  onPress={() =>
+                    router.push({
+                      pathname: "/wijzigFaq/[id]",
+                      params: { id: faq.id.toString() },
+                    })
+                  }
+                >
+                  <MaterialIcons name="edit" size={30} color="#000000" />
+                </Pressable>
               </View>
-            );
-          })
-        )}
-      </ScrollView>
-    </View>
+            </View>
+          );
+        })
+      )}
+    </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
     backgroundColor: "#FFFFFF",
     paddingHorizontal: 20,
+    paddingBottom: 250,
   },
 
   title: {
@@ -152,10 +157,6 @@ const styles = StyleSheet.create({
     color: "#222",
     marginBottom: 30,
     fontWeight: "400",
-  },
-  scrollContent: {
-    paddingBottom: 250,
-    flexGrow: 1,
   },
   row: {
     flexDirection: "row",
@@ -171,6 +172,51 @@ const styles = StyleSheet.create({
     color: "#000000ff",
     marginRight: 12,
   },
+
+  container2: {
+    paddingHorizontal: 20,
+    marginTop: 50,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+  },
+
+  terugButton: {
+    backgroundColor: "#E73E07",
+    paddingVertical: 12,
+    paddingHorizontal: 24,
+    marginBottom: 30,
+    borderRadius: 12,
+    minWidth: 120,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+
+  terugButtonText: {
+    color: "#FFFFFF",
+    fontSize: 20,
+    fontWeight: "400",
+    textAlign: "center",
+  },
+
+  nieuwButton: {
+    backgroundColor: "#FFD285",
+    paddingVertical: 12,
+    paddingHorizontal: 24,
+    marginBottom: 30,
+    borderRadius: 12,
+    minWidth: 120,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+
+  nieuwButtonText: {
+    color: "#000000ff",
+    fontSize: 20,
+    fontWeight: "400",
+    textAlign: "center",
+  },
+
   Faq2: {
     fontSize: 24,
     color: "#000000ff",
@@ -198,29 +244,6 @@ const styles = StyleSheet.create({
     backgroundColor: "#FFD285", // oranje
     padding: 6,
     borderRadius: 9,
-  },
-  container2: {
-    paddingHorizontal: 20,
-    marginTop: 50,
-    alignItems: "flex-end", // knop rechts uitgelijnd
-  },
-
-  nieuwButton: {
-    backgroundColor: "#FFD285", // rood
-    paddingVertical: 12,
-    paddingHorizontal: 24,
-    marginBottom: 30,
-    borderRadius: 12,
-    minWidth: 120,
-    alignItems: "center", // belangrijk!
-    justifyContent: "center", // belangrijk!
-  },
-
-  nieuwButtonText: {
-    color: "#000000ff", // WITTE tekst
-    fontSize: 20,
-    fontWeight: "400",
-    textAlign: "center",
   },
 });
 

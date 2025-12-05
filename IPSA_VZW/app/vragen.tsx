@@ -82,6 +82,14 @@ const Vragen: React.FC = () => {
     <View style={styles.container}>
       <View style={styles.container2}>
         <Pressable
+          style={styles.terugButton}
+          onPress={() => router.push("/")}
+          hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+        >
+          <Text style={styles.terugButtonText}>Terug</Text>
+        </Pressable>
+
+        <Pressable
           style={styles.nieuwButton}
           onPress={() => router.push("/nieuwevraag")}
         >
@@ -203,7 +211,27 @@ const styles = StyleSheet.create({
   container2: {
     paddingHorizontal: 20,
     marginTop: 50,
-    alignItems: "flex-end", // knop rechts uitgelijnd
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+  },
+
+  terugButton: {
+    backgroundColor: "#E73E07",
+    paddingVertical: 12,
+    paddingHorizontal: 24,
+    marginBottom: 30,
+    borderRadius: 12,
+    minWidth: 120,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+
+  terugButtonText: {
+    color: "#FFFFFF",
+    fontSize: 20,
+    fontWeight: "400",
+    textAlign: "center",
   },
 
   nieuwButton: {
