@@ -47,9 +47,6 @@ const ScorePage: React.FC<ScorePageProps> = ({
         <Pressable onPress={() => router.push("/")}>
           <Text style={styles.buttonText}>Score Bord</Text>
         </Pressable>
-        <Pressable onPress={() => router.push("/")}>
-          <Text style={styles.buttonText}>Score Bord</Text>
-        </Pressable>
       </LinearGradient>
 
       <LinearGradient
