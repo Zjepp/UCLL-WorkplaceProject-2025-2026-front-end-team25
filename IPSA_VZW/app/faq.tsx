@@ -37,9 +37,11 @@ export default function FAQPage() {
 
   const openForumPage = async () => {
     const url = 'https://ipsa.be/totara/dashboard/index.php?id=6';
+    console.log("Attempting to open URL:", url);
     try {
       const supported = await Linking.canOpenURL(url);
       if (supported) {
+        console.log("Opening URL:", url);
         await Linking.openURL(url);
       } else {
         console.error("Cannot open URL:", url);

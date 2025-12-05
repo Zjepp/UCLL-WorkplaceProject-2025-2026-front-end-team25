@@ -72,22 +72,30 @@ const styles = StyleSheet.create({
     paddingTop: 60,
     paddingHorizontal: 20,
   },
+  header: {
+    marginBottom: 20,
+  },
+  backButton: {
+    alignSelf: "flex-start",
+    marginBottom: 10,
+  },
+  backButtonText: {
+    fontSize: 18,
+    color: "#28A0A0",
+    fontWeight: "500",
+  },
   title: {
     fontSize: 42,
     fontWeight: "400",
     textAlign: "center",
-    marginBottom: 30,
     color: "#000000",
   },
-  scrollContent: {
-    flexGrow: 1,
-    paddingBottom: 40,
+  listContent: {
+    paddingBottom: 20,
   },
-  gridContainer: {
-    flexDirection: "row",
-    flexWrap: "wrap",
+  row: {
     justifyContent: "space-between",
-    gap: 20,
+    marginBottom: 20,
   },
   categoryButton: {
     width: "47%",
@@ -105,9 +113,10 @@ const styles = StyleSheet.create({
     elevation: 3,
   },
   categoryText: {
-    fontSize: 28,
+    fontSize: 18,
     color: "#333333",
     fontWeight: "400",
     textAlign: "center",
+    paddingHorizontal: 8,
   },
 });
