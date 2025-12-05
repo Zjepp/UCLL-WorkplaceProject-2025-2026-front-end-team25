@@ -93,6 +93,16 @@ const styles = StyleSheet.create({
   listContent: {
     paddingBottom: 20,
   },
+  scrollContent: {
+    flexGrow: 1,
+    justifyContent: "center",
+  },
+  gridContainer: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    justifyContent: "space-between",
+    gap: 16,
+  },
   row: {
     justifyContent: "space-between",
     marginBottom: 20,
