@@ -193,7 +193,7 @@ const QuizConnect: React.FC<ConnectProps> = ({
                 key={option.id}
                 style={[styles.optionBox, { backgroundColor }, selected && styles.selected]}
                 onPress={() => handleOptionSelect(option.id)}
-              >
+                >
                 <Text style={styles.option}>{option.formula}</Text>
               </Pressable>
             );

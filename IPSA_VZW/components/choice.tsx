@@ -25,6 +25,8 @@ const QuizChoice: React.FC<MultipleChoiceProps> = ({ onAnswerSelected, question,
   const boxSize = (windowWidth - 100) / 2;
   const [visible, setVisible] = useState(true);
   const [phase, setPhase] = useState<'view' | 'answer'>('view');
+  const [shuffledOptions, setShuffledOptions] = useState<typeof questionData.options>([]);
+  
 
   const questionData: {
   title: string;
@@ -48,6 +50,17 @@ const QuizChoice: React.FC<MultipleChoiceProps> = ({ onAnswerSelected, question,
       onAnswerSelected?.(true);
 };
 
+  const shuffleArray = (array: any[]) => {
+    return array
+      .map((item) => ({ item, sort: Math.random() }))
+      .sort((a, b) => a.sort - b.sort)
+      .map(({ item }) => item);
+  };
+
+  useEffect(() => {
+      const shuffledOptions = shuffleArray(questionData.options);
+      setShuffledOptions(shuffledOptions);
+    });
 
 return ( 
     <View style={styles.container}>
@@ -55,7 +68,7 @@ return (
       <Text style={styles.question}>{questionData.question.vraag}</Text>
 
       <View style={styles.optionsGrid}>
-        {questionData.options.map((option, index) => {
+        {shuffledOptions.map((option, index) => {
           const isSelected = selectedOption === option.id;
           const row = Math.floor(index / 2);
           const col = index % 2;

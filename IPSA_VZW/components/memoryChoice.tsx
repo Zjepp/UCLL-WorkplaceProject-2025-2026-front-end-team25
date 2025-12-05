@@ -40,6 +40,8 @@ const QuizMemoryChoice: React.FC<MultipleChoiceProps> = ({
   const boxSize = (windowWidth - 100) / 2;
   const [visible, setVisible] = useState(true);
   const [phase, setPhase] = useState<"view" | "answer">("view");
+  const [shuffledOptions, setShuffledOptions] = useState<typeof questionData.options>([]);
+  
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -117,6 +119,18 @@ const QuizMemoryChoice: React.FC<MultipleChoiceProps> = ({
   
   };
 
+  const shuffleArray = (array: any[]) => {
+      return array
+        .map((item) => ({ item, sort: Math.random() }))
+        .sort((a, b) => a.sort - b.sort)
+        .map(({ item }) => item);
+    };
+  
+    useEffect(() => {
+        const shuffledOptions = shuffleArray(questionData.options);
+        setShuffledOptions(shuffledOptions);
+      });
+
   const progressWidth = ((10 - timeLeft) / 10) * 100;
   const progressColor = phase === "view" ? "#acece6ff" : "#e64d32ff";
 
@@ -135,7 +149,7 @@ const QuizMemoryChoice: React.FC<MultipleChoiceProps> = ({
       </View>
 
       <View style={styles.optionsGrid}>
-        {questionData.options.map((option, index) => {
+        {shuffledOptions.map((option, index) => {
           const isSelected = selectedOption === option.id;
           const row = Math.floor(index / 2);
           const col = index % 2;
