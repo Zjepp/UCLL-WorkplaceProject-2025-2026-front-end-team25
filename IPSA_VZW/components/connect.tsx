@@ -1,6 +1,8 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { Antwoord, Vraag } from "@/types";
 import { Pressable, StyleSheet, View, Text } from "react-native";
+import { addWrongAnswer } from "@/components/wrongItemStore";
+
 
 interface QuizOption {
   id: number;
@@ -24,41 +26,42 @@ const QuizConnect: React.FC<ConnectProps> = ({
   questionc,
   questiond,
   title,
-}: ConnectProps) => {const questionData: {
-    title: string;
-    question1: Vraag;
-    question2: Vraag;
-    question3: Vraag;
-    question4: Vraag;
-    options: QuizOption[];
-  } = {title: title, 
-    question1: questiona.vraag ? questiona: ({ vraag: "vraag niet beschikbaar" } as Vraag),
-    question2: questionb.vraag ? questionb: ({ vraag: "vraag niet beschikbaar" } as Vraag),
-    question3: questionc.vraag ? questionc: ({ vraag: "vraag niet beschikbaar" } as Vraag),
-    question4: questiond.vraag ? questiond: ({ vraag: "vraag niet beschikbaar" } as Vraag),
-    options: [
-      {
-        id: 1,
-        formula: questionb.antwoorden?.[0].antwoord ?? "antwoord niet beschikbaar",
-        color: "#26A69Aff",
-      },
-      {
-        id: 2,
-        formula: questiond.antwoorden?.[0].antwoord ?? "antwoord niet beschikbaar",
-        color: "#fdc961ff",
-      },
-      {
-        id: 3,
-        formula: questiona.antwoorden?.[0].antwoord ?? "antwoord niet beschikbaar",
-        color: "#e64d32ff",
-      },
-      {
-        id: 4,
-        formula: questionc.antwoorden?.[0].antwoord ?? "antwoord niet beschikbaar",
-        color: "#bd99d4ff",
-      },
-    ],
-  };
+  }) => {
+    const questionData = {
+      title,
+      question1: questiona.vraag ? questiona : ({ vraag: "vraag niet beschikbaar" } as Vraag),
+      question2: questionb.vraag ? questionb : ({ vraag: "vraag niet beschikbaar" } as Vraag),
+      question3: questionc.vraag ? questionc : ({ vraag: "vraag niet beschikbaar" } as Vraag),
+      question4: questiond.vraag ? questiond : ({ vraag: "vraag niet beschikbaar" } as Vraag),
+      options: [
+        {
+          id: 1,
+          formula: questionb.antwoorden?.[0].antwoord ?? "antwoord niet beschikbaar",
+          color: "#26A69Aff",
+        },
+        {
+          id: 2,
+          formula: questiond.antwoorden?.[0].antwoord ?? "antwoord niet beschikbaar",
+          color: "#fdc961ff",
+        },
+        {
+          id: 3,
+          formula: questiona.antwoorden?.[0].antwoord ?? "antwoord niet beschikbaar",
+          color: "#e64d32ff",
+        },
+        {
+          id: 4,
+          formula: questionc.antwoorden?.[0].antwoord ?? "antwoord niet beschikbaar",
+          color: "#bd99d4ff",
+        },
+      ],
+    };
+    const correctMap: Record<number, number> = {
+      1: 3,
+      2: 1,
+      3: 4,
+      4: 2,
+    };
 
   const [selectedQuestion, setSelectedQuestion] = useState<number | null>(null);
   const [selectedOption, setSelectedOption] = useState<number | null>(null);
@@ -83,27 +86,42 @@ const QuizConnect: React.FC<ConnectProps> = ({
   const handleOptionSelect = (optionId: number) => {
     if (isOptionConnected(optionId)) return;
 
-    setSelectedOption((oud) => oud === optionId ? null : optionId);
     if (selectedQuestion !== null) {
-        setConnection((oud) => [...oud, { questionId: selectedQuestion, optionId: optionId }])
-      }
-      
-      if (connections.length === 3) {
-        onAnswerSelected?.(true);
-      }
-    console.log(connections)
-    setSelectedQuestion(null);
-    setSelectedOption(null);
-};
-
-  const resetState = () => {
-  setSelectedQuestion(null);
-  setSelectedOption(null);
-  setConnection([]);
+      setConnection((oud) => [...oud, { questionId: selectedQuestion, optionId: optionId }]);
+      setSelectedQuestion(null);
+      setSelectedOption(null);
+    } else {
+      setSelectedOption((oud) => oud === optionId ? null : optionId);
+    }
   };
 
   useEffect(() => {
-    resetState();
+    if (connections.length === 4) {
+      connections.forEach((pair) => {
+        const correctOption = correctMap[pair.questionId];
+
+        if (pair.optionId !== correctOption) {
+          const questionObj = questions.find(q => q.id === pair.questionId)?.data;
+          const wrongOption = questionData.options.find(o => o.id === pair.optionId);
+
+          // ✅ Veiligheidscontrole toegevoegd
+          if (questionObj && wrongOption) {
+            addWrongAnswer({
+              question: questionObj,
+              userAnswer: wrongOption.formula,
+            });
+          }
+        }
+      });
+      console.log(connections);
+      onAnswerSelected?.(true);
+    }
+  }, [connections, correctMap, questions, questionData.options, onAnswerSelected]);
+
+  useEffect(() => {
+    setSelectedQuestion(null);
+    setSelectedOption(null);
+    setConnection([]);
   }, [questiona, questionb, questionc, questiond]);
 
   return (
@@ -159,7 +177,6 @@ const QuizConnect: React.FC<ConnectProps> = ({
     </View>
   );
 };
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,

@@ -3,6 +3,8 @@ import { Pressable, Text, View, StyleSheet } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { useRouter } from "expo-router";
 import WrongAnswers from "@/components/wrongAnswers";
+import { getWrongAnswers } from "@/components/wrongItemStore";
+import WrongAnswersList from "@/components/wrongAnswersList"
 
 interface ScorePageProps {
   correctAmount: number;
@@ -16,7 +18,18 @@ const ScorePage: React.FC<ScorePageProps> = ({
   const router = useRouter();
   const [showWrong, setShowWrong] = React.useState(false);
   
-  const total = correctAmount + mistakesAmount;
+  const [wrongAnswersState, setWrongAnswersState] = React.useState(() => getWrongAnswers());;
+
+  React.useEffect(() => {
+    setWrongAnswersState(getWrongAnswers());
+  }, []);
+
+  const openWrong = () => {
+    setWrongAnswersState(getWrongAnswers());
+    setShowWrong(true);
+  };
+
+  const wrongAnswers = wrongAnswersState;
 
 
 
@@ -45,7 +58,7 @@ const ScorePage: React.FC<ScorePageProps> = ({
       >
         <Text style={styles.scoreNumberLeft}>{correctAmount}</Text>
         <Text style={styles.scoreBar}>|</Text>
-        <Text style={styles.scoreNumberRight}>{total}</Text>
+        <Text style={styles.scoreNumberRight}>{wrongAnswers.length}</Text>
       </LinearGradient>
 
       <LinearGradient
@@ -55,9 +68,9 @@ const ScorePage: React.FC<ScorePageProps> = ({
         locations={[0.5, 0.5]}
         style={styles.button}
       >
-        <Pressable onPress={() => setShowWrong(true)} style={styles.buttonPressable}>
-          <Text style={styles.buttonText}>Foute Antwoorden</Text>
-        </Pressable>
+        <Pressable onPress={openWrong} style={styles.buttonPressable}>
+           <Text style={styles.buttonText}>Foute Antwoorden</Text>
+         </Pressable>
       </LinearGradient>
 
       <Pressable onPress={() => router.push("/")}>
@@ -72,7 +85,11 @@ const ScorePage: React.FC<ScorePageProps> = ({
         </LinearGradient>
       </Pressable>
 
-      {showWrong && <WrongAnswers onClose={() => setShowWrong(false)} />}
+      <WrongAnswersList
+        visible={showWrong}
+        wrongAnswers={wrongAnswers}
+        onClose={() => setShowWrong(false)}
+      />
     </View>
   );
 };

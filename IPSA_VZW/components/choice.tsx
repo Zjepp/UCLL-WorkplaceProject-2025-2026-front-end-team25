@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Dimensions, Pressable } from 'react-native';
 import { Antwoord, Vraag } from '@/types';
+import { addWrongAnswer } from './wrongItemStore';
 
 interface QuizOption {
   id: number;
@@ -18,7 +19,7 @@ interface MultipleChoiceProps {
   correctAmountSetter: (amount: number) => void;
 }
 
-const QuizChoice: React.FC<MultipleChoiceProps> = ({ onAnswerSelected, question, title, mistakeAmount, mistakeAmountSetter, correctAmount, correctAmountSetter }: MultipleChoiceProps) => {
+const QuizChoice: React.FC<MultipleChoiceProps> = ({ onAnswerSelected, question, title, mistakeAmount, mistakeAmountSetter, correctAmount, correctAmountSetter }) => {
   const [selectedOption, setSelectedOption] = useState<number | null>(null);
   const windowWidth = Dimensions.get('window').width;
   const [timeLeft, setTimeLeft] = useState(10);
@@ -41,12 +42,20 @@ const QuizChoice: React.FC<MultipleChoiceProps> = ({ onAnswerSelected, question,
     ],
   };
   const handleSelect = (option: QuizOption) => { 
-      console.log(`Je hebt gekozen voor: ${option.formula}`);
-      if(typeof option.formula === 'object' && option.formula !== null && 'correct' in option.formula){
-        if(option.formula.correct) {correctAmountSetter(correctAmount+1)} else {mistakeAmountSetter(mistakeAmount + 1)};
-      };
-      onAnswerSelected?.(true);
-};
+    console.log(`Je hebt gekozen voor: ${option.formula}`);
+    if(typeof option.formula === 'object' && option.formula !== null && 'correct' in option.formula){
+      if(option.formula.correct) {
+        correctAmountSetter(correctAmount+1);
+      } else {
+        mistakeAmountSetter(mistakeAmount + 1);
+        addWrongAnswer({
+          question: question,
+          userAnswer: option.formula.antwoord,
+        });
+      }
+    }
+    onAnswerSelected?.(true);
+  };
 
 
 return ( 

@@ -1,76 +1,97 @@
-import React, { createContext, useContext, useState, useCallback, useEffect } from "react";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import React from "react";
+import { View, Text, StyleSheet, ScrollView, Pressable, Modal } from "react-native";
+import { MaterialIcons } from "@expo/vector-icons";
+import WrongAnswer from "./wrongAnswers";
+import { Vraag } from "@/types";
+import { WrongItem } from "@/components/wrongItemStore";
+import WrongAnswers from "./wrongAnswers";
 
-export type WrongItem = { id: string; question: string; answer: string };
-
-type WrongAnswersContextShape = {
+interface Props {
+  visible: boolean;
   wrongAnswers: WrongItem[];
-  addWrong: (question: string, answer: string) => void;
-  clearWrong: () => void;
-};
+  onClose: () => void;
+}
 
-const WrongAnswersContext = createContext<WrongAnswersContextShape | undefined>(undefined);
-
-const STORAGE_KEY = "wrongAnswers";
-
-export const WrongAnswersProvider: React.FC<React.PropsWithChildren<{}>> = ({ children }) => {
-  const [wrongAnswers, setWrongAnswers] = useState<WrongItem[]>([]);
-  const [isLoaded, setIsLoaded] = useState(false);
-
-  // laad data bij mount
-  useEffect(() => {
-    const loadWrongAnswers = async () => {
-      try {
-        const stored = await AsyncStorage.getItem(STORAGE_KEY);
-        if (stored) {
-          setWrongAnswers(JSON.parse(stored));
-        }
-      } catch (error) {
-        console.error("Fout bij laden van foute antwoorden:", error);
-      } finally {
-        setIsLoaded(true);
-      }
-    };
-
-    loadWrongAnswers();
-  }, []);
-
-  // sla op wanneer wrongAnswers verandert
-  useEffect(() => {
-    if (isLoaded) {
-      AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(wrongAnswers)).catch((error) =>
-        console.error("Fout bij opslaan van foute antwoorden:", error)
-      );
-    }
-  }, [wrongAnswers, isLoaded]);
-
-  const addWrong = useCallback((question: string, answer: string) => {
-    setWrongAnswers((prev) => [
-      ...prev,
-      {
-        id: Date.now().toString() + Math.random().toString(36).slice(2),
-        question,
-        answer,
-      },
-    ]);
-  }, []);
-
-  const clearWrong = useCallback(async () => {
-    setWrongAnswers([]);
-    await AsyncStorage.removeItem(STORAGE_KEY).catch((error) =>
-      console.error("Fout bij verwijderen van foute antwoorden:", error)
-    );
-  }, []);
-
+const WrongAnswersList: React.FC<Props> = ({ visible, wrongAnswers, onClose }) => {
   return (
-    <WrongAnswersContext.Provider value={{ wrongAnswers, addWrong, clearWrong }}>
-      {children}
-    </WrongAnswersContext.Provider>
+    <Modal visible={visible} animationType="slide" transparent={false}>
+      <View style={styles.container}>
+        <View style={styles.header}>
+          <Text style={styles.title}>Foute Antwoorden</Text>
+          <Pressable onPress={onClose} style={styles.close}>
+            <MaterialIcons name="close" size={28} color="#fff" />
+          </Pressable>
+        </View>
+
+        {wrongAnswers.length === 0 ? (
+          <View style={styles.empty}>
+            <Text style={styles.emptyText}>Geen foute antwoorden</Text>
+          </View>
+        ) : (
+          <ScrollView contentContainerStyle={styles.list}>
+            {wrongAnswers.map((w, i) => (
+              <View key={i} style={styles.item}>
+                <Text style={styles.index}>Vraag {i + 1}</Text>
+                <WrongAnswers question={w.question} userAnswer={w.userAnswer} />
+              </View>
+            ))}
+          </ScrollView>
+        )}
+      </View>
+    </Modal>
   );
 };
 
-export const useWrongAnswers = (): WrongAnswersContextShape => {
-  const ctx = useContext(WrongAnswersContext);
-  if (!ctx) throw new Error("useWrongAnswers must be used inside WrongAnswersProvider");
-  return ctx;
-};
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: "#fff",
+    paddingTop: 40,
+  },
+  header: {
+    backgroundColor: "#FF4928",
+    padding: 20,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+  },
+  title: {
+    fontSize: 24,
+    fontWeight: "bold",
+    color: "#fff",
+  },
+  closeButton: {
+    padding: 5,
+  },
+  listContainer: {
+    flex: 1,
+  },
+  listContent: {
+    padding: 15,
+    paddingBottom: 30,
+  },
+  itemNumber: {
+    fontSize: 14,
+    fontWeight: "600",
+    color: "#666",
+    marginBottom: 8,
+  },
+  emptyContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  emptyText: {
+    fontSize: 18,
+    color: "#999",
+  },
+  close: {
+    padding: 6
+  },
+  list: { padding: 16, paddingBottom: 40 },
+  item: { marginBottom: 12 },
+  index: { color: "#666", fontWeight: "600", marginBottom: 6 },
+  empty: { flex: 1, justifyContent: "center", alignItems: "center" },
+});
+
+export default WrongAnswersList;

@@ -1,119 +1,68 @@
-import { LinearGradient } from "expo-linear-gradient";
 import React from "react";
-import { Pressable, View, Text, StyleSheet, ScrollView } from "react-native";
-import { useWrongAnswers } from "./wrongAnswersList";
+import { View, Text, StyleSheet } from "react-native";
+import { Vraag } from "@/types";
 
-const WrongAnswers: React.FC<{ onClose: () => void }> = ({ onClose }) => {
-  const { wrongAnswers } = useWrongAnswers();
+interface WrongAnswersProps {
+  question: Vraag;
+  userAnswer: string;
+}
+
+const WrongAnswers: React.FC<WrongAnswersProps> = ({ question, userAnswer }) => {
+  const correctAnswer = question.antwoorden?.find(a => a.correct)?.antwoord || "Onbekend";
 
   return (
-    <View style={styles.overlay}>
-      <View style={styles.modalContent}>
-        <Text style={styles.modalTitle}>Foute Antwoorden</Text>
-        
-        <ScrollView style={styles.scrollContainer}>
-          {wrongAnswers.length === 0 ? (
-            <Text style={styles.emptyText}>Geen foute antwoorden!</Text>
-          ) : (
-            wrongAnswers.map((item, index) => (
-              <View key={item.id} style={styles.wrongItem}>
-                <Text style={styles.wrongText}>
-                  {index + 1}. {item.question}
-                </Text>
-                <Text style={styles.answerText}>
-                  Jouw antwoord: {item.answer}
-                </Text>
-              </View>
-            ))
-          )}
-        </ScrollView>
+    <View style={styles.container}>
+      <Text style={styles.questionText}>{question.vraag}</Text>
+      
+      <View style={styles.answerSection}>
+        <Text style={styles.label}>Jouw antwoord:</Text>
+        <Text style={[styles.answerText, styles.wrongAnswers]}>{userAnswer}</Text>
+      </View>
 
-        <Pressable onPress={onClose}>
-          <LinearGradient
-            colors={["#FFD285", "#CE9935"]}
-            start={{ x: 0, y: 0 }}
-            end={{ x: 1, y: 0 }}
-            style={styles.button}
-          >
-            <Text style={styles.buttonText}>Sluiten</Text>
-          </LinearGradient>
-        </Pressable>
+      <View style={styles.answerSection}>
+        <Text style={styles.label}>Juist antwoord:</Text>
+        <Text style={[styles.answerText, styles.correctAnswer]}>{correctAnswer}</Text>
       </View>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  overlay: {
-    position: "absolute",
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    backgroundColor: "rgba(0,0,0,0.45)",
-    justifyContent: "center",
-    alignItems: "center",
-    zIndex: 1000,
-    elevation: 20,
+  container: {
+    backgroundColor: "#f5f5f5",
+    padding: 15,
+    marginVertical: 10,
+    borderRadius: 8,
+    borderLeftWidth: 4,
+    borderLeftColor: "#FF4928",
   },
-  modalContent: {
-    width: 320,
-    maxHeight: '80%',
-    paddingVertical: 20,
-    paddingHorizontal: 18,
-    borderRadius: 14,
-    backgroundColor: "#FFF",
-    alignItems: "center",
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 6 },
-    shadowOpacity: 0.15,
-    shadowRadius: 12,
-    elevation: 10,
-  },
-  modalTitle: {
-    fontSize: 22,
-    fontWeight: "700",
+  questionText: {
+    fontSize: 16,
+    fontWeight: "600",
     color: "#222",
     marginBottom: 12,
   },
-  scrollContainer: {
-    width: '100%',
-    maxHeight: 300,
+  answerSection: {
+    marginBottom: 10,
   },
-  emptyText: {
+  label: {
+    fontSize: 12,
     color: "#666",
-    textAlign: "center",
-    fontSize: 16,
-    marginVertical: 20,
-  },
-  wrongItem: {
-    marginVertical: 8,
-    paddingVertical: 8,
-    borderBottomWidth: 1,
-    borderBottomColor: "#eee",
-  },
-  wrongText: {
-    color: "#333",
-    fontSize: 14,
-    marginBottom: 4,
+    fontWeight: "500",
   },
   answerText: {
-    color: "#666",
-    fontSize: 12,
-    fontStyle: "italic",
+    fontSize: 14,
+    marginTop: 4,
+    padding: 8,
+    borderRadius: 4,
   },
-  button: {
-    width: 200,
-    height: 50,
-    borderRadius: 25,
-    alignItems: "center",
-    justifyContent: "center",
-    marginTop: 15,
+  wrongAnswers: {
+    backgroundColor: "#FFE5E0",
+    color: "#A91E00",
   },
-  buttonText: {
-    color: "#FFFFFF",
-    fontSize: 18,
-    fontWeight: "400",
+  correctAnswer: {
+    backgroundColor: "#D4EDDA",
+    color: "#155724",
   },
 });
 

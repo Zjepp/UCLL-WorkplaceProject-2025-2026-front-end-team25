@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Dimensions, Pressable } from 'react-native';
 import { Antwoord, Vraag } from '@/types';
+import { addWrongAnswer } from './wrongItemStore';
 
 interface QuizOption {
   id: number;
@@ -18,7 +19,7 @@ interface MultipleChoiceProps {
   correctAmountSetter: (amount: number) => void;
 }
 
-const QuizMemoryChoice: React.FC<MultipleChoiceProps> = ({ onAnswerSelected, question, title, mistakeAmount, mistakeAmountSetter, correctAmount, correctAmountSetter }: MultipleChoiceProps) => {
+const QuizMemoryChoice: React.FC<MultipleChoiceProps> = ({ onAnswerSelected, question, title, mistakeAmount, mistakeAmountSetter, correctAmount, correctAmountSetter }) => {
   const [selectedOption, setSelectedOption] = useState<number | null>(null);
   const windowWidth = Dimensions.get('window').width;
   const [timeLeft, setTimeLeft] = useState(10);
@@ -62,15 +63,23 @@ const QuizMemoryChoice: React.FC<MultipleChoiceProps> = ({ onAnswerSelected, que
     ],
   };
   const handleSelect = (option: QuizOption) => { 
-      console.log(`Je hebt gekozen voor: ${option.formula}`);
-      if(typeof option.formula === 'object' && option.formula !== null && 'correct' in option.formula){
-        if(option.formula.correct) {correctAmountSetter(correctAmount+1)} else {mistakeAmountSetter(mistakeAmount + 1)};
-      };
-      onAnswerSelected?.(true);
-      setTimeLeft(10);
-      setVisible(true);
-      setPhase('view')
-};
+    console.log(`Je hebt gekozen voor: ${option.formula}`);
+    if(typeof option.formula === 'object' && option.formula !== null && 'correct' in option.formula){
+      if(option.formula.correct) {
+        correctAmountSetter(correctAmount+1);
+      } else {
+        mistakeAmountSetter(mistakeAmount + 1);
+        addWrongAnswer({
+          question: question,
+          userAnswer: option.formula.antwoord,
+        });
+      }
+    }
+    onAnswerSelected?.(true);
+    setTimeLeft(10);
+    setVisible(true);
+    setPhase('view');
+  };
 
 const progressWidth = ((10 - timeLeft) / 10) * 100;
 const progressColor = phase === 'view' ? '#acece6ff' : '#e64d32ff';

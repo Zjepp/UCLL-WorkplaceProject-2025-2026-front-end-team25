@@ -19,6 +19,8 @@ import QuizChoice from "@/components/choice";
 import Score from "@/components/score";
 import HangmanQuiz from "@/components/hangman";
 import HeartIcon from "../assets/images/heart.png";
+import { addWrongAnswer } from "@/components/wrongItemStore";
+
 type Connect = {
   type: string;
   vragen: Vraag[];
@@ -89,8 +91,16 @@ export default function quiz() {
     console.log(question);
 
     if (!question) {
+      if (questions.length > 0 && currentIndex >= questions.length) {
+        return (
+          <Score correctAmount={correctAmount} mistakesAmount={mistakeAmount} />
+        );
+      }
       return (
-        <Score correctAmount={correctAmount} mistakesAmount={mistakeAmount} />
+      <View style={styles.center}>
+        <ActivityIndicator size="large" />
+        <Text>Vragen worden geladen...</Text>
+      </View>
       );
     }
 
