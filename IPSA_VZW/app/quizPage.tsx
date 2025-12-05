@@ -40,8 +40,8 @@ export default function quiz() {
   };
 
   const dataReady =
-    questionsStandaard.length > 0 &&
-    connectQuestions.length > 0 &&
+    questionsStandaard.length > 0 ||
+    connectQuestions.length > 0 ||
     questions.length > 0;
 
   const getRandom18 = async () => {
@@ -116,6 +116,7 @@ export default function quiz() {
         const connectVragen = vragen.filter((v) => v.type === "connect-choice");
 
         // Shuffle the arrays before setting them
+        
         setStandaardQuestions(shuffleArray(standaardVragen));
 
         // Group connect questions in sets of 4
