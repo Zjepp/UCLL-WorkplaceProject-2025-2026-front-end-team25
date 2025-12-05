@@ -1,5 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, StyleSheet, Pressable, FlatList, ActivityIndicator, Linking } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  Pressable,
+  FlatList,
+  ActivityIndicator,
+  Linking,
+} from "react-native";
 import { useRouter } from "expo-router";
 import faqService from "@/services/faqService";
 
@@ -22,13 +30,13 @@ export default function FAQPage() {
     setLoading(true);
     try {
       const res = await faqService.getFaqs();
-      if (!res.ok) throw new Error('network');
+      if (!res.ok) throw new Error("network");
       const data = await res.json();
       if (Array.isArray(data)) {
         setFaqs(data);
       }
     } catch (e) {
-      console.error('Failed to load FAQs:', e);
+      console.error("Failed to load FAQs:", e);
       setFaqs([]);
     } finally {
       setLoading(false);
@@ -36,10 +44,12 @@ export default function FAQPage() {
   };
 
   const openForumPage = async () => {
-    const url = 'https://ipsa.be/totara/dashboard/index.php?id=6';
+    const url = "https://ipsa.be/totara/dashboard/index.php?id=6";
+    console.log("Attempting to open URL:", url);
     try {
       const supported = await Linking.canOpenURL(url);
       if (supported) {
+        console.log("Opening URL:", url);
         await Linking.openURL(url);
       } else {
         console.error("Cannot open URL:", url);
@@ -59,19 +69,27 @@ export default function FAQPage() {
   return (
     <View style={styles.container}>
       <View style={styles.colorBars}>
-        <View style={[styles.colorBar, { backgroundColor: '#28A0A0' }]} />
-        <View style={[styles.colorBar, { backgroundColor: '#FED57A' }]} />
-        <View style={[styles.colorBar, { backgroundColor: '#B196C7' }]} />
-        <View style={[styles.colorBar, { backgroundColor: '#E73E07' }]} />
+        <View style={[styles.colorBar, { backgroundColor: "#28A0A0" }]} />
+        <View style={[styles.colorBar, { backgroundColor: "#FED57A" }]} />
+        <View style={[styles.colorBar, { backgroundColor: "#B196C7" }]} />
+        <View style={[styles.colorBar, { backgroundColor: "#E73E07" }]} />
       </View>
 
       <View style={styles.headerRow}>
-        <Pressable style={[styles.headerButton, styles.chatButton]} onPress={openForumPage}>
+        <Pressable
+          style={[styles.headerButton, styles.chatButton]}
+          onPress={openForumPage}
+        >
           <Text style={styles.headerButtonText}>Chat met ons</Text>
         </Pressable>
 
-        <Pressable style={[styles.headerButton, styles.returnButton]} onPress={() => router.push("/")}>
-          <Text style={[styles.headerButtonText, { color: 'white' }]}>Terug</Text>
+        <Pressable
+          style={[styles.headerButton, styles.returnButton]}
+          onPress={() => router.push("/")}
+        >
+          <Text style={[styles.headerButtonText, { color: "white" }]}>
+            Terug
+          </Text>
         </Pressable>
       </View>
 
@@ -90,7 +108,9 @@ export default function FAQPage() {
             ListEmptyComponent={() => (
               <View style={styles.card}>
                 <Text style={styles.question}>Nog geen FAQ's beschikbaar</Text>
-                <Text style={styles.answer}>- Er zijn momenteel geen veelgestelde vragen opgeslagen.</Text>
+                <Text style={styles.answer}>
+                  - Er zijn momenteel geen veelgestelde vragen opgeslagen.
+                </Text>
               </View>
             )}
           />
@@ -101,45 +121,47 @@ export default function FAQPage() {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#fff' },
+  container: { flex: 1, backgroundColor: "#fff" },
   colorBars: {
-    position: 'absolute',
+    position: "absolute",
     top: 0,
     left: 0,
     right: 0,
     bottom: 0,
-    flexDirection: 'row',
+    flexDirection: "row",
     zIndex: 1,
   },
-  colorBar: { width: '25%', height: '100%' },
+  colorBar: { width: "25%", height: "100%" },
   headerRow: {
     zIndex: 2,
     marginTop: 30,
     paddingHorizontal: 20,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
   },
   headerButton: {
     paddingVertical: 12,
     paddingHorizontal: 20,
     borderRadius: 18,
   },
-  chatButton: { backgroundColor: '#B196C7' },
-  returnButton: { backgroundColor: '#E73E07' },
-  headerButtonText: { color: '#fff', fontSize: 16 },
-  title: { zIndex: 2, fontSize: 36, textAlign: 'center', marginTop: 22, marginBottom: 12, color: '#222' },
+  chatButton: { backgroundColor: "#B196C7" },
+  returnButton: { backgroundColor: "#28A0A0" },
+  headerButtonText: { color: "#fff", fontSize: 20 },
+  title: {
+    zIndex: 2,
+    fontSize: 36,
+    textAlign: "center",
+    marginTop: 22,
+    marginBottom: 12,
+    color: "#222",
+  },
   listWrapper: { zIndex: 2, paddingHorizontal: 18, paddingTop: 10 },
   card: {
-    backgroundColor: 'white',
+    backgroundColor: "white",
     borderRadius: 18,
     padding: 18,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 3,
-    elevation: 4,
   },
-  question: { fontSize: 28, marginBottom: 8, color: '#111' },
-  answer: { fontSize: 16, color: '#222' },
+  question: { fontSize: 28, marginBottom: 8, color: "#111" },
+  answer: { fontSize: 16, color: "#222" },
 });

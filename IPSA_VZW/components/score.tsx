@@ -9,62 +9,63 @@ interface ScoreProps {
 }
 
 const Score: React.FC<ScoreProps> = ({ correctAmount, mistakesAmount }) => {
-    const router = useRouter();
+  const router = useRouter();
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Resultaten</Text>
 
       <LinearGradient
-        colors={["#A89BC7", "#5B4D9F"]}
+        colors={["#B196C7", "#B196C7"]}
         start={{ x: 0, y: 0 }}
         end={{ x: 1, y: 0 }}
         locations={[0.5, 0.5]}
         style={styles.button}
       >
-        <Pressable  onPress={() => router.push("/")}>
-          <Text style={styles.buttonText}>Score Bord</Text></Pressable>
+        <Pressable onPress={() => router.push("/")}>
+          <Text style={styles.buttonText}>Score Bord</Text>
+        </Pressable>
       </LinearGradient>
 
       <LinearGradient
-        colors={["#FF4928", "#A91E00"]}
+        colors={["#FF4F21", "#FF4F21"]}
         start={{ x: 0, y: 0 }}
         end={{ x: 1, y: 0 }}
         locations={[0.5, 0.5]}
-        style={styles.scoreContainer}
+        style={styles.button}
       >
         <Text style={styles.scoreNumberLeft}>{correctAmount}</Text>
         <Text style={styles.scoreBar}>|</Text>
-        <Text style={styles.scoreNumberRight}>{correctAmount + mistakesAmount}</Text>
+        <Text style={styles.scoreNumberRight}>
+          {correctAmount + mistakesAmount}
+        </Text>
       </LinearGradient>
 
       <LinearGradient
-        colors={["#A5BCBC", "#1CA0A0"]}
+        colors={["#28A0A0", "#28A0A0"]}
         start={{ x: 0, y: 0 }}
         end={{ x: 1, y: 0 }}
         locations={[0.5, 0.5]}
         style={styles.button}
-
       >
-        <Pressable  onPress={() => router.push("/")}>
-          <Text style={styles.buttonText}>Foute Antwoorden</Text></Pressable>
+        <Pressable onPress={() => router.push("/")}>
+          <Text style={styles.buttonText}>Foute Antwoorden</Text>
+        </Pressable>
       </LinearGradient>
 
       <LinearGradient
-        colors={["#FFD285", "#CE9935"]}
+        colors={["#e8bf4fff", "#e8bf4fff"]}
         start={{ x: 0, y: 0 }}
         end={{ x: 1, y: 0 }}
         locations={[0.5, 0.5]}
         style={styles.button}
-
-
       >
-        <Pressable onPress={() => router.push("/")}><Text style={styles.buttonText}>Terug</Text></Pressable>
+        <Pressable onPress={() => router.push("/")}>
+          <Text style={styles.buttonText}>Terug</Text>
+        </Pressable>
       </LinearGradient>
     </View>
   );
 };
-
-
 
 const styles = StyleSheet.create({
   container: {
@@ -104,7 +105,7 @@ const styles = StyleSheet.create({
     marginVertical: 20,
   },
   scoreNumberLeft: {
-    fontSize: 70,
+    fontSize: 30,
     color: "#FFFFFF",
     fontWeight: "bold",
     marginHorizontal: 30,
@@ -112,7 +113,7 @@ const styles = StyleSheet.create({
     right: 150,
   },
   scoreNumberRight: {
-    fontSize: 70,
+    fontSize: 30,
     color: "#FFFFFF",
     fontWeight: "bold",
     marginHorizontal: 30,
@@ -120,7 +121,7 @@ const styles = StyleSheet.create({
     left: 150,
   },
   scoreBar: {
-    fontSize: 50,
+    fontSize: 30,
     color: "#FFFFFF",
     position: "absolute",
   },

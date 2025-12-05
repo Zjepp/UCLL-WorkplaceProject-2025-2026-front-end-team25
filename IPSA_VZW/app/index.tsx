@@ -29,7 +29,7 @@ export default function HomePage() {
         <View style={[styles.container, { marginTop: 35 }]}>
           <View style={styles.headerContainer}>
             <View>
-              <Text style={styles.headerText}>Dagen</Text>
+              <Text style={styles.headerText}>Plaats</Text>
 
               <View
                 style={[
@@ -37,12 +37,12 @@ export default function HomePage() {
                   styles.headerCounterLayoutDagen,
                 ]}
               >
-                <Text style={styles.headerTextBox}>23</Text>
+                <Text style={styles.headerTextBoxPlaats}>234</Text>
               </View>
             </View>
 
             <View>
-              <Text style={styles.headerText}>Plaats 345</Text>
+              <Text style={styles.headerText}>Score</Text>
 
               <View
                 style={[
@@ -56,17 +56,15 @@ export default function HomePage() {
           </View>
 
           <View style={styles.buttonContainer}>
-            <Text style={styles.headerText}>Welkom {user?.username}</Text>
+            <Pressable
+              onPress={() => router.push("/categoryPage" as any)}
+              style={[styles.button, styles.quizButton]}
+            >
+              <Text style={styles.buttonText}>Quiz</Text>
+            </Pressable>
 
             <Pressable style={[styles.button, styles.scoreBordButton]}>
               <Text style={styles.buttonText}>Score Bord</Text>
-            </Pressable>
-
-            <Pressable
-              onPress={() => router.push("/categoryPage" as any)}
-              style={[styles.quizButton]}
-            >
-              <Text style={styles.buttonQuizText}>Quiz</Text>
             </Pressable>
 
             <Pressable style={[styles.button, styles.overzichtButton]}>
@@ -178,6 +176,7 @@ const styles = StyleSheet.create({
   },
   headerText: {
     fontSize: 20,
+    textAlign: "center",
   },
   headerTextBox: {
     fontSize: 24,
@@ -194,11 +193,13 @@ const styles = StyleSheet.create({
   },
   headerCounterLayoutDagen: {
     marginTop: 7,
-    backgroundColor: "#FFD07F",
+    paddingHorizontal: 5,
+    backgroundColor: "#28A0A0",
   },
   headerCounterLayoutPlaats: {
     marginTop: 7,
-    backgroundColor: "#A496CB",
+    paddingHorizontal: 5,
+    backgroundColor: "#FF4F21",
   },
   buttonContainer: {
     flex: 1,
@@ -209,7 +210,7 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 30,
-    color: "#222",
+    color: "#ffffffff",
     marginBottom: 50,
     fontWeight: "400",
   },
@@ -219,10 +220,10 @@ const styles = StyleSheet.create({
     borderRadius: 40,
     alignItems: "center",
     justifyContent: "center",
-    marginVertical: 15,
+    marginVertical: 10,
   },
   logoutButton: {
-    backgroundColor: "#FF4F21",
+    backgroundColor: "#B196C7",
   },
   buttonText: {
     color: "#FFFFFF",
@@ -235,20 +236,15 @@ const styles = StyleSheet.create({
     color: "white",
   },
   overzichtButton: {
-    backgroundColor: "#A1C2C2",
+    backgroundColor: "#e8bf4fff",
   },
   scoreBordButton: {
-    backgroundColor: "#A395CA",
+    backgroundColor: "#B196C7",
   },
   quizButton: {
-    borderRadius: 50,
-    height: 100,
-    width: 295,
-    justifyContent: "center",
-    alignItems: "center",
     backgroundColor: "#FF4F21",
   },
   faqButton: {
-    backgroundColor: "#FDCE7E",
+    backgroundColor: "#28A0A0",
   },
 });
