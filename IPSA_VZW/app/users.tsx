@@ -11,8 +11,6 @@ import { useRouter } from "expo-router";
 import * as DocumentPicker from "expo-document-picker"; // ← nieuw
 import userService from "@/services/userService";
 import { MaterialIcons } from "@expo/vector-icons";
-import * as Sharing from "expo-sharing";
-import * as FileSystem from "expo-file-system";
 
 type User = {
   id: number;
