@@ -1,10 +1,16 @@
 import React, { useState } from "react";
-import { View, Text, TextInput, Pressable, StyleSheet, Image } from "react-native";
+import {
+  View,
+  Text,
+  TextInput,
+  Pressable,
+  StyleSheet,
+  Image,
+} from "react-native";
 import { useRouter } from "expo-router";
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import userService from "@/services/userService";
 import { LoginUserResponse } from "@/types";
-
 
 interface LoginProps {
   user: LoginUserResponse | null;
@@ -26,7 +32,7 @@ const Login: React.FC<LoginProps> = ({ user, setUser }) => {
     const loginUser = { email: email, password: password };
     try {
       const response = await userService.login(loginUser);
-  
+
       if (response.status === 200) {
         console.log("Login successful");
         const user = await response.json();
@@ -41,7 +47,6 @@ const Login: React.FC<LoginProps> = ({ user, setUser }) => {
     } catch (error) {
       console.log(error);
     }
-    
   };
 
   return (
@@ -52,12 +57,12 @@ const Login: React.FC<LoginProps> = ({ user, setUser }) => {
           style={styles.logo}
         />
       </View> */}
-      
+
       <View style={loginStyles.colorBars}>
-        <View style={[loginStyles.colorBar, { backgroundColor: '#28A0A0' }]} />
-        <View style={[loginStyles.colorBar, { backgroundColor: '#FED57A' }]} />
-        <View style={[loginStyles.colorBar, { backgroundColor: '#B196C7' }]} />
-        <View style={[loginStyles.colorBar, { backgroundColor: '#E73E07' }]} />
+        <View style={[loginStyles.colorBar, { backgroundColor: "#28A0A0" }]} />
+        <View style={[loginStyles.colorBar, { backgroundColor: "#FED57A" }]} />
+        <View style={[loginStyles.colorBar, { backgroundColor: "#B196C7" }]} />
+        <View style={[loginStyles.colorBar, { backgroundColor: "#E73E07" }]} />
       </View>
 
       <View style={loginStyles.formWrapper}>
@@ -66,7 +71,9 @@ const Login: React.FC<LoginProps> = ({ user, setUser }) => {
 
           <View style={loginStyles.inputContainer}>
             <Text style={loginStyles.label}>
-              <Text style={[loginStyles.plusSign, { color: '#B196C7' }]}>+</Text> 
+              <Text style={[loginStyles.plusSign, { color: "#B196C7" }]}>
+                +
+              </Text>
               Email
             </Text>
             <TextInput
@@ -83,8 +90,10 @@ const Login: React.FC<LoginProps> = ({ user, setUser }) => {
 
           <View style={loginStyles.inputContainer}>
             <Text style={loginStyles.label}>
-              <Text style={[loginStyles.plusSign, { color: '#E73E07' }]}>+</Text> 
-              Wachtwoord
+              <Text style={[loginStyles.plusSign, { color: "#E73E07" }]}>
+                +
+              </Text>
+              Username
             </Text>
             <TextInput
               style={loginStyles.input}
@@ -92,17 +101,10 @@ const Login: React.FC<LoginProps> = ({ user, setUser }) => {
               placeholderTextColor="#999"
               value={password}
               onChangeText={setPassword}
-              secureTextEntry
             />
           </View>
 
-          <Pressable onPress={() => {}}>
-            <Text style={loginStyles.forgotPassword}>
-              wachtwoord vergeten?
-            </Text>
-          </Pressable>
-
-          <Pressable 
+          <Pressable
             style={loginStyles.loginButton}
             onPress={() => handleSubmit()}
           >
@@ -117,49 +119,49 @@ const Login: React.FC<LoginProps> = ({ user, setUser }) => {
 const loginStyles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: "#fff",
   },
   header: {
-    width: '100%',
+    width: "100%",
     height: 80,
-    backgroundColor: 'transparent',
-    justifyContent: 'center',
-    alignItems: 'flex-end',
+    backgroundColor: "transparent",
+    justifyContent: "center",
+    alignItems: "flex-end",
     paddingRight: 20,
     paddingTop: 20,
     zIndex: 2,
   },
   logo: {
-    position: 'absolute',
+    position: "absolute",
     top: 0,
     right: 0,
     width: 410,
     height: 80,
   },
   colorBars: {
-    position: 'absolute',
+    position: "absolute",
     top: 0,
     left: 0,
     right: 0,
     bottom: 0,
-    flexDirection: 'row',
+    flexDirection: "row",
     zIndex: 1,
   },
   colorBar: {
-    width: '25%',
-    height: '100%',
+    width: "25%",
+    height: "100%",
   },
   formWrapper: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
     padding: 20,
     zIndex: 2,
   },
   loginContainer: {
-    width: '100%',
+    width: "100%",
     maxWidth: 340,
-    backgroundColor: 'white',
+    backgroundColor: "white",
     padding: 25,
     borderRadius: 20,
     shadowColor: "#000",
@@ -173,10 +175,10 @@ const loginStyles = StyleSheet.create({
   },
   title: {
     fontSize: 32,
-    fontWeight: '400',
+    fontWeight: "400",
     marginBottom: 25,
-    color: '#333',
-    textAlign: 'left',
+    color: "#333",
+    textAlign: "left",
   },
   inputContainer: {
     marginBottom: 20,
@@ -184,45 +186,45 @@ const loginStyles = StyleSheet.create({
   label: {
     fontSize: 16,
     marginBottom: 8,
-    color: '#333',
-    flexDirection: 'row',
-    alignItems: 'center',
+    color: "#333",
+    flexDirection: "row",
+    alignItems: "center",
   },
   plusSign: {
     fontSize: 26,
     marginRight: 10,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
   input: {
-    width: '100%',
+    width: "100%",
     height: 45,
     borderWidth: 2,
-    borderColor: '#28A0A0',
+    borderColor: "#28A0A0",
     borderRadius: 22,
     paddingHorizontal: 15,
     fontSize: 16,
   },
   forgotPassword: {
-    color: '#333',
+    color: "#333",
     fontSize: 14,
-    textDecorationLine: 'underline',
+    textDecorationLine: "underline",
     marginTop: 8,
     marginBottom: 20,
-    textAlign: 'center',
+    textAlign: "center",
   },
   loginButton: {
-    width: '100%',
+    width: "100%",
     height: 45,
-    backgroundColor: '#FED57A',
+    backgroundColor: "#FED57A",
     borderRadius: 22,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
   },
   loginButtonText: {
-    color: '#333',
+    color: "#333",
     fontSize: 16,
-    fontWeight: '500',
-  }
+    fontWeight: "500",
+  },
 });
 
 export default Login;

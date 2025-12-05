@@ -51,7 +51,11 @@ const QuizMemoryChoice: React.FC<MultipleChoiceProps> = ({
             setPhase("answer");
             setTimeLeft(10);
           } else {
-            setVisible(false);
+            mistakeAmountSetter(mistakeAmount + 1);
+            setTimeLeft(10);
+            setVisible(true);
+            setPhase("view");
+            onAnswerSelected?.(true);
           }
           return 0;
         }
@@ -74,22 +78,22 @@ const QuizMemoryChoice: React.FC<MultipleChoiceProps> = ({
       {
         id: 1,
         formula: question.antwoorden?.[0] ?? "antwoord niet beschikbaar",
-        color: "#26A69Aff",
+        color: "#28A0A0",
       },
       {
         id: 2,
         formula: question.antwoorden?.[1] ?? "antwoord niet beschikbaar",
-        color: "#fdc961ff",
+        color: "#e8bf4fff",
       },
       {
         id: 3,
         formula: question.antwoorden?.[2] ?? "antwoord niet beschikbaar",
-        color: "#e64d32ff",
+        color: "#FF4F21",
       },
       {
         id: 4,
         formula: question.antwoorden?.[3] ?? "antwoord niet beschikbaar",
-        color: "#bd99d4ff",
+        color: "#B196C7",
       },
     ],
   };
@@ -106,14 +110,14 @@ const QuizMemoryChoice: React.FC<MultipleChoiceProps> = ({
         mistakeAmountSetter(mistakeAmount + 1);
       }
     }
-    onAnswerSelected?.(true);
     setTimeLeft(10);
     setVisible(true);
     setPhase("view");
+    onAnswerSelected?.(true);
   };
 
   const progressWidth = ((10 - timeLeft) / 10) * 100;
-  const progressColor = phase === "view" ? "#acece6ff" : "#e64d32ff";
+  const progressColor = phase === "view" ? "#acece6ff" : "#FF4F21";
 
   return (
     <View style={styles.container}>
@@ -194,7 +198,7 @@ const styles = StyleSheet.create({
   progressContainer: {
     height: 20,
     width: "100%",
-    backgroundColor: "#26A69Aff",
+    backgroundColor: "#28A0A0",
     overflow: "hidden",
     marginVertical: 10,
   },
@@ -216,7 +220,7 @@ const styles = StyleSheet.create({
   formulaText: {
     fontSize: 22,
     paddingHorizontal: 5,
-    color: "#000000ff",
+    color: "#ffffffff",
     textAlign: "center",
   },
 });

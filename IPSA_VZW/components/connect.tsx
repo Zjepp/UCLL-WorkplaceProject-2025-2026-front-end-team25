@@ -31,86 +31,132 @@ const QuizConnect: React.FC<ConnectProps> = ({
   mistakeAmount,
   mistakeAmountSetter,
   correctAmount,
-  correctAmountSetter
-}: ConnectProps) => {const questionData: {
+  correctAmountSetter,
+}: ConnectProps) => {
+  const questionData: {
     title: string;
     question1: Vraag;
     question2: Vraag;
     question3: Vraag;
     question4: Vraag;
     options: QuizOption[];
-  } = {title: title, 
-    question1: questiona.vraag ? questiona: ({ vraag: "vraag niet beschikbaar" } as Vraag),
-    question2: questionb.vraag ? questionb: ({ vraag: "vraag niet beschikbaar" } as Vraag),
-    question3: questionc.vraag ? questionc: ({ vraag: "vraag niet beschikbaar" } as Vraag),
-    question4: questiond.vraag ? questiond: ({ vraag: "vraag niet beschikbaar" } as Vraag),
+  } = {
+    title: title,
+    question1: questiona.vraag
+      ? questiona
+      : ({ vraag: "vraag niet beschikbaar" } as Vraag),
+    question2: questionb.vraag
+      ? questionb
+      : ({ vraag: "vraag niet beschikbaar" } as Vraag),
+    question3: questionc.vraag
+      ? questionc
+      : ({ vraag: "vraag niet beschikbaar" } as Vraag),
+    question4: questiond.vraag
+      ? questiond
+      : ({ vraag: "vraag niet beschikbaar" } as Vraag),
     options: [
       {
         id: 1,
-        formula: questiona.antwoorden?.[0].antwoord ?? "antwoord niet beschikbaar",
-        color: "#26A69Aff",
+        formula:
+          questiona.antwoorden?.[0].antwoord ?? "antwoord niet beschikbaar",
+        color: "#28A0A0",
       },
       {
         id: 2,
-        formula: questionb.antwoorden?.[0].antwoord ?? "antwoord niet beschikbaar",
-        color: "#fdc961ff",
+        formula:
+          questionb.antwoorden?.[0].antwoord ?? "antwoord niet beschikbaar",
+        color: "#e8bf4fff",
       },
       {
         id: 3,
-        formula: questionc.antwoorden?.[0].antwoord ?? "antwoord niet beschikbaar",
-        color: "#e64d32ff",
+        formula:
+          questionc.antwoorden?.[0].antwoord ?? "antwoord niet beschikbaar",
+        color: "#FF4F21",
       },
       {
         id: 4,
-        formula: questiond.antwoorden?.[0].antwoord ?? "antwoord niet beschikbaar",
-        color: "#bd99d4ff",
+        formula:
+          questiond.antwoorden?.[0].antwoord ?? "antwoord niet beschikbaar",
+        color: "#B196C7",
       },
     ],
   };
 
   const [selectedQuestion, setSelectedQuestion] = useState<number | null>(null);
   const [selectedOption, setSelectedOption] = useState<number | null>(null);
-  const [connections, setConnection] = useState<Array<{questionId: number, optionId: number}>>([]);
-  const [shuffledQuestions, setShuffledQuestions] = useState<typeof questions>([]);
-  const [shuffledOptions, setShuffledOptions] = useState<typeof questionData.options>([]);
+  const [connections, setConnection] = useState<
+    Array<{ questionId: number; optionId: number; color: string }>
+  >([]);
+  const [shuffledQuestions, setShuffledQuestions] = useState<typeof questions>(
+    []
+  );
+  const [shuffledOptions, setShuffledOptions] = useState<
+    typeof questionData.options
+  >([]);
+  const [availableColors, setAvailableColors] = useState<string[]>([
+    "#28A0A0",
+    "#e8bf4fff",
+    "#FF4F21",
+    "#B196C7",
+  ]);
 
-  const questions = useMemo(() => [
-    { id: 1, data: questionData.question1, color: '#bd99d4ff' },
-    { id: 2, data: questionData.question2, color: '#e64d32ff' },
-    { id: 3, data: questionData.question3, color: '#fdc961ff' },	
-    { id: 4, data: questionData.question4, color: '#26A69Aff' },
-  ], [questionData.question1, questionData.question2, questionData.question3, questionData.question4]);
+  const questions = useMemo(
+    () => [
+      { id: 1, data: questionData.question1, color: "#28A0A0" },
+      { id: 2, data: questionData.question2, color: "#e8bf4fff" },
+      { id: 3, data: questionData.question3, color: "#FF4F21" },
+      { id: 4, data: questionData.question4, color: "#B196C7" },
+    ],
+    [
+      questionData.question1,
+      questionData.question2,
+      questionData.question3,
+      questionData.question4,
+    ]
+  );
 
-  const isQuestionConnected = (questionId: number) => connections.some((c) => c.questionId === questionId);
-  const isOptionConnected = (optionId: number) => connections.some((c) => c.optionId === optionId);
+  const isQuestionConnected = (questionId: number) =>
+    connections.some((c) => c.questionId === questionId);
+  const isOptionConnected = (optionId: number) =>
+    connections.some((c) => c.optionId === optionId);
 
   const handleQuestionSelect = (questionId: number) => {
     if (isQuestionConnected(questionId)) {
-      const arr = connections.filter((qo) => qo.questionId !== questionId);
-      setConnection(arr);
-    };
-
-    setSelectedQuestion((oud) => (oud === questionId ? null : questionId));
+      const connection = connections.find((c) => c.questionId === questionId);
+      if (connection) {
+        setAvailableColors((prev) => [...prev, connection.color]);
+        setConnection((prev) =>
+          prev.filter((c) => c.questionId !== questionId)
+        );
+      }
+    }
+    setSelectedQuestion((prev) => (prev === questionId ? null : questionId));
   };
 
   const handleOptionSelect = (optionId: number) => {
     if (isOptionConnected(optionId)) return;
 
-    setSelectedOption((oud) => oud === optionId ? null : optionId);
-    if (selectedQuestion !== null) {
-        setConnection((oud) => [...oud, { questionId: selectedQuestion, optionId: optionId }])
-      }
-      
-      if (connections.length === 3) {
-        const score = calculateScore();
-        onAnswerSelected?.(true);
-        correctAmountSetter?.(correctAmount+score);
-        mistakeAmountSetter?.(mistakeAmount+(4-score))
-      }
-    console.log(connections)
+    setSelectedOption((prev) => (prev === optionId ? null : optionId));
+
+    if (selectedQuestion !== null && availableColors.length > 0) {
+      const color = availableColors[0];
+      setAvailableColors((prev) => prev.slice(1));
+      setConnection((prev) => [
+        ...prev,
+        { questionId: selectedQuestion, optionId, color },
+      ]);
+    }
+
+    if (connections.length === 3) {
+      const score = calculateScore();
+      onAnswerSelected?.(true);
+      correctAmountSetter?.(correctAmount + score);
+      mistakeAmountSetter?.(mistakeAmount + (4 - score));
+    }
+
     setSelectedQuestion(null);
     setSelectedOption(null);
-};
+  };
 
   const resetState = () => {
     setSelectedQuestion(null);
@@ -123,12 +169,16 @@ const QuizConnect: React.FC<ConnectProps> = ({
     connections.forEach(({ questionId, optionId }) => {
       const question = questions.find((q) => q.id === questionId);
       const option = questionData.options.find((o) => o.id === optionId);
-      if (question?.data.antwoorden?.some((a: Antwoord) => a.correct && a.antwoord === option?.formula)) {
-          score += 1;
-        };
+      if (
+        question?.data.antwoorden?.some(
+          (a: Antwoord) => a.correct && a.antwoord === option?.formula
+        )
+      ) {
+        score += 1;
+      }
     });
     return score;
-  }
+  };
 
   const shuffleArray = (array: any[]) => {
     return array
@@ -148,43 +198,53 @@ const QuizConnect: React.FC<ConnectProps> = ({
   return (
     <View style={styles.container}>
       <Text style={styles.title}>{questionData.title}</Text>
-      <Text style={styles.connectTitle}>Verbind de vraag met het juiste antwoord</Text>
-      
+      <Text style={styles.connectTitle}>
+        Verbind de vraag met het juiste antwoord
+      </Text>
+
       <View style={styles.container2}>
         <View style={styles.questionsAndAnswers}>
           {shuffledQuestions.map((question) => {
-            const connected = isQuestionConnected(question.id);
-            const selected = (selectedQuestion === question.id);
+            const connection = connections.find(
+              (c) => c.questionId === question.id
+            );
+            const backgroundColor = connection?.color || "#a1a1a1ff";
+            const selected = selectedQuestion === question.id;
+
             return (
               <Pressable
                 key={question.id}
                 style={[
-                  styles.questionBox, 
-                  { backgroundColor: question.color },
-                  connected ? styles.connected : {},
-                  selected ? styles.selected : {},
-                ]} 
-                  onPress={() => handleQuestionSelect(question.id)}>
-                  <Text style={styles.question}>{question.data.vraag}</Text>
+                  styles.questionBox,
+                  { backgroundColor },
+                  selected && styles.selected,
+                ]}
+                onPress={() => handleQuestionSelect(question.id)}
+              >
+                <Text style={styles.question}>{question.data.vraag}</Text>
               </Pressable>
-            )
+            );
           })}
         </View>
 
         <View style={styles.questionsAndAnswers}>
           {shuffledOptions.map((option) => {
-            const connected = isOptionConnected(option.id)
-            const selected = (selectedOption === option.id)
+            const connection = connections.find(
+              (c) => c.optionId === option.id
+            );
+            const backgroundColor = connection?.color || "#a1a1a1ff";
+            const selected = selectedOption === option.id;
+
             return (
-              <Pressable 
-                key={option.id} 
+              <Pressable
+                key={option.id}
                 style={[
-                  styles.optionBox, 
-                  { backgroundColor: option.color },
-                  connected ? styles.connected : {},
-                  selected ? styles.selected : {},
-                  ]} 
-                  onPress={() => handleOptionSelect(option.id)}>
+                  styles.optionBox,
+                  { backgroundColor },
+                  selected && styles.selected,
+                ]}
+                onPress={() => handleOptionSelect(option.id)}
+              >
                 <Text style={styles.option}>{option.formula}</Text>
               </Pressable>
             );
@@ -217,14 +277,14 @@ const styles = StyleSheet.create({
   },
   connectTitle: {
     fontSize: 28,
-    color: '#000000ff',
+    color: "#000000ff",
     marginBottom: 30,
-    textAlign: 'center',
+    textAlign: "center",
     paddingHorizontal: 20,
   },
   questionsAndAnswers: {
     width: "32%",
-    margin: 20
+    margin: 20,
   },
   question: {
     fontSize: 18,
@@ -237,7 +297,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     marginBottom: 30,
-    height: 140
+    height: 140,
   },
   option: {
     fontSize: 18,
@@ -250,7 +310,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     marginBottom: 30,
-    height: 140
+    height: 140,
   },
   selected: {
     borderWidth: 3,

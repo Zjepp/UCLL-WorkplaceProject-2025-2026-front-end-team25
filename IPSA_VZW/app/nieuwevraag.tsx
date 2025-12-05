@@ -16,7 +16,9 @@ import { useRouter } from "expo-router";
 
 const Nieuwevraag = () => {
   const [open, setOpen] = useState(false);
+  const [categoryOpen, setCategoryOpen] = useState(false);
   const [vraagType, setVraagType] = useState<string | null>(null);
+  const [category, setCategory] = useState<string | null>(null);
   const router = useRouter();
 
   const [items] = useState([
@@ -24,6 +26,36 @@ const Nieuwevraag = () => {
     { label: "Memory", value: "memory" },
     { label: "Hangman", value: "hangman" },
     { label: "Connect", value: "connect" },
+  ]);
+
+  const [categoryItems] = useState([
+    { label: "Cardiovasculair", value: "Cardiovasculair" },
+    { label: "Gastro-intestinaal", value: "Gastro-intestinaal" },
+    { label: "Respiratoir stelsel", value: "Respiratoir stelsel" },
+    { label: "Hormonaal stelsel", value: "Hormonaal stelsel" },
+    { label: "Pijn", value: "Pijn" },
+    { label: "Centraal zenuwstelsel", value: "Centraal zenuwstelsel" },
+    { label: "Infecties & immuniteit", value: "Infecties & immuniteit" },
+    { label: "Uro-genitaal stelsel", value: "Uro-genitaal stelsel" },
+    { label: "Osteo-articulaire aandoeningen", value: "Osteo-articulaire aandoeningen" },
+    { label: "Kanker", value: "Kanker" },
+    { label: "Dermatologie", value: "Dermatologie" },
+    { label: "Oftalmologie", value: "Oftalmologie" },
+    { label: "Toxicomanie", value: "Toxicomanie" },
+    { label: "Mentaal welzijn", value: "Mentaal welzijn" },
+    { label: "Veterinair", value: "Veterinair" },
+    { label: "Gezonde levensstijl", value: "Gezonde levensstijl" },
+    { label: "Geriatrische patiënt", value: "Geriatrische patiënt" },
+    { label: "Pediatrische patiënt", value: "Pediatrische patiënt" },
+    { label: "Zwangerschap & borstvoeding", value: "Zwangerschap & borstvoeding" },
+    { label: "Fytotherapeutica", value: "Fytotherapeutica" },
+    { label: "Vaccinatie", value: "Vaccinatie" },
+    { label: "Medicatienazicht", value: "Medicatienazicht" },
+    { label: "Medische materialen", value: "Medische materialen" },
+    { label: "Communicatie", value: "Communicatie" },
+    { label: "GGG", value: "GGG: Goed geneesmiddelengebruik" },
+    { label: "Magistrale bereidingen", value: "Magistrale bereidingen" },
+    { label: "Actua", value: "Actua" },
   ]);
 
   const [tijd, setTijd] = useState("");
@@ -40,8 +72,8 @@ const Nieuwevraag = () => {
   };
 
   const saveVraag = async () => {
-    if (!vraag || !vraagType) {
-      Alert.alert("Fout", "Vraag en speltype zijn verplicht.");
+    if (!vraag || !vraagType || !category) {
+      Alert.alert("Fout", "Vraag, speltype en categorie zijn verplicht.");
       return;
     }
 
@@ -91,6 +123,7 @@ const Nieuwevraag = () => {
     const payload = {
       type: vraagType,
       vraag,
+      category,
       tijd: tijd ? parseInt(tijd, 10) : undefined, // alleen meesturen als nodig
       antwoorden,
     };
@@ -107,6 +140,7 @@ const Nieuwevraag = () => {
       setFout2("");
       setFout3("");
       setVraagType(null);
+      setCategory(null);
       router.push("/vragen");
     } catch (err) {
       Alert.alert("Error", "Kon vraag niet opslaan.");
@@ -150,6 +184,25 @@ const Nieuwevraag = () => {
                 style={styles.dropdown}
                 textStyle={styles.dropdownText}
                 dropDownContainerStyle={styles.dropdownList}
+                zIndex={3000}
+                zIndexInverse={1000}
+              />
+
+              {/* Categorie */}
+              <Text style={styles.label}>Categorie</Text>
+              <DropDownPicker
+                open={categoryOpen}
+                value={category}
+                items={categoryItems}
+                setOpen={setCategoryOpen}
+                setValue={setCategory}
+                setItems={() => {}}
+                placeholder="Kies een categorie..."
+                style={styles.dropdown}
+                textStyle={styles.dropdownText}
+                dropDownContainerStyle={styles.dropdownList}
+                zIndex={2000}
+                zIndexInverse={2000}
               />
 
               {/* Vraag */}
