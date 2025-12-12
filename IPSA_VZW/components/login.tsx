@@ -26,7 +26,7 @@ const Login: React.FC<LoginProps> = ({ user, setUser }) => {
   const handleSubmit = async () => {
     setError("");
     if (!email.trim() || !password) {
-      setError("Please enter both username and password.");
+      setError("Geef gebruikersnaam en email in.");
       return;
     }
     const loginUser = { email: email, password: password };
@@ -41,6 +41,7 @@ const Login: React.FC<LoginProps> = ({ user, setUser }) => {
         await AsyncStorage.setItem("loggedInUser", userValue);
         setUser(user);
       } else {
+        setError("Foute credentials");
         console.log("Login failed");
         console.log(response.status);
       }
@@ -110,6 +111,7 @@ const Login: React.FC<LoginProps> = ({ user, setUser }) => {
           >
             <Text style={loginStyles.loginButtonText}>Log In</Text>
           </Pressable>
+          <Text style={loginStyles.error}>{error}</Text>
         </View>
       </View>
     </View>
@@ -164,14 +166,6 @@ const loginStyles = StyleSheet.create({
     backgroundColor: "white",
     padding: 25,
     borderRadius: 20,
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.1,
-    shadowRadius: 3.84,
-    elevation: 5,
   },
   title: {
     fontSize: 32,
@@ -224,6 +218,13 @@ const loginStyles = StyleSheet.create({
     color: "#333",
     fontSize: 16,
     fontWeight: "500",
+  },
+  error: {
+    color: "#bf1c1cff",
+    fontSize: 16,
+    fontWeight: "500",
+    textAlign: "center",
+    marginTop: 15,
   },
 });
 

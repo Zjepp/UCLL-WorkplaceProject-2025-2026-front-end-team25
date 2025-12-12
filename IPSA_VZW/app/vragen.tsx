@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import * as DocumentPicker from "expo-document-picker"; // ← nieuw
 import {
   Text,
   View,
@@ -78,15 +79,56 @@ const Vragen: React.FC = () => {
 
   const rowColors = ["#A89BC7", "#6FA8DC"];
 
+  const handleCsvUpload = async () => {
+    try {
+      // Dit opent de nieuwe, stabiele picker (werkt op alle Androids)
+      const result = await DocumentPicker.getDocumentAsync({
+        type: ["text/csv", "text/plain"], // accepteert .csv én .txt
+        copyToCacheDirectory: true,
+        multiple: false,
+      });
+
+      // Nieuwe API: check of canceled
+      if (result.canceled) {
+        console.log("Gebruiker annuleerde");
+        return;
+      }
+
+      // Bestand is er!
+      const file = result.assets[0];
+
+      Alert.alert("Bestand gekozen", file.name); // test of je hier komt
+
+      // Upload naar backend
+      const response = await quizService.uploadCsv(
+        file.uri,
+        file.name,
+        file.mimeType || "text/plain"
+      );
+
+      if (response.ok) {
+        const text = await response.text();
+        Alert.alert("Succes", text || "Gebruikers toegevoegd!");
+        getVragen(); // lijst verversen
+      } else {
+        const error = await response.text();
+        Alert.alert("Fout", error || "Upload mislukt");
+      }
+    } catch (err: any) {
+      console.error("Picker error:", err);
+      Alert.alert("Fout", "Kon bestand niet kiezen");
+    }
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.container2}>
-        <Pressable
-          style={styles.terugButton}
-          onPress={() => router.push("/")}
-          hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
-        >
+        <Pressable style={styles.terugButton} onPress={() => router.push("/")}>
           <Text style={styles.terugButtonText}>Terug</Text>
+        </Pressable>
+
+        <Pressable style={styles.nieuwButton2} onPress={handleCsvUpload}>
+          <Text style={styles.nieuwButtonText}>Nieuw (CSV)</Text>
         </Pressable>
 
         <Pressable
@@ -209,7 +251,6 @@ const styles = StyleSheet.create({
     borderRadius: 9,
   },
   container2: {
-    paddingHorizontal: 20,
     marginTop: 50,
     flexDirection: "row",
     justifyContent: "space-between",
@@ -219,10 +260,9 @@ const styles = StyleSheet.create({
   terugButton: {
     backgroundColor: "#E73E07",
     paddingVertical: 12,
-    paddingHorizontal: 24,
+    paddingHorizontal: 10,
     marginBottom: 30,
     borderRadius: 12,
-    minWidth: 120,
     alignItems: "center",
     justifyContent: "center",
   },
@@ -237,10 +277,19 @@ const styles = StyleSheet.create({
   nieuwButton: {
     backgroundColor: "#FFD285", // rood
     paddingVertical: 12,
-    paddingHorizontal: 24,
+    paddingHorizontal: 10,
     marginBottom: 30,
     borderRadius: 12,
-    minWidth: 120,
+    alignItems: "center", // belangrijk!
+    justifyContent: "center", // belangrijk!
+  },
+
+  nieuwButton2: {
+    backgroundColor: "#A89BC7", // rood
+    paddingVertical: 12,
+    paddingHorizontal: 10,
+    marginBottom: 30,
+    borderRadius: 12,
     alignItems: "center", // belangrijk!
     justifyContent: "center", // belangrijk!
   },
