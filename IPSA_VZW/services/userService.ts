@@ -1,6 +1,7 @@
 import { LoginUser, LoginUserResponse, User } from "@/types";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { API_URL } from "@/config";
+import { Platform } from 'react-native'; // <-- voeg dit toe bovenaan
 
 const apiUrl = API_URL;
 
@@ -46,31 +47,68 @@ const deleteUser = async (id: number) => {
     });
 };
 
-const uploadCsv = async (uri: string, name: string, type: string) => {
+const uploadCsv = async (uri: string, name: string, mimeType?: string) => {
   const userValue = await AsyncStorage.getItem("loggedInUser");
-  const token = userValue ? JSON.parse(userValue).token : "";
+  if (!userValue) throw new Error("Niet ingelogd");
+
+  const { token } = JSON.parse(userValue);
 
   const formData = new FormData();
   formData.append("file", {
     uri,
     name,
-    type: type || (name.endsWith(".csv") ? "text/csv" : "text/plain"),
+    type: mimeType || "text/csv",
   } as any);
 
-  return fetch(apiUrl + "/users/upload-csv", {
+  const response = await fetch(apiUrl + "/users/upload-csv", {
     method: "POST",
     headers: {
       Authorization: `Bearer ${token}`,
+      // GEEN Content-Type header zetten!
     },
     body: formData,
   });
+
+  if (!response.ok) {
+    const errorText = await response.text();
+    throw new Error(errorText || "Upload mislukt");
+  }
+
+  return await response.text();
+};
+
+const uploadCsvForWeb = async (file: File | any) => { // File op web, object op native
+  const userValue = await AsyncStorage.getItem("loggedInUser");
+  if (!userValue) throw new Error("Niet ingelogd");
+
+  const { token } = JSON.parse(userValue);
+
+  const formData = new FormData();
+  formData.append("file", file); // op web: echte File object → perfect voor Spring Boot
+
+  const response = await fetch(apiUrl + "/users/upload-csv", {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${token}`,
+      // GEEN Content-Type zetten! Browser/fetch doet het automatisch correct
+    },
+    body: formData,
+  });
+
+  if (!response.ok) {
+    const errorText = await response.text();
+    throw new Error(errorText || "Upload mislukt");
+  }
+
+  return await response.text();
 };
 
 const userService = {
   login,
   getAll,
   deleteUser,
-  uploadCsv
+  uploadCsv,
+  uploadCsvForWeb
 };
 
 export default userService;
