@@ -2,14 +2,32 @@ import React from "react";
 import { Pressable, Text, View, StyleSheet } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { useRouter } from "expo-router";
+import { getWrongAnswers } from "@/components/wrongItemStore";
+import WrongAnswersList from "@/components/wrongAnswersList";
 
-interface ScoreProps {
+interface ScorePageProps {
   correctAmount: number;
   mistakesAmount: number;
 }
 
-const Score: React.FC<ScoreProps> = ({ correctAmount, mistakesAmount }) => {
+const ScorePage: React.FC<ScorePageProps> = ({ correctAmount, mistakesAmount }) => {
   const router = useRouter();
+  const [showWrong, setShowWrong] = React.useState(false);
+  const [wrongAnswersState, setWrongAnswersState] = React.useState(() => getWrongAnswers());
+
+  React.useEffect(() => {
+    setWrongAnswersState(getWrongAnswers());
+  }, []);
+
+  const openWrong = () => {
+    setWrongAnswersState(getWrongAnswers());
+    setShowWrong(true);
+  };
+
+  const wrongAnswers = wrongAnswersState;
+
+
+
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Resultaten</Text>
@@ -47,22 +65,28 @@ const Score: React.FC<ScoreProps> = ({ correctAmount, mistakesAmount }) => {
         locations={[0.5, 0.5]}
         style={styles.button}
       >
-        <Pressable onPress={() => router.push("/")}>
-          <Text style={styles.buttonText}>Foute Antwoorden</Text>
-        </Pressable>
-      </LinearGradient>
+        <Pressable onPress={openWrong} style={styles.buttonPressable}>
+           <Text style={styles.buttonText}>Foute Antwoorden</Text>
+         </Pressable>
+       </LinearGradient>
 
-      <LinearGradient
-        colors={["#e8bf4fff", "#e8bf4fff"]}
-        start={{ x: 0, y: 0 }}
-        end={{ x: 1, y: 0 }}
-        locations={[0.5, 0.5]}
-        style={styles.button}
-      >
-        <Pressable onPress={() => router.push("/")}>
+      <Pressable onPress={() => router.push("/")}>
+        <LinearGradient
+          colors={["#FFD285", "#CE9935"]}
+          start={{ x: 0, y: 0 }}
+          end={{ x: 1, y: 0 }}
+          locations={[0.5, 0.5]}
+          style={styles.button}
+        >
           <Text style={styles.buttonText}>Terug</Text>
-        </Pressable>
-      </LinearGradient>
+        </LinearGradient>
+      </Pressable>
+
+      <WrongAnswersList
+        visible={showWrong}
+        wrongAnswers={wrongAnswers}
+        onClose={() => setShowWrong(false)}
+      />
     </View>
   );
 };
@@ -88,6 +112,12 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     marginVertical: 15,
+  },
+  buttonPressable: {
+    width: "100%",
+    height: "100%",
+    alignItems: "center",
+    justifyContent: "center",
   },
   buttonText: {
     color: "#FFFFFF",
@@ -127,4 +157,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Score;
+export default ScorePage;

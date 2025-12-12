@@ -1,6 +1,8 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { Antwoord, Vraag } from "@/types";
 import { Pressable, StyleSheet, View, Text } from "react-native";
+import { addWrongAnswer } from "@/components/wrongItemStore";
+
 
 interface QuizOption {
   id: number;
@@ -81,18 +83,24 @@ const QuizConnect: React.FC<ConnectProps> = ({
       },
     ],
   };
+  const correctMap: Record<number, number> = {
+      1: 3,
+      2: 1,
+      3: 4,
+      4: 2,
+    };
 
   const [selectedQuestion, setSelectedQuestion] = useState<number | null>(null);
   const [selectedOption, setSelectedOption] = useState<number | null>(null);
   const [connections, setConnection] = useState<
     Array<{ questionId: number; optionId: number; color: string }>
   >([]);
-  const [shuffledQuestions, setShuffledQuestions] = useState<typeof questions>(
+  const [shuffledQuestions, setShuffledQuestions] = useState<{ id: number; data: Vraag; color: string }[]>(
     []
   );
-  const [shuffledOptions, setShuffledOptions] = useState<
-    typeof questionData.options
-  >([]);
+  const [shuffledOptions, setShuffledOptions] = useState<QuizOption[]>(
+    []
+  );
   const [availableColors, setAvailableColors] = useState<string[]>([
     "#28A0A0",
     "#e8bf4fff",
@@ -138,20 +146,38 @@ const QuizConnect: React.FC<ConnectProps> = ({
 
     setSelectedOption((prev) => (prev === optionId ? null : optionId));
 
-    if (selectedQuestion !== null && availableColors.length > 0) {
-      const color = availableColors[0];
-      setAvailableColors((prev) => prev.slice(1));
-      setConnection((prev) => [
-        ...prev,
-        { questionId: selectedQuestion, optionId, color },
-      ]);
+    if (selectedQuestion === null || availableColors.length === 0) {
+      return;
     }
 
-    if (connections.length === 3) {
-      const score = calculateScore();
+    const color = availableColors[0];
+    setAvailableColors((prev) => prev.slice(1));
+    const newConnection = { questionId: selectedQuestion, optionId, color };
+    const newConnections = [...connections, newConnection];
+    setConnection((prev) => [...prev, newConnection]);
+
+    if (newConnections.length === 4) {
+      const score = calculateScore(newConnections);
       onAnswerSelected?.(true);
       correctAmountSetter?.(correctAmount + score);
       mistakeAmountSetter?.(mistakeAmount + (4 - score));
+
+      // voeg foute antwoorden toe in store (voor connect: userAnswer = correct antwoord)
+      try {
+        newConnections.forEach(({ questionId, optionId }) => {
+          const q = questions.find((qq) => qq.id === questionId);
+          const opt = questionData.options.find((o) => o.id === optionId);
+          const isCorrect = q?.data.antwoorden?.some(
+            (a: Antwoord) => a.correct && a.antwoord === opt?.formula
+          );
+          if (!isCorrect && q) {
+            const correct = q.data.antwoorden?.find((a: Antwoord) => a.correct)?.antwoord ?? String(opt?.formula ?? "");
+            addWrongAnswer({ question: q.data, userAnswer: '/' });
+          }
+        });
+      } catch (e) {
+        // ignore
+      }
     }
 
     setSelectedQuestion(null);
@@ -164,9 +190,9 @@ const QuizConnect: React.FC<ConnectProps> = ({
     setConnection([]);
   };
 
-  const calculateScore = () => {
+  const calculateScore = (conns: Array<{ questionId: number; optionId: number; color: string }>) => {
     let score = 0;
-    connections.forEach(({ questionId, optionId }) => {
+    conns.forEach(({ questionId, optionId }) => {
       const question = questions.find((q) => q.id === questionId);
       const option = questionData.options.find((o) => o.id === optionId);
       if (
@@ -269,7 +295,6 @@ const QuizConnect: React.FC<ConnectProps> = ({
     </View>
   );
 };
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
