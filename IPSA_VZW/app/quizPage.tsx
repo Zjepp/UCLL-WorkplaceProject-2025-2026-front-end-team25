@@ -39,10 +39,10 @@ export default function quiz() {
     return shuffled;
   };
 
-  const dataReady =
-    questionsStandaard.length > 0 ||
-    connectQuestions.length > 0 ||
-    questions.length > 0;
+  // const dataReady =
+  //   questionsStandaard.length > 0 ||
+  //   connectQuestions.length > 0 ||
+  //   questions.length > 0;
 
   const getRandom18 = async () => {
     try {
@@ -170,13 +170,13 @@ export default function quiz() {
     }
   }, [questionsStandaard, connectQuestions]);
 
-  if (!dataReady) {
-    return (
-      <View style={styles.loadingContainer}>
-        <ActivityIndicator size="large" />
-      </View>
-    );
-  }
+  // if (!dataReady) {
+  //   return (
+  //     <View style={styles.loadingContainer}>
+  //       <ActivityIndicator size="large" />
+  //     </View>
+  //   );
+  // }
 
   const openQuestion = () => {
     if (loading) {
@@ -215,11 +215,11 @@ export default function quiz() {
     console.log("Current question:", question);
 
     if (!question) {
-      if (dataReady) {
+      // if (dataReady) {
         return (
           <Score correctAmount={correctAmount} mistakesAmount={mistakeAmount} />
         );
-      }
+      // }
 
       return null;
     }
