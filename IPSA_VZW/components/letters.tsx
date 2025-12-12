@@ -33,7 +33,7 @@ const Letters: React.FC<LettersProps> = ({ onSelect, resetKey }) => {
 
   const { width } = Dimensions.get("window");
   const keyWidth = (width - 20) / 10 - 4;
-
+  // nog te veranderen bij volgende sprint dus hou in de gaten
   // Renders a row with a specific starting color index
   const renderRow = (letters: string[], startIndex: number) => {
     return letters.map((letter, index) => {

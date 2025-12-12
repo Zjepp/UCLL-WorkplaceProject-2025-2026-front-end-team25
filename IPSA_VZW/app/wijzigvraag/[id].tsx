@@ -30,7 +30,7 @@ const Wijzigvraag = () => {
   const [open, setOpen] = useState(false);
 
   const [vraagType, setVraagType] = useState<string | null>(null);
-  const [tijd, setTijd] = useState("");
+  const [tijd, setTijd] = useState<string>("");
   const [vraag, setVraag] = useState("");
   const [juistAntwoord, setJuistAntwoord] = useState("");
   const [fout1, setFout1] = useState("");
@@ -65,17 +65,13 @@ const Wijzigvraag = () => {
         // Type mapping (jouw backend gebruikt andere namen)
         let mappedType = data.type;
         if (data.type === "standaard-choice") mappedType = "multiple_choice";
-        else if (data.type === "memory-choice-game")
-          mappedType = "memory-choice";
+        else if (data.type === "memory-choice") mappedType = "memory-choice";
         else if (data.type === "hangman") mappedType = "hangman";
         else if (data.type === "connect-choice") mappedType = "connect-choice";
 
         setVraagType(mappedType);
 
-        if (
-          data.type === "standaard-choice" ||
-          data.type === "memory-choice-game"
-        ) {
+        if (data.type === "standaard-choice" || data.type === "memory-choice") {
           setJuistAntwoord(data.antwoorden[0].antwoord);
           setFout1(data.antwoorden[1].antwoord);
           setFout2(data.antwoorden[2].antwoord);
@@ -95,7 +91,7 @@ const Wijzigvraag = () => {
   }, [id]);
 
   const handleTijdChange = (text: string) => {
-    setTijd(text.replace(/[^0-9]/g, ""));
+    setTijd(text);
   };
 
   const saveWijziging = async () => {
@@ -149,7 +145,7 @@ const Wijzigvraag = () => {
       id: Number(id),
       type: vraagType,
       vraag,
-      tijd: tijd ? tijd : null,
+      tijd: tijd === "" ? 10 : Number(tijd),
       antwoorden,
     };
 
