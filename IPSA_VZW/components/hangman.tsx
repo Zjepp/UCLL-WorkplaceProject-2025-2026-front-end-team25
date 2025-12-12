@@ -206,17 +206,16 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     flexWrap: "wrap",
     justifyContent: "center",
-    marginBottom: 50,
+    width: "100%",
   },
   hangmanLetter: {
-    margin: "5%",
+    width: 10,
   },
   title: {
     position: "absolute",
     top: 100,
     marginBottom: 70,
     fontSize: 24,
-    width: "95%",
     textAlign: "center",
   },
 });
