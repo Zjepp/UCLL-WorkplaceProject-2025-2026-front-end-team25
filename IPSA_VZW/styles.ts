@@ -1,6 +1,11 @@
 import { StyleSheet } from "react-native";
 
 export const styles = StyleSheet.create({
+  keyboard: {
+    position: "absolute",
+    bottom: 0,
+    width: "100%",
+  },
   container: {
     flex: 1,
     flexDirection: "column",
@@ -11,18 +16,17 @@ export const styles = StyleSheet.create({
   hangmanArray: {
     flexDirection: "row",
     flexWrap: "wrap",
-    alignItems: "center",
     justifyContent: "center",
-    marginBottom: 50,
+    width: "100%",
   },
   hangmanLetter: {
-    margin: "5%",
+    width: 10,
   },
   title: {
-    marginTop: 40,
+    position: "absolute",
+    top: 100,
     marginBottom: 70,
     fontSize: 24,
-    width: "95%",
     textAlign: "center",
   },
 });
