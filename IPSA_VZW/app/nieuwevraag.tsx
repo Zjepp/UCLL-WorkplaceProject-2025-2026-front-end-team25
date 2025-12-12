@@ -22,10 +22,10 @@ const Nieuwevraag = () => {
   const router = useRouter();
 
   const [items] = useState([
-    { label: "Multiple Choice", value: "multiple_choice" },
-    { label: "Memory", value: "memory" },
+    { label: "Multiple Choice", value: "standaard-choice" },
+    { label: "Memory", value: "memory-choice" },
     { label: "Hangman", value: "hangman" },
-    { label: "Connect", value: "connect" },
+    { label: "Connect", value: "connect-choice" },
   ]);
 
   const [categoryItems] = useState([
@@ -37,7 +37,10 @@ const Nieuwevraag = () => {
     { label: "Centraal zenuwstelsel", value: "Centraal zenuwstelsel" },
     { label: "Infecties & immuniteit", value: "Infecties & immuniteit" },
     { label: "Uro-genitaal stelsel", value: "Uro-genitaal stelsel" },
-    { label: "Osteo-articulaire aandoeningen", value: "Osteo-articulaire aandoeningen" },
+    {
+      label: "Osteo-articulaire aandoeningen",
+      value: "Osteo-articulaire aandoeningen",
+    },
     { label: "Kanker", value: "Kanker" },
     { label: "Dermatologie", value: "Dermatologie" },
     { label: "Oftalmologie", value: "Oftalmologie" },
@@ -47,7 +50,10 @@ const Nieuwevraag = () => {
     { label: "Gezonde levensstijl", value: "Gezonde levensstijl" },
     { label: "Geriatrische patiënt", value: "Geriatrische patiënt" },
     { label: "Pediatrische patiënt", value: "Pediatrische patiënt" },
-    { label: "Zwangerschap & borstvoeding", value: "Zwangerschap & borstvoeding" },
+    {
+      label: "Zwangerschap & borstvoeding",
+      value: "Zwangerschap & borstvoeding",
+    },
     { label: "Fytotherapeutica", value: "Fytotherapeutica" },
     { label: "Vaccinatie", value: "Vaccinatie" },
     { label: "Medicatienazicht", value: "Medicatienazicht" },
@@ -78,14 +84,14 @@ const Nieuwevraag = () => {
     }
 
     // Tijd verplicht voor multiple_choice & memory
-    if (vraagType === "memory" && !tijd) {
+    if (vraagType === "memory-choice" && !tijd) {
       Alert.alert("Fout", "Tijd is verplicht voor  Memory.");
       return;
     }
 
     let antwoorden: any[] = [];
 
-    if (vraagType === "multiple_choice") {
+    if (vraagType === "standaard-choice") {
       if (!juistAntwoord || !fout1 || !fout2 || !fout3) {
         Alert.alert("Fout", "Vul alle 4 antwoorden in voor Multiple Choice.");
         return;
@@ -98,7 +104,7 @@ const Nieuwevraag = () => {
       ];
     }
 
-    if (vraagType === "memory") {
+    if (vraagType === "memory-choice") {
       // Memory: 4 paren → 4 juiste antwoorden nodig
       if (!juistAntwoord || !fout1 || !fout2 || !fout3) {
         Alert.alert("Fout", "Vul alle 4 paren in voor Memory.");
@@ -112,7 +118,7 @@ const Nieuwevraag = () => {
       ];
     }
 
-    if (vraagType === "hangman" || vraagType === "connect") {
+    if (vraagType === "hangman" || vraagType === "connect-choice") {
       if (!juistAntwoord) {
         Alert.alert("Fout", "Juist antwoord is verplicht.");
         return;
@@ -127,6 +133,8 @@ const Nieuwevraag = () => {
       tijd: tijd ? parseInt(tijd, 10) : undefined, // alleen meesturen als nodig
       antwoorden,
     };
+
+    console.log(payload);
 
     try {
       const response = await quizService.addQuestions(payload);
@@ -147,9 +155,8 @@ const Nieuwevraag = () => {
     }
   };
 
-  const isMultipleChoice = vraagType === "multiple_choice";
-  const isMemory = vraagType === "memory";
-  const isHangmanOrConnect = vraagType === "hangman" || vraagType === "connect";
+  const isMultipleChoice = vraagType === "standaard-choice";
+  const isMemory = vraagType === "memory-choice";
   const showTijd = isMemory;
   const showFouteAntwoorden = isMultipleChoice || isMemory;
 
