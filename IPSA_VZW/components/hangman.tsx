@@ -10,6 +10,7 @@ import {
 } from "react-native";
 import { Antwoord, Vraag } from "@/types";
 import Letters from "./letters";
+import { addWrongAnswer } from "./wrongItemStore";
 
 interface QuizOption {
   id: number;
@@ -107,6 +108,8 @@ const HangmanQuiz: React.FC<HangmanQuizProps> = ({
       onAnswerSelected?.(true);
     }
     if (livesLeft <= 0) {
+      const correct = question.antwoorden?.find((a) => a.correct)?.antwoord ?? "";
+      addWrongAnswer({ question: question, userAnswer: '/' });
       mistakeAmountSetter(mistakeAmount + 1);
       setLivesLeft(3);
       heartsCountSetter?.(3);

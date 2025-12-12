@@ -10,6 +10,8 @@ import QuizChoice from "@/components/choice";
 import Score from "@/components/score";
 import HangmanQuiz from "@/components/hangman";
 import HeartIcon from "../assets/images/heart.png";
+import { addWrongAnswer } from "@/components/wrongItemStore";
+import { clearWrongAnswers } from "@/components/wrongItemStore";
 
 type Connect = {
   type: string;
@@ -153,6 +155,7 @@ export default function quiz() {
   };
 
   useEffect(() => {
+    clearWrongAnswers();
     setLoading(true);
     getRandom18();
   }, [category]);
@@ -215,13 +218,17 @@ export default function quiz() {
     console.log("Current question:", question);
 
     if (!question) {
-      // if (dataReady) {
+      if (questions.length > 0 && currentIndex >= questions.length) {
         return (
           <Score correctAmount={correctAmount} mistakesAmount={mistakeAmount} />
         );
-      // }
-
-      return null;
+      }
+      return (
+        <View style={styles.center}>
+          <ActivityIndicator size="large" />
+          <Text>Vragen worden geladen...</Text>
+        </View>
+      );
     }
 
     if (question.type === "standaard-choice") {
