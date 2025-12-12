@@ -69,24 +69,60 @@ const addQuestions = async (payload: Vraag) => {
   });
 };
 
-const uploadCsv = async (uri: string, name: string, type: string) => {
+const uploadCsv = async (uri: string, name: string, mimeType?: string) => {
   const userValue = await AsyncStorage.getItem("loggedInUser");
-  const token = userValue ? JSON.parse(userValue).token : "";
+  if (!userValue) throw new Error("Niet ingelogd");
+
+  const { token } = JSON.parse(userValue);
 
   const formData = new FormData();
   formData.append("file", {
     uri,
     name,
-    type: type || (name.endsWith(".csv") ? "text/csv" : "text/plain"),
+    type: mimeType || "text/csv",
   } as any);
 
-  return fetch(apiUrl + "/vragen/upload-csv", {
+  const response = await fetch(apiUrl + "/vragen/upload-csv", {
     method: "POST",
     headers: {
       Authorization: `Bearer ${token}`,
+      // GEEN Content-Type header zetten!
     },
     body: formData,
   });
+
+  if (!response.ok) {
+    const errorText = await response.text();
+    throw new Error(errorText || "Upload mislukt");
+  }
+
+  return await response.text();
+};
+
+const uploadCsvForWeb = async (file: File | any) => { // File op web, object op native
+  const userValue = await AsyncStorage.getItem("loggedInUser");
+  if (!userValue) throw new Error("Niet ingelogd");
+
+  const { token } = JSON.parse(userValue);
+
+  const formData = new FormData();
+  formData.append("file", file); // op web: echte File object → perfect voor Spring Boot
+
+  const response = await fetch(apiUrl + "/vragen/upload-csv", {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${token}`,
+      // GEEN Content-Type zetten! Browser/fetch doet het automatisch correct
+    },
+    body: formData,
+  });
+
+  if (!response.ok) {
+    const errorText = await response.text();
+    throw new Error(errorText || "Upload mislukt");
+  }
+
+  return await response.text();
 };
 
 const deleteQuestions = async (id: number) => {
@@ -179,8 +215,9 @@ const quizService = {
   get18Questions,
   get8Questions,
   getQuestionsByCategory,
-  getCategories,
-  uploadCsv
+  uploadCsv,
+  uploadCsvForWeb,
+  getCategories
 };
 
 export default quizService;
