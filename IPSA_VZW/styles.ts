@@ -141,4 +141,81 @@ const loginStyles = StyleSheet.create({
   },
 });
 
-export { styles, loginStyles };
+const adminStyles = StyleSheet.create({
+  container: {
+    flex: 0.9,
+    flexDirection: "column",
+    backgroundColor: "#ffffff",
+    marginTop: 35,
+  },
+  headerContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    margin: 20,
+  },
+  headerText: {
+    fontSize: 20,
+  },
+  headerTextBox: {
+    fontSize: 24,
+  },
+  headerTextBoxPlaats: {
+    fontSize: 24,
+    color: "white",
+  },
+  headerCounterLayout: {
+    borderRadius: 7,
+    height: 50,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  headerCounterLayoutDagen: {
+    marginTop: 7,
+    backgroundColor: "#FFD07F",
+  },
+  headerCounterLayoutPlaats: {
+    marginTop: 7,
+    backgroundColor: "#A496CB",
+  },
+  buttonContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    gap: 20,
+  },
+  button: {
+    borderRadius: 50,
+    height: 75,
+    width: 250,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  scoreBordButton: {
+    backgroundColor: "#A395CA",
+  },
+  quizButton: {
+    borderRadius: 50,
+    height: 100,
+    width: 295,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#FF4F21",
+  },
+  overzichtButton: {
+    backgroundColor: "#A1C2C2",
+  },
+  faqButton: {
+    backgroundColor: "#FDCE7E",
+  },
+  buttonText: {
+    color: "white",
+    fontSize: 26,
+    marginHorizontal: 5,
+  },
+  buttonQuizText: {
+    fontSize: 46,
+    color: "white",
+  },
+});
+
+export { styles, loginStyles, adminStyles };
