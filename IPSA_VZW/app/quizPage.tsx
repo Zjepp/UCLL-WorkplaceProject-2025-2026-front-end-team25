@@ -222,12 +222,12 @@ export default function quiz() {
         return (
           <Score correctAmount={correctAmount} mistakesAmount={mistakeAmount} />
         );
-      // }
+      }
       return (
-      <View style={styles.center}>
-        <ActivityIndicator size="large" />
-        <Text>Vragen worden geladen...</Text>
-      </View>
+        <View style={styles.center}>
+          <ActivityIndicator size="large" />
+          <Text>Vragen worden geladen...</Text>
+        </View>
       );
     }
 
