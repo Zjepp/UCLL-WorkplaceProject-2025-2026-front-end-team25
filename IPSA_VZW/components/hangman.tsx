@@ -10,6 +10,7 @@ import {
 } from "react-native";
 import { Antwoord, Vraag } from "@/types";
 import Letters from "./letters";
+import { addWrongAnswer } from "./wrongItemStore";
 
 interface QuizOption {
   id: number;
@@ -107,6 +108,8 @@ const HangmanQuiz: React.FC<HangmanQuizProps> = ({
       onAnswerSelected?.(true);
     }
     if (livesLeft <= 0) {
+      const correct = question.antwoorden?.find((a) => a.correct)?.antwoord ?? "";
+      addWrongAnswer({ question: question, userAnswer: '/' });
       mistakeAmountSetter(mistakeAmount + 1);
       setLivesLeft(3);
       heartsCountSetter?.(3);
@@ -182,12 +185,19 @@ const HangmanQuiz: React.FC<HangmanQuizProps> = ({
           );
         })}
       </View>
-      <Letters onSelect={handleLetterSelect} resetKey={questionResetKey} />
+      <View style={styles.keyboard}>
+        <Letters onSelect={handleLetterSelect} resetKey={questionResetKey} />
+      </View>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
+  keyboard: {
+    position: "absolute",
+    bottom: 0,
+    width: "100%",
+  },
   container: {
     flex: 1,
     flexDirection: "column",
@@ -198,18 +208,17 @@ const styles = StyleSheet.create({
   hangmanArray: {
     flexDirection: "row",
     flexWrap: "wrap",
-    alignItems: "center",
     justifyContent: "center",
-    marginBottom: 50,
+    width: "100%",
   },
   hangmanLetter: {
-    margin: "5%",
+    width: 10,
   },
   title: {
-    marginTop: 40,
+    position: "absolute",
+    top: 100,
     marginBottom: 70,
     fontSize: 24,
-    width: "95%",
     textAlign: "center",
   },
 });

@@ -8,6 +8,7 @@ import {
   Pressable,
 } from "react-native";
 import { Antwoord, Vraag } from "@/types";
+import { addWrongAnswer } from './wrongItemStore';
 
 interface QuizOption {
   id: number;
@@ -33,7 +34,7 @@ const QuizChoice: React.FC<MultipleChoiceProps> = ({
   mistakeAmountSetter,
   correctAmount,
   correctAmountSetter,
-}: MultipleChoiceProps) => {
+}) => {
   const [selectedOption, setSelectedOption] = useState<number | null>(null);
   const windowWidth = Dimensions.get("window").width;
   const [timeLeft, setTimeLeft] = useState(10);
@@ -75,14 +76,14 @@ const QuizChoice: React.FC<MultipleChoiceProps> = ({
   };
   const handleSelect = (option: QuizOption) => {
     console.log(`Je hebt gekozen voor: ${option.formula}`);
-    if (
-      typeof option.formula === "object" &&
-      option.formula !== null &&
-      "correct" in option.formula
-    ) {
-      if (option.formula.correct) {
+    if (typeof option.formula === "object" && option.formula !== null) {
+      const isCorrect = "correct" in option.formula && option.formula.correct;
+      const selectedAnswerText = option.formula.antwoord;
+
+      if (isCorrect) {
         correctAmountSetter(correctAmount + 1);
       } else {
+        addWrongAnswer({ question, userAnswer: selectedAnswerText });
         mistakeAmountSetter(mistakeAmount + 1);
       }
     }
