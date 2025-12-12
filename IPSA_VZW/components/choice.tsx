@@ -74,22 +74,21 @@ const QuizChoice: React.FC<MultipleChoiceProps> = ({
       },
     ],
   };
-  const handleSelect = (option: QuizOption) => { 
+  const handleSelect = (option: QuizOption) => {
     console.log(`Je hebt gekozen voor: ${option.formula}`);
-    if(typeof option.formula === 'object' && option.formula !== null && 'correct' in option.formula){
-      if(option.formula.correct) {
-        correctAmountSetter(correctAmount+1);
+    if (typeof option.formula === "object" && option.formula !== null) {
+      const isCorrect = "correct" in option.formula && option.formula.correct;
+      const selectedAnswerText = option.formula.antwoord;
+
+      if (isCorrect) {
+        correctAmountSetter(correctAmount + 1);
       } else {
+        addWrongAnswer({ question, userAnswer: selectedAnswerText });
         mistakeAmountSetter(mistakeAmount + 1);
-        addWrongAnswer({
-          question: question,
-          userAnswer: option.formula.antwoord,
-        });
       }
     }
     onAnswerSelected?.(true);
   };
-
 
   return (
     <View style={styles.container}>

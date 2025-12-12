@@ -2,23 +2,18 @@ import React from "react";
 import { Pressable, Text, View, StyleSheet } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { useRouter } from "expo-router";
-import WrongAnswers from "@/components/wrongAnswers";
 import { getWrongAnswers } from "@/components/wrongItemStore";
-import WrongAnswersList from "@/components/wrongAnswersList"
+import WrongAnswersList from "@/components/wrongAnswersList";
 
 interface ScorePageProps {
   correctAmount: number;
   mistakesAmount: number;
 }
 
-const ScorePage: React.FC<ScorePageProps> = ({ 
-  correctAmount, 
-  mistakesAmount 
-}) => {
+const ScorePage: React.FC<ScorePageProps> = ({ correctAmount, mistakesAmount }) => {
   const router = useRouter();
   const [showWrong, setShowWrong] = React.useState(false);
-  
-  const [wrongAnswersState, setWrongAnswersState] = React.useState(() => getWrongAnswers());;
+  const [wrongAnswersState, setWrongAnswersState] = React.useState(() => getWrongAnswers());
 
   React.useEffect(() => {
     setWrongAnswersState(getWrongAnswers());
@@ -73,7 +68,7 @@ const ScorePage: React.FC<ScorePageProps> = ({
         <Pressable onPress={openWrong} style={styles.buttonPressable}>
            <Text style={styles.buttonText}>Foute Antwoorden</Text>
          </Pressable>
-      </LinearGradient>
+       </LinearGradient>
 
       <Pressable onPress={() => router.push("/")}>
         <LinearGradient

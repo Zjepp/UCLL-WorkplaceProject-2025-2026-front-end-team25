@@ -9,22 +9,13 @@ export type WrongItem = {
 // In-memory store (runtime)
 let wrongAnswers: WrongItem[] = [];
 
-// Haal alle foute antwoorden op (kopie)
-export const getWrongAnswers = (): WrongItem[] => {
-  return [...wrongAnswers];
-};
-
-// Vervang volledige lijst
+export const getWrongAnswers = (): WrongItem[] => wrongAnswers.slice();
 export const setWrongAnswers = (items: WrongItem[]) => {
-  wrongAnswers = [...items];
+  wrongAnswers = items.slice();
 };
-
-// Voeg een fout antwoord toe
 export const addWrongAnswer = (item: WrongItem) => {
   wrongAnswers.push(item);
 };
-
-// Reset de lijst
 export const clearWrongAnswers = () => {
   wrongAnswers = [];
 };

@@ -11,6 +11,7 @@ import Score from "@/components/score";
 import HangmanQuiz from "@/components/hangman";
 import HeartIcon from "../assets/images/heart.png";
 import { addWrongAnswer } from "@/components/wrongItemStore";
+import { clearWrongAnswers } from "@/components/wrongItemStore";
 
 type Connect = {
   type: string;
@@ -154,6 +155,7 @@ export default function quiz() {
   };
 
   useEffect(() => {
+    clearWrongAnswers();
     setLoading(true);
     getRandom18();
   }, [category]);
