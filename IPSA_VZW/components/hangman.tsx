@@ -10,6 +10,7 @@ import {
 } from "react-native";
 import { Antwoord, Vraag } from "@/types";
 import Letters from "./letters";
+import { styles } from "@/styles";
 
 interface QuizOption {
   id: number;
@@ -189,35 +190,35 @@ const HangmanQuiz: React.FC<HangmanQuizProps> = ({
   );
 };
 
-const styles = StyleSheet.create({
-  keyboard: {
-    position: "absolute",
-    bottom: 0,
-    width: "100%",
-  },
-  container: {
-    flex: 1,
-    flexDirection: "column",
-    flexWrap: "wrap",
-    justifyContent: "center",
-    paddingTop: 0,
-  },
-  hangmanArray: {
-    flexDirection: "row",
-    flexWrap: "wrap",
-    justifyContent: "center",
-    width: "100%",
-  },
-  hangmanLetter: {
-    width: 10,
-  },
-  title: {
-    position: "absolute",
-    top: 100,
-    marginBottom: 70,
-    fontSize: 24,
-    textAlign: "center",
-  },
-});
+// const styles = StyleSheet.create({
+//   keyboard: {
+//     position: "absolute",
+//     bottom: 0,
+//     width: "100%",
+//   },
+//   container: {
+//     flex: 1,
+//     flexDirection: "column",
+//     flexWrap: "wrap",
+//     justifyContent: "center",
+//     paddingTop: 0,
+//   },
+//   hangmanArray: {
+//     flexDirection: "row",
+//     flexWrap: "wrap",
+//     justifyContent: "center",
+//     width: "100%",
+//   },
+//   hangmanLetter: {
+//     width: 10,
+//   },
+//   title: {
+//     position: "absolute",
+//     top: 100,
+//     marginBottom: 70,
+//     fontSize: 24,
+//     textAlign: "center",
+//   },
+// });
 
 export default HangmanQuiz;
