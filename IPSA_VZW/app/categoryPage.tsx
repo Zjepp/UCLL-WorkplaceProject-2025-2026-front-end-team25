@@ -1,49 +1,46 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useRouter } from "expo-router";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Text,
   View,
   StyleSheet,
   Pressable,
-  ScrollView,
   FlatList,
 } from "react-native";
+import quizService from "@/services/quizService";
 import { LoginUserResponse } from "@/types";
 import { isTokenExpired } from "@/utils/tokenUtils";
 
 export default function CategoryPage() {
   const router = useRouter();
 
-  const categories = [
-    { name: "Cardiovasculair", color: "#28A0A0" },
-    { name: "Gastro-intestinaal", color: "#e8bf4fff" },
-    { name: "Respiratoir stelsel", color: "#E73E07" },
-    { name: "Hormonaal stelsel", color: "#B196C7" },
-    { name: "Pijn", color: "#e8bf4fff" },
-    { name: "Centraal zenuwstelsel", color: "#28A0A0" },
-    { name: "Infecties & immuniteit", color: "#B196C7" },
-    { name: "Uro-genitaal stelsel", color: "#E73E07" },
-    { name: "Osteo-articulaire aandoeningen", color: "#28A0A0" },
-    { name: "Kanker", color: "#e8bf4fff" },
-    { name: "Dermatologie", color: "#E73E07" },
-    { name: "Oftalmologie", color: "#B196C7" },
-    { name: "Toxicomanie", color: "#e8bf4fff" },
-    { name: "Mentaal welzijn", color: "#28A0A0" },
-    { name: "Veterinair", color: "#B196C7" },
-    { name: "Gezonde levensstijl", color: "#E73E07" },
-    { name: "Geriatrische patiënt", color: "#28A0A0" },
-    { name: "Pediatrische patiënt", color: "#e8bf4fff" },
-    { name: "Zwangerschap & borstvoeding", color: "#E73E07" },
-    { name: "Fytotherapeutica", color: "#B196C7" },
-    { name: "Vaccinatie", color: "#28A0A0" },
-    { name: "Medicatienazicht", color: "#e8bf4fff" },
-    { name: "Medische materialen", color: "#E73E07" },
-    { name: "Magistrale bereidingen", color: "#B196C7" },
-    { name: "Actua", color: "#e8bf4fff" },
-    { name: "Communicatie", color: "#28A0A0" },
-    { name: "GGG: Goed geneesmiddelengebruik", color: "#B196C7" },
+  const [categories, setCategories] = useState<{ name: string; color: string }[]>([]);
+  const defaultColors = [
+    "#28A0A0", "#e8bf4fff", "#E73E07", "#B196C7"
   ];
+
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const response = await quizService.getCategories();
+        if (response.status === 200) {
+          const data = await response.json();
+          // Assign a color to each category (cycled)
+          const colored = data.map((cat: string, idx: number) => ({
+            name: cat,
+            color: defaultColors[idx % defaultColors.length],
+          }));
+          setCategories(colored);
+        } else {
+          setCategories([]);
+        }
+      } catch (e) {
+        setCategories([]);
+      }
+    };
+    fetchCategories();
+  }, []);
 
   const handleCategoryPress = async (category: string) => {
     const userValue = await AsyncStorage.getItem("loggedInUser");
