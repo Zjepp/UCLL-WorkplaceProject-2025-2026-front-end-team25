@@ -4,56 +4,33 @@ import { LinearGradient } from "expo-linear-gradient";
 import { useRouter } from "expo-router";
 
 const ScorePage: React.FC = () => {
-    const router = useRouter();
+  const router = useRouter();
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Resultaten</Text>
 
-      <LinearGradient
-        colors={["#A89BC7", "#5B4D9F"]}
-        start={{ x: 0, y: 0 }}
-        end={{ x: 1, y: 0 }}
-        locations={[0.5, 0.5]}
-        style={styles.button}
-      >
-        <Pressable  onPress={() => router.push("/")}>
-          <Text style={styles.buttonText}>Score Bord</Text></Pressable>
-      </LinearGradient>
-
-      <LinearGradient
-        colors={["#FF4928", "#A91E00"]}
-        start={{ x: 0, y: 0 }}
-        end={{ x: 1, y: 0 }}
-        locations={[0.5, 0.5]}
-        style={styles.scoreContainer}
-      >
+      <LinearGradient colors={["#FF4F21", "#FF4F21"]} style={styles.button}>
         <Text style={styles.scoreNumberLeft}>14</Text>
         <Text style={styles.scoreBar}>|</Text>
         <Text style={styles.scoreNumberRight}>20</Text>
       </LinearGradient>
 
-      <LinearGradient
-        colors={["#A5BCBC", "#1CA0A0"]}
-        start={{ x: 0, y: 0 }}
-        end={{ x: 1, y: 0 }}
-        locations={[0.5, 0.5]}
-        style={styles.button}
-
-      >
-        <Pressable  onPress={() => router.push("/")}>
-          <Text style={styles.buttonText}>Foute Antwoorden</Text></Pressable>
+      <LinearGradient colors={["#B196C7", "#B196C7"]} style={styles.button}>
+        <Pressable onPress={() => router.push("/")}>
+          <Text style={styles.buttonText}>Score Bord</Text>
+        </Pressable>
       </LinearGradient>
 
-      <LinearGradient
-        colors={["#FFD285", "#CE9935"]}
-        start={{ x: 0, y: 0 }}
-        end={{ x: 1, y: 0 }}
-        locations={[0.5, 0.5]}
-        style={styles.button}
+      <LinearGradient colors={["#28A0A0", "#28A0A0"]} style={styles.button}>
+        <Pressable onPress={() => router.push("/")}>
+          <Text style={styles.buttonText}>Foute Antwoorden</Text>
+        </Pressable>
+      </LinearGradient>
 
-
-      >
-        <Pressable onPress={() => router.push("/")}><Text style={styles.buttonText}>Terug</Text></Pressable>
+      <LinearGradient colors={["#e8bf4fff", "#e8bf4fff"]} style={styles.button}>
+        <Pressable onPress={() => router.push("/")}>
+          <Text style={styles.buttonText}>Terug</Text>
+        </Pressable>
       </LinearGradient>
     </View>
   );

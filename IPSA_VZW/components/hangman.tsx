@@ -68,7 +68,7 @@ const HangmanQuiz: React.FC<HangmanQuizProps> = ({
           question.antwoorden?.[0]?.antwoord ??
           question.vraag ??
           "antwoord niet beschikbaar",
-        color: "#26A69Aff",
+        color: "#28A0A0",
       },
     ],
   };
@@ -194,7 +194,6 @@ const styles = StyleSheet.create({
     flexWrap: "wrap",
     justifyContent: "center",
     paddingTop: 0,
-    marginTop: 0,
   },
   hangmanArray: {
     flexDirection: "row",

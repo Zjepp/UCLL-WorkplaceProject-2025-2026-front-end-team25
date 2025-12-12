@@ -11,8 +11,6 @@ import { useRouter } from "expo-router";
 import * as DocumentPicker from "expo-document-picker"; // ← nieuw
 import userService from "@/services/userService";
 import { MaterialIcons } from "@expo/vector-icons";
-import * as Sharing from "expo-sharing";
-import * as FileSystem from "expo-file-system";
 
 type User = {
   id: number;
@@ -111,6 +109,13 @@ const Users: React.FC = () => {
   return (
     <View style={styles.container}>
       <View style={styles.container2}>
+        <Pressable
+          style={styles.terugButton}
+          onPress={() => router.push("/")}
+          hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+        >
+          <Text style={styles.terugButtonText}>Terug</Text>
+        </Pressable>
         <Pressable style={styles.nieuwButton} onPress={handleCsvUpload}>
           <Text style={styles.nieuwButtonText}>Nieuw (CSV)</Text>
         </Pressable>
@@ -159,6 +164,17 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
   },
 
+  terugButton: {
+    backgroundColor: "#E73E07",
+    paddingVertical: 12,
+    paddingHorizontal: 24,
+    marginBottom: 30,
+    borderRadius: 12,
+    minWidth: 120,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+
   title: {
     fontSize: 30,
     textAlign: "center",
@@ -169,6 +185,12 @@ const styles = StyleSheet.create({
   scrollContent: {
     paddingBottom: 250,
     flexGrow: 1,
+  },
+  terugButtonText: {
+    color: "#FFFFFF",
+    fontSize: 20,
+    fontWeight: "400",
+    textAlign: "center",
   },
   row: {
     flexDirection: "row",
@@ -215,7 +237,9 @@ const styles = StyleSheet.create({
   container2: {
     paddingHorizontal: 20,
     marginTop: 50,
-    alignItems: "flex-end", // knop rechts uitgelijnd
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
   },
 
   nieuwButton: {
