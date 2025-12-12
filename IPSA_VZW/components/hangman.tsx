@@ -10,7 +10,7 @@ import {
 } from "react-native";
 import { Antwoord, Vraag } from "@/types";
 import Letters from "./letters";
-import { styles } from "@/styles";
+import { styles } from "@/style/component.styles";
 
 interface QuizOption {
   id: number;

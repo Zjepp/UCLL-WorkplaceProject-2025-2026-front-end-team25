@@ -8,6 +8,7 @@ import {
   Pressable,
 } from "react-native";
 import { Antwoord, Vraag } from "@/types";
+import { choiceStyles as styles } from "@/style/component.styles";
 
 interface QuizOption {
   id: number;
@@ -133,45 +134,45 @@ const QuizChoice: React.FC<MultipleChoiceProps> = ({
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#FFFFFF",
-    justifyContent: "flex-start",
-  },
-  title: {
-    fontSize: 18,
-    color: "#000000ff",
-    marginBottom: 10,
-    textAlign: "right",
-    paddingHorizontal: 20,
-    paddingTop: 20,
-  },
-  question: {
-    fontSize: 28,
-    color: "#000000ff",
-    marginBottom: 30,
-    textAlign: "center",
-    paddingHorizontal: 20,
-  },
+// const styles = StyleSheet.create({
+//   container: {
+//     flex: 1,
+//     backgroundColor: "#FFFFFF",
+//     justifyContent: "flex-start",
+//   },
+//   title: {
+//     fontSize: 18,
+//     color: "#000000ff",
+//     marginBottom: 10,
+//     textAlign: "right",
+//     paddingHorizontal: 20,
+//     paddingTop: 20,
+//   },
+//   question: {
+//     fontSize: 28,
+//     color: "#000000ff",
+//     marginBottom: 30,
+//     textAlign: "center",
+//     paddingHorizontal: 20,
+//   },
 
-  optionsGrid: {
-    flexDirection: "row",
-    flexWrap: "wrap",
-    justifyContent: "space-between",
-    paddingHorizontal: 20,
-  },
-  optionBox: {
-    borderRadius: 20,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  formulaText: {
-    fontSize: 22,
-    paddingHorizontal: 5,
-    color: "#ffffffff",
-    textAlign: "center",
-  },
-});
+//   optionsGrid: {
+//     flexDirection: "row",
+//     flexWrap: "wrap",
+//     justifyContent: "space-between",
+//     paddingHorizontal: 20,
+//   },
+//   optionBox: {
+//     borderRadius: 20,
+//     justifyContent: "center",
+//     alignItems: "center",
+//   },
+//   formulaText: {
+//     fontSize: 22,
+//     paddingHorizontal: 5,
+//     color: "#ffffffff",
+//     textAlign: "center",
+//   },
+// });
 
 export default QuizChoice;

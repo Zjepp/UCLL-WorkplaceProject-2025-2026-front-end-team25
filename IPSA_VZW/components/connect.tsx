@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { Antwoord, Vraag } from "@/types";
 import { Pressable, StyleSheet, View, Text } from "react-native";
+import { connectStyles as styles } from "@/style/component.styles";
 
 interface QuizOption {
   id: number;
@@ -270,77 +271,77 @@ const QuizConnect: React.FC<ConnectProps> = ({
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#FFFFFF",
-    justifyContent: "flex-start",
-  },
-  container2: {
-    flex: 2,
-    backgroundColor: "#FFFFFF",
-    justifyContent: "space-between",
-    flexDirection: "row",
-  },
-  title: {
-    fontSize: 18,
-    color: "#000000ff",
-    marginBottom: 10,
-    textAlign: "right",
-    paddingHorizontal: 20,
-    paddingTop: 20,
-  },
-  connectTitle: {
-    fontSize: 28,
-    color: "#000000ff",
-    marginBottom: 30,
-    textAlign: "center",
-    paddingHorizontal: 20,
-  },
-  questionsAndAnswers: {
-    width: "37%",
-    margin: 20,
-  },
-  question: {
-    fontSize: 18,
-    color: "#000000ff",
-    textAlign: "center",
-    paddingHorizontal: 20,
-  },
-  questionBox: {
-    borderRadius: 20,
-    justifyContent: "center",
-    alignItems: "center",
-    marginBottom: 30,
-    height: 140,
-  },
-  option: {
-    fontSize: 18,
-    color: "#000000ff",
-    textAlign: "center",
-    paddingHorizontal: 20,
-  },
-  optionBox: {
-    borderRadius: 20,
-    justifyContent: "center",
-    alignItems: "center",
-    marginBottom: 30,
-    height: 140,
-  },
+// const styles = StyleSheet.create({
+//   container: {
+//     flex: 1,
+//     backgroundColor: "#FFFFFF",
+//     justifyContent: "flex-start",
+//   },
+//   container2: {
+//     flex: 2,
+//     backgroundColor: "#FFFFFF",
+//     justifyContent: "space-between",
+//     flexDirection: "row",
+//   },
+//   title: {
+//     fontSize: 18,
+//     color: "#000000ff",
+//     marginBottom: 10,
+//     textAlign: "right",
+//     paddingHorizontal: 20,
+//     paddingTop: 20,
+//   },
+//   connectTitle: {
+//     fontSize: 28,
+//     color: "#000000ff",
+//     marginBottom: 30,
+//     textAlign: "center",
+//     paddingHorizontal: 20,
+//   },
+//   questionsAndAnswers: {
+//     width: "37%",
+//     margin: 20,
+//   },
+//   question: {
+//     fontSize: 18,
+//     color: "#000000ff",
+//     textAlign: "center",
+//     paddingHorizontal: 20,
+//   },
+//   questionBox: {
+//     borderRadius: 20,
+//     justifyContent: "center",
+//     alignItems: "center",
+//     marginBottom: 30,
+//     height: 140,
+//   },
+//   option: {
+//     fontSize: 18,
+//     color: "#000000ff",
+//     textAlign: "center",
+//     paddingHorizontal: 20,
+//   },
+//   optionBox: {
+//     borderRadius: 20,
+//     justifyContent: "center",
+//     alignItems: "center",
+//     marginBottom: 30,
+//     height: 140,
+//   },
 
-  connected: {
-    opacity: 0.5,
-  },
-  // verzend: {
-  //   fontSize: 28,
-  //   textAlign: 'center',
-  //   width: '40%',
-  //   height: 40,
-  //   marginBottom: 50,
-  //   marginLeft: 130,
-  //   borderRadius: 20,
-  //   backgroundColor: '#797979ff'
-  // }
-});
+//   connected: {
+//     opacity: 0.5,
+//   },
+//   // verzend: {
+//   //   fontSize: 28,
+//   //   textAlign: 'center',
+//   //   width: '40%',
+//   //   height: 40,
+//   //   marginBottom: 50,
+//   //   marginLeft: 130,
+//   //   borderRadius: 20,
+//   //   backgroundColor: '#797979ff'
+//   // }
+// });
 
 export default QuizConnect;

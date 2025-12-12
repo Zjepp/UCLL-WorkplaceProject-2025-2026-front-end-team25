@@ -2,6 +2,7 @@ import React from "react";
 import { Pressable, Text, View, StyleSheet } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { useRouter } from "expo-router";
+import { scorePageStyles as styles } from "@/style/page.styles";
 
 const ScorePage: React.FC = () => {
   const router = useRouter();
@@ -36,64 +37,64 @@ const ScorePage: React.FC = () => {
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#FFFFFF",
-    justifyContent: "center",
-    alignItems: "center",
-    paddingHorizontal: 20,
-  },
-  title: {
-    fontSize: 30,
-    color: "#222",
-    marginBottom: 50,
-    fontWeight: "400",
-  },
-  button: {
-    width: 280,
-    height: 75,
-    borderRadius: 40,
-    alignItems: "center",
-    justifyContent: "center",
-    marginVertical: 15,
-  },
-  buttonText: {
-    color: "#FFFFFF",
-    fontSize: 30,
-    fontWeight: "400",
-    marginRight: 10,
-  },
-  scoreContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
-    width: 300,
-    height: 100,
-    borderRadius: 50,
-    marginVertical: 20,
-  },
-  scoreNumberLeft: {
-    fontSize: 70,
-    color: "#FFFFFF",
-    fontWeight: "bold",
-    marginHorizontal: 30,
-    position: "absolute",
-    right: 150,
-  },
-  scoreNumberRight: {
-    fontSize: 70,
-    color: "#FFFFFF",
-    fontWeight: "bold",
-    marginHorizontal: 30,
-    position: "absolute",
-    left: 150,
-  },
-  scoreBar: {
-    fontSize: 50,
-    color: "#FFFFFF",
-    position: "absolute",
-  },
-});
+// const styles = StyleSheet.create({
+//   container: {
+//     flex: 1,
+//     backgroundColor: "#FFFFFF",
+//     justifyContent: "center",
+//     alignItems: "center",
+//     paddingHorizontal: 20,
+//   },
+//   title: {
+//     fontSize: 30,
+//     color: "#222",
+//     marginBottom: 50,
+//     fontWeight: "400",
+//   },
+//   button: {
+//     width: 280,
+//     height: 75,
+//     borderRadius: 40,
+//     alignItems: "center",
+//     justifyContent: "center",
+//     marginVertical: 15,
+//   },
+//   buttonText: {
+//     color: "#FFFFFF",
+//     fontSize: 30,
+//     fontWeight: "400",
+//     marginRight: 10,
+//   },
+//   scoreContainer: {
+//     flexDirection: "row",
+//     alignItems: "center",
+//     justifyContent: "center",
+//     width: 300,
+//     height: 100,
+//     borderRadius: 50,
+//     marginVertical: 20,
+//   },
+//   scoreNumberLeft: {
+//     fontSize: 70,
+//     color: "#FFFFFF",
+//     fontWeight: "bold",
+//     marginHorizontal: 30,
+//     position: "absolute",
+//     right: 150,
+//   },
+//   scoreNumberRight: {
+//     fontSize: 70,
+//     color: "#FFFFFF",
+//     fontWeight: "bold",
+//     marginHorizontal: 30,
+//     position: "absolute",
+//     left: 150,
+//   },
+//   scoreBar: {
+//     fontSize: 50,
+//     color: "#FFFFFF",
+//     position: "absolute",
+//   },
+// });
 
 export default ScorePage;

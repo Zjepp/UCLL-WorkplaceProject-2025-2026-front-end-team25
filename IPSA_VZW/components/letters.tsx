@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { View, Text, Pressable, StyleSheet, Dimensions } from "react-native";
-
+import { lettersStyles as styles } from "@/style/component.styles";
 interface LettersProps {
   onSelect?: (letter: string) => void;
   resetKey?: string;
@@ -71,42 +71,42 @@ const Letters: React.FC<LettersProps> = ({ onSelect, resetKey }) => {
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    justifyContent: "center",
-    alignItems: "center",
-    paddingVertical: 10,
-    backgroundColor: "#ffffff",
-  },
-  row: {
-    flexDirection: "row",
-    justifyContent: "center",
-    marginVertical: 4,
-    flexWrap: "wrap",
-    width: "100%",
-  },
-  row3: {
-    flexDirection: "row",
-    justifyContent: "center",
-    marginVertical: 4,
-    flexWrap: "wrap",
-    width: "100%",
-  },
-  key: {
-    flexBasis: "9%", // 9–10% gives you 10 keys per row
-    maxWidth: "9%",
-    borderRadius: 4,
-    paddingVertical: 12,
-    marginHorizontal: 2,
-    alignItems: "center",
-    justifyContent: "center",
-    height: 60,
-  },
-  letter: {
-    fontSize: 20,
-    fontWeight: "700",
-    color: "#ffffff",
-  },
-});
+// const styles = StyleSheet.create({
+//   container: {
+//     justifyContent: "center",
+//     alignItems: "center",
+//     paddingVertical: 10,
+//     backgroundColor: "#ffffff",
+//   },
+//   row: {
+//     flexDirection: "row",
+//     justifyContent: "center",
+//     marginVertical: 4,
+//     flexWrap: "wrap",
+//     width: "100%",
+//   },
+//   row3: {
+//     flexDirection: "row",
+//     justifyContent: "center",
+//     marginVertical: 4,
+//     flexWrap: "wrap",
+//     width: "100%",
+//   },
+//   key: {
+//     flexBasis: "9%", // 9–10% gives you 10 keys per row
+//     maxWidth: "9%",
+//     borderRadius: 4,
+//     paddingVertical: 12,
+//     marginHorizontal: 2,
+//     alignItems: "center",
+//     justifyContent: "center",
+//     height: 60,
+//   },
+//   letter: {
+//     fontSize: 20,
+//     fontWeight: "700",
+//     color: "#ffffff",
+//   },
+// });
 
 export default Letters;

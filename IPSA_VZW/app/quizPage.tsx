@@ -10,6 +10,7 @@ import QuizChoice from "@/components/choice";
 import Score from "@/components/score";
 import HangmanQuiz from "@/components/hangman";
 import HeartIcon from "../assets/images/heart.png";
+import { quizPageStyles as styles } from "@/style/page.styles";
 
 type Connect = {
   type: string;
@@ -216,9 +217,9 @@ export default function quiz() {
 
     if (!question) {
       // if (dataReady) {
-        return (
-          <Score correctAmount={correctAmount} mistakesAmount={mistakeAmount} />
-        );
+      return (
+        <Score correctAmount={correctAmount} mistakesAmount={mistakeAmount} />
+      );
       // }
 
       return null;
@@ -317,34 +318,34 @@ export default function quiz() {
   );
 }
 
-const styles = StyleSheet.create({
-  container: { flex: 1, position: "relative", marginTop: 35 },
-  loadingContainer: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  content: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "stretch",
-    paddingHorizontal: 12,
-  },
-  center: { flex: 1, justifyContent: "center", alignItems: "center" },
-  done: { fontSize: 18, fontWeight: "bold", marginBottom: 12 },
-  link: { color: "blue", textDecorationLine: "underline" },
-  heartContainer: {
-    position: "absolute",
-    top: 20,
-    left: 0,
-    right: 0,
-    flexDirection: "row",
-    justifyContent: "center",
-    zIndex: 10,
-  },
-  heartIcon: {
-    width: 30,
-    height: 30,
-    marginHorizontal: 4,
-  },
-});
+// const styles = StyleSheet.create({
+//   container: { flex: 1, position: "relative", marginTop: 35 },
+//   loadingContainer: {
+//     flex: 1,
+//     justifyContent: "center",
+//     alignItems: "center",
+//   },
+//   content: {
+//     flex: 1,
+//     justifyContent: "center",
+//     alignItems: "stretch",
+//     paddingHorizontal: 12,
+//   },
+//   center: { flex: 1, justifyContent: "center", alignItems: "center" },
+//   done: { fontSize: 18, fontWeight: "bold", marginBottom: 12 },
+//   link: { color: "blue", textDecorationLine: "underline" },
+//   heartContainer: {
+//     position: "absolute",
+//     top: 20,
+//     left: 0,
+//     right: 0,
+//     flexDirection: "row",
+//     justifyContent: "center",
+//     zIndex: 10,
+//   },
+//   heartIcon: {
+//     width: 30,
+//     height: 30,
+//     marginHorizontal: 4,
+//   },
+// });

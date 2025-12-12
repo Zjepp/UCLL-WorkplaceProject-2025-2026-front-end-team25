@@ -11,7 +11,7 @@ import { useRouter } from "expo-router";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import userService from "@/services/userService";
 import { LoginUserResponse } from "@/types";
-import { loginStyles } from "@/styles";
+import { loginStyles } from "@/style/component.styles";
 
 interface LoginProps {
   user: LoginUserResponse | null;

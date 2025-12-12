@@ -5,6 +5,7 @@ import React, { use, useEffect, useState } from "react";
 import { Text, View, StyleSheet, Pressable } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { indexStyles as styles } from "@/style/page.styles";
 
 export default function HomePage() {
   const router = useRouter();
@@ -163,88 +164,88 @@ export default function HomePage() {
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    flexDirection: "column",
-    backgroundColor: "#ffffff",
-  },
-  headerContainer: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    margin: 20,
-  },
-  headerText: {
-    fontSize: 20,
-    textAlign: "center",
-  },
-  headerTextBox: {
-    fontSize: 24,
-  },
-  headerTextBoxPlaats: {
-    fontSize: 24,
-    color: "white",
-  },
-  headerCounterLayout: {
-    borderRadius: 7,
-    height: 50,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  headerCounterLayoutDagen: {
-    marginTop: 7,
-    paddingHorizontal: 5,
-    backgroundColor: "#28A0A0",
-  },
-  headerCounterLayoutPlaats: {
-    marginTop: 7,
-    paddingHorizontal: 5,
-    backgroundColor: "#FF4F21",
-  },
-  buttonContainer: {
-    flex: 1,
-    backgroundColor: "#FFFFFF",
-    justifyContent: "center",
-    alignItems: "center",
-    paddingHorizontal: 20,
-  },
-  title: {
-    fontSize: 30,
-    color: "#ffffffff",
-    marginBottom: 50,
-    fontWeight: "400",
-  },
-  button: {
-    width: 280,
-    height: 75,
-    borderRadius: 40,
-    alignItems: "center",
-    justifyContent: "center",
-    marginVertical: 10,
-  },
-  logoutButton: {
-    backgroundColor: "#B196C7",
-  },
-  buttonText: {
-    color: "#FFFFFF",
-    fontSize: 30,
-    fontWeight: "400",
-    marginRight: 10,
-  },
-  buttonQuizText: {
-    fontSize: 46,
-    color: "white",
-  },
-  overzichtButton: {
-    backgroundColor: "#e8bf4fff",
-  },
-  scoreBordButton: {
-    backgroundColor: "#B196C7",
-  },
-  quizButton: {
-    backgroundColor: "#FF4F21",
-  },
-  faqButton: {
-    backgroundColor: "#28A0A0",
-  },
-});
+// const styles = StyleSheet.create({
+//   container: {
+//     flex: 1,
+//     flexDirection: "column",
+//     backgroundColor: "#ffffff",
+//   },
+//   headerContainer: {
+//     flexDirection: "row",
+//     justifyContent: "space-between",
+//     margin: 20,
+//   },
+//   headerText: {
+//     fontSize: 20,
+//     textAlign: "center",
+//   },
+//   headerTextBox: {
+//     fontSize: 24,
+//   },
+//   headerTextBoxPlaats: {
+//     fontSize: 24,
+//     color: "white",
+//   },
+//   headerCounterLayout: {
+//     borderRadius: 7,
+//     height: 50,
+//     justifyContent: "center",
+//     alignItems: "center",
+//   },
+//   headerCounterLayoutDagen: {
+//     marginTop: 7,
+//     paddingHorizontal: 5,
+//     backgroundColor: "#28A0A0",
+//   },
+//   headerCounterLayoutPlaats: {
+//     marginTop: 7,
+//     paddingHorizontal: 5,
+//     backgroundColor: "#FF4F21",
+//   },
+//   buttonContainer: {
+//     flex: 1,
+//     backgroundColor: "#FFFFFF",
+//     justifyContent: "center",
+//     alignItems: "center",
+//     paddingHorizontal: 20,
+//   },
+//   title: {
+//     fontSize: 30,
+//     color: "#ffffffff",
+//     marginBottom: 50,
+//     fontWeight: "400",
+//   },
+//   button: {
+//     width: 280,
+//     height: 75,
+//     borderRadius: 40,
+//     alignItems: "center",
+//     justifyContent: "center",
+//     marginVertical: 10,
+//   },
+//   logoutButton: {
+//     backgroundColor: "#B196C7",
+//   },
+//   buttonText: {
+//     color: "#FFFFFF",
+//     fontSize: 30,
+//     fontWeight: "400",
+//     marginRight: 10,
+//   },
+//   buttonQuizText: {
+//     fontSize: 46,
+//     color: "white",
+//   },
+//   overzichtButton: {
+//     backgroundColor: "#e8bf4fff",
+//   },
+//   scoreBordButton: {
+//     backgroundColor: "#B196C7",
+//   },
+//   quizButton: {
+//     backgroundColor: "#FF4F21",
+//   },
+//   faqButton: {
+//     backgroundColor: "#28A0A0",
+//   },
+// });

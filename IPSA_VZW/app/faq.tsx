@@ -10,6 +10,7 @@ import {
 } from "react-native";
 import { useRouter } from "expo-router";
 import faqService from "@/services/faqService";
+import { faqStyles as styles } from "@/style/page.styles";
 
 type FaqItem = {
   id?: number | string;
@@ -120,48 +121,48 @@ export default function FAQPage() {
   );
 }
 
-const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: "#fff" },
-  colorBars: {
-    position: "absolute",
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    flexDirection: "row",
-    zIndex: 1,
-  },
-  colorBar: { width: "25%", height: "100%" },
-  headerRow: {
-    zIndex: 2,
-    marginTop: 30,
-    paddingHorizontal: 20,
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-  },
-  headerButton: {
-    paddingVertical: 12,
-    paddingHorizontal: 20,
-    borderRadius: 18,
-  },
-  chatButton: { backgroundColor: "#B196C7" },
-  returnButton: { backgroundColor: "#28A0A0" },
-  headerButtonText: { color: "#fff", fontSize: 20 },
-  title: {
-    zIndex: 2,
-    fontSize: 36,
-    textAlign: "center",
-    marginTop: 22,
-    marginBottom: 12,
-    color: "#222",
-  },
-  listWrapper: { zIndex: 2, paddingHorizontal: 18, paddingTop: 10 },
-  card: {
-    backgroundColor: "white",
-    borderRadius: 18,
-    padding: 18,
-  },
-  question: { fontSize: 28, marginBottom: 8, color: "#111" },
-  answer: { fontSize: 16, color: "#222" },
-});
+// const styles = StyleSheet.create({
+//   container: { flex: 1, backgroundColor: "#fff" },
+//   colorBars: {
+//     position: "absolute",
+//     top: 0,
+//     left: 0,
+//     right: 0,
+//     bottom: 0,
+//     flexDirection: "row",
+//     zIndex: 1,
+//   },
+//   colorBar: { width: "25%", height: "100%" },
+//   headerRow: {
+//     zIndex: 2,
+//     marginTop: 30,
+//     paddingHorizontal: 20,
+//     flexDirection: "row",
+//     justifyContent: "space-between",
+//     alignItems: "center",
+//   },
+//   headerButton: {
+//     paddingVertical: 12,
+//     paddingHorizontal: 20,
+//     borderRadius: 18,
+//   },
+//   chatButton: { backgroundColor: "#B196C7" },
+//   returnButton: { backgroundColor: "#28A0A0" },
+//   headerButtonText: { color: "#fff", fontSize: 20 },
+//   title: {
+//     zIndex: 2,
+//     fontSize: 36,
+//     textAlign: "center",
+//     marginTop: 22,
+//     marginBottom: 12,
+//     color: "#222",
+//   },
+//   listWrapper: { zIndex: 2, paddingHorizontal: 18, paddingTop: 10 },
+//   card: {
+//     backgroundColor: "white",
+//     borderRadius: 18,
+//     padding: 18,
+//   },
+//   question: { fontSize: 28, marginBottom: 8, color: "#111" },
+//   answer: { fontSize: 16, color: "#222" },
+// });

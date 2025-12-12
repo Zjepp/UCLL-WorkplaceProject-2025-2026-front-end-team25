@@ -11,6 +11,7 @@ import { useRouter } from "expo-router";
 import * as DocumentPicker from "expo-document-picker"; // ← nieuw
 import userService from "@/services/userService";
 import { MaterialIcons } from "@expo/vector-icons";
+import { usersStyles as styles } from "@/style/page.styles";
 
 type User = {
   id: number;
@@ -158,107 +159,107 @@ const Users: React.FC = () => {
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    backgroundColor: "#FFFFFF",
-    paddingHorizontal: 20,
-  },
+// const styles = StyleSheet.create({
+//   container: {
+//     backgroundColor: "#FFFFFF",
+//     paddingHorizontal: 20,
+//   },
 
-  terugButton: {
-    backgroundColor: "#E73E07",
-    paddingVertical: 12,
-    paddingHorizontal: 24,
-    marginBottom: 30,
-    borderRadius: 12,
-    minWidth: 120,
-    alignItems: "center",
-    justifyContent: "center",
-  },
+//   terugButton: {
+//     backgroundColor: "#E73E07",
+//     paddingVertical: 12,
+//     paddingHorizontal: 24,
+//     marginBottom: 30,
+//     borderRadius: 12,
+//     minWidth: 120,
+//     alignItems: "center",
+//     justifyContent: "center",
+//   },
 
-  title: {
-    fontSize: 30,
-    textAlign: "center",
-    color: "#222",
-    marginBottom: 30,
-    fontWeight: "400",
-  },
-  scrollContent: {
-    paddingBottom: 250,
-    flexGrow: 1,
-  },
-  terugButtonText: {
-    color: "#FFFFFF",
-    fontSize: 20,
-    fontWeight: "400",
-    textAlign: "center",
-  },
-  row: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    padding: 14,
-    marginVertical: 10,
-    borderRadius: 20,
-  },
-  user: {
-    flex: 1,
-    fontSize: 18,
-    color: "#000000ff",
-    marginRight: 12,
-  },
-  user2: {
-    fontSize: 24,
-    color: "#000000ff",
-    textAlign: "center",
-  },
-  iconRow: {
-    flexDirection: "row",
-    gap: 16,
-  },
-  iconButton1: {
-    backgroundColor: "#FF4928", // rood
-    padding: 6,
-    borderRadius: 9,
-  },
-  Button: {
-    backgroundColor: "#FFD285", // rood
-    padding: 6,
-    width: "40%",
-    height: "100%",
-    borderRadius: 9,
-    marginTop: 50,
-    textAlign: "center",
-  },
-  iconButton2: {
-    backgroundColor: "#FFD285", // oranje
-    padding: 6,
-    borderRadius: 9,
-  },
-  container2: {
-    paddingHorizontal: 20,
-    marginTop: 50,
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-  },
+//   title: {
+//     fontSize: 30,
+//     textAlign: "center",
+//     color: "#222",
+//     marginBottom: 30,
+//     fontWeight: "400",
+//   },
+//   scrollContent: {
+//     paddingBottom: 250,
+//     flexGrow: 1,
+//   },
+//   terugButtonText: {
+//     color: "#FFFFFF",
+//     fontSize: 20,
+//     fontWeight: "400",
+//     textAlign: "center",
+//   },
+//   row: {
+//     flexDirection: "row",
+//     justifyContent: "space-between",
+//     alignItems: "center",
+//     padding: 14,
+//     marginVertical: 10,
+//     borderRadius: 20,
+//   },
+//   user: {
+//     flex: 1,
+//     fontSize: 18,
+//     color: "#000000ff",
+//     marginRight: 12,
+//   },
+//   user2: {
+//     fontSize: 24,
+//     color: "#000000ff",
+//     textAlign: "center",
+//   },
+//   iconRow: {
+//     flexDirection: "row",
+//     gap: 16,
+//   },
+//   iconButton1: {
+//     backgroundColor: "#FF4928", // rood
+//     padding: 6,
+//     borderRadius: 9,
+//   },
+//   Button: {
+//     backgroundColor: "#FFD285", // rood
+//     padding: 6,
+//     width: "40%",
+//     height: "100%",
+//     borderRadius: 9,
+//     marginTop: 50,
+//     textAlign: "center",
+//   },
+//   iconButton2: {
+//     backgroundColor: "#FFD285", // oranje
+//     padding: 6,
+//     borderRadius: 9,
+//   },
+//   container2: {
+//     paddingHorizontal: 20,
+//     marginTop: 50,
+//     flexDirection: "row",
+//     justifyContent: "space-between",
+//     alignItems: "center",
+//   },
 
-  nieuwButton: {
-    backgroundColor: "#FFD285", // rood
-    paddingVertical: 12,
-    paddingHorizontal: 24,
-    marginBottom: 30,
-    borderRadius: 12,
-    minWidth: 120,
-    alignItems: "center", // belangrijk!
-    justifyContent: "center", // belangrijk!
-  },
+//   nieuwButton: {
+//     backgroundColor: "#FFD285", // rood
+//     paddingVertical: 12,
+//     paddingHorizontal: 24,
+//     marginBottom: 30,
+//     borderRadius: 12,
+//     minWidth: 120,
+//     alignItems: "center", // belangrijk!
+//     justifyContent: "center", // belangrijk!
+//   },
 
-  nieuwButtonText: {
-    color: "#000000ff", // WITTE tekst
-    fontSize: 20,
-    fontWeight: "400",
-    textAlign: "center",
-  },
-});
+//   nieuwButtonText: {
+//     color: "#000000ff", // WITTE tekst
+//     fontSize: 20,
+//     fontWeight: "400",
+//     textAlign: "center",
+//   },
+// });
 
 export default Users;

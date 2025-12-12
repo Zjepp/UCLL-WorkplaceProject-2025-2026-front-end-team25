@@ -13,6 +13,7 @@ import quizService from "@/services/quizService";
 import { MaterialIcons } from "@expo/vector-icons";
 import { Antwoord } from "@/types";
 import faqService from "@/services/faqService";
+import { faqOverviewStyles as styles } from "@/style/page.styles";
 
 export type Faq = {
   id: number;
@@ -143,108 +144,108 @@ const Faq: React.FC = () => {
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#FFFFFF",
-    paddingHorizontal: 20,
-    paddingBottom: 250,
-  },
+// const styles = StyleSheet.create({
+//   container: {
+//     flex: 1,
+//     backgroundColor: "#FFFFFF",
+//     paddingHorizontal: 20,
+//     paddingBottom: 250,
+//   },
 
-  title: {
-    fontSize: 30,
-    textAlign: "center",
-    color: "#222",
-    marginBottom: 30,
-    fontWeight: "400",
-  },
-  row: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    padding: 14,
-    marginVertical: 10,
-    borderRadius: 20,
-  },
-  faq: {
-    flex: 1,
-    fontSize: 18,
-    color: "#000000ff",
-    marginRight: 12,
-  },
+//   title: {
+//     fontSize: 30,
+//     textAlign: "center",
+//     color: "#222",
+//     marginBottom: 30,
+//     fontWeight: "400",
+//   },
+//   row: {
+//     flexDirection: "row",
+//     justifyContent: "space-between",
+//     alignItems: "center",
+//     padding: 14,
+//     marginVertical: 10,
+//     borderRadius: 20,
+//   },
+//   faq: {
+//     flex: 1,
+//     fontSize: 18,
+//     color: "#000000ff",
+//     marginRight: 12,
+//   },
 
-  container2: {
-    paddingHorizontal: 20,
-    marginTop: 50,
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-  },
+//   container2: {
+//     paddingHorizontal: 20,
+//     marginTop: 50,
+//     flexDirection: "row",
+//     justifyContent: "space-between",
+//     alignItems: "center",
+//   },
 
-  terugButton: {
-    backgroundColor: "#E73E07",
-    paddingVertical: 12,
-    paddingHorizontal: 24,
-    marginBottom: 30,
-    borderRadius: 12,
-    minWidth: 120,
-    alignItems: "center",
-    justifyContent: "center",
-  },
+//   terugButton: {
+//     backgroundColor: "#E73E07",
+//     paddingVertical: 12,
+//     paddingHorizontal: 24,
+//     marginBottom: 30,
+//     borderRadius: 12,
+//     minWidth: 120,
+//     alignItems: "center",
+//     justifyContent: "center",
+//   },
 
-  terugButtonText: {
-    color: "#FFFFFF",
-    fontSize: 20,
-    fontWeight: "400",
-    textAlign: "center",
-  },
+//   terugButtonText: {
+//     color: "#FFFFFF",
+//     fontSize: 20,
+//     fontWeight: "400",
+//     textAlign: "center",
+//   },
 
-  nieuwButton: {
-    backgroundColor: "#FFD285",
-    paddingVertical: 12,
-    paddingHorizontal: 24,
-    marginBottom: 30,
-    borderRadius: 12,
-    minWidth: 120,
-    alignItems: "center",
-    justifyContent: "center",
-  },
+//   nieuwButton: {
+//     backgroundColor: "#FFD285",
+//     paddingVertical: 12,
+//     paddingHorizontal: 24,
+//     marginBottom: 30,
+//     borderRadius: 12,
+//     minWidth: 120,
+//     alignItems: "center",
+//     justifyContent: "center",
+//   },
 
-  nieuwButtonText: {
-    color: "#000000ff",
-    fontSize: 20,
-    fontWeight: "400",
-    textAlign: "center",
-  },
+//   nieuwButtonText: {
+//     color: "#000000ff",
+//     fontSize: 20,
+//     fontWeight: "400",
+//     textAlign: "center",
+//   },
 
-  Faq2: {
-    fontSize: 24,
-    color: "#000000ff",
-    textAlign: "center",
-  },
-  iconRow: {
-    flexDirection: "row",
-    gap: 16,
-  },
-  iconButton1: {
-    backgroundColor: "#FF4928", // rood
-    padding: 6,
-    borderRadius: 9,
-  },
-  Button: {
-    backgroundColor: "#FFD285", // rood
-    padding: 6,
-    width: "40%",
-    height: "100%",
-    borderRadius: 9,
-    marginTop: 50,
-    textAlign: "center",
-  },
-  iconButton2: {
-    backgroundColor: "#FFD285", // oranje
-    padding: 6,
-    borderRadius: 9,
-  },
-});
+//   Faq2: {
+//     fontSize: 24,
+//     color: "#000000ff",
+//     textAlign: "center",
+//   },
+//   iconRow: {
+//     flexDirection: "row",
+//     gap: 16,
+//   },
+//   iconButton1: {
+//     backgroundColor: "#FF4928", // rood
+//     padding: 6,
+//     borderRadius: 9,
+//   },
+//   Button: {
+//     backgroundColor: "#FFD285", // rood
+//     padding: 6,
+//     width: "40%",
+//     height: "100%",
+//     borderRadius: 9,
+//     marginTop: 50,
+//     textAlign: "center",
+//   },
+//   iconButton2: {
+//     backgroundColor: "#FFD285", // oranje
+//     padding: 6,
+//     borderRadius: 9,
+//   },
+// });
 
 export default Faq;

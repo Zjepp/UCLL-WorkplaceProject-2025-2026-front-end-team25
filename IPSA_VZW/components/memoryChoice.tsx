@@ -8,6 +8,7 @@ import {
   Pressable,
 } from "react-native";
 import { Antwoord, Vraag } from "@/types";
+import { memoryChoiceStyles as styles } from "@/style/component.styles";
 
 interface QuizOption {
   id: number;
@@ -177,56 +178,56 @@ const QuizMemoryChoice: React.FC<MultipleChoiceProps> = ({
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    //padding: 20,
-    backgroundColor: "#FFFFFF",
-    justifyContent: "flex-start",
-  },
-  title: {
-    fontSize: 18,
-    color: "#000000ff",
-    marginBottom: 10,
-    textAlign: "right",
-    paddingHorizontal: 20,
-    paddingTop: 20,
-  },
-  question: {
-    fontSize: 28,
-    color: "#000000ff",
-    marginBottom: 30,
-    textAlign: "center",
-    paddingHorizontal: 20,
-  },
-  progressContainer: {
-    height: 20,
-    width: "100%",
-    backgroundColor: "#28A0A0",
-    overflow: "hidden",
-    marginVertical: 10,
-  },
-  progressBar: {
-    height: "100%",
-    backgroundColor: "#acece6ff",
-  },
-  optionsGrid: {
-    flexDirection: "row",
-    flexWrap: "wrap",
-    justifyContent: "space-between",
-    paddingHorizontal: 20,
-  },
-  optionBox: {
-    borderRadius: 20,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  formulaText: {
-    fontSize: 22,
-    paddingHorizontal: 5,
-    color: "#ffffffff",
-    textAlign: "center",
-  },
-});
+// const styles = StyleSheet.create({
+//   container: {
+//     flex: 1,
+//     //padding: 20,
+//     backgroundColor: "#FFFFFF",
+//     justifyContent: "flex-start",
+//   },
+//   title: {
+//     fontSize: 18,
+//     color: "#000000ff",
+//     marginBottom: 10,
+//     textAlign: "right",
+//     paddingHorizontal: 20,
+//     paddingTop: 20,
+//   },
+//   question: {
+//     fontSize: 28,
+//     color: "#000000ff",
+//     marginBottom: 30,
+//     textAlign: "center",
+//     paddingHorizontal: 20,
+//   },
+//   progressContainer: {
+//     height: 20,
+//     width: "100%",
+//     backgroundColor: "#28A0A0",
+//     overflow: "hidden",
+//     marginVertical: 10,
+//   },
+//   progressBar: {
+//     height: "100%",
+//     backgroundColor: "#acece6ff",
+//   },
+//   optionsGrid: {
+//     flexDirection: "row",
+//     flexWrap: "wrap",
+//     justifyContent: "space-between",
+//     paddingHorizontal: 20,
+//   },
+//   optionBox: {
+//     borderRadius: 20,
+//     justifyContent: "center",
+//     alignItems: "center",
+//   },
+//   formulaText: {
+//     fontSize: 22,
+//     paddingHorizontal: 5,
+//     color: "#ffffffff",
+//     textAlign: "center",
+//   },
+// });
 
 export default QuizMemoryChoice;

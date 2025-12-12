@@ -11,6 +11,7 @@ import {
 } from "react-native";
 import { LoginUserResponse } from "@/types";
 import { isTokenExpired } from "@/utils/tokenUtils";
+import { categoryPageStyles as styles } from "@/style/page.styles";
 
 export default function CategoryPage() {
   const router = useRouter();
@@ -93,55 +94,55 @@ export default function CategoryPage() {
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#ffffff",
-    paddingTop: 60,
-    paddingHorizontal: 20,
-  },
-  header: {
-    marginBottom: 20,
-  },
-  backButton: {
-    alignSelf: "flex-start",
-    marginBottom: 10,
-    backgroundColor: "#FF4F21",
-    marginTop: 7,
-    borderRadius: 7,
-    paddingVertical: 2,
-    paddingHorizontal: 7,
-  },
-  backButtonText: {
-    fontSize: 20,
-    color: "#ffffffff",
-    fontWeight: "500",
-  },
-  title: {
-    fontSize: 42,
-    fontWeight: "400",
-    textAlign: "center",
-    color: "#000000",
-  },
-  listContent: {
-    paddingBottom: 20,
-  },
-  row: {
-    justifyContent: "space-between",
-    marginBottom: 20,
-  },
-  categoryButton: {
-    width: "47%",
-    aspectRatio: 1,
-    borderRadius: 30,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  categoryText: {
-    fontSize: 20,
-    color: "#ffffffff",
-    fontWeight: "400",
-    textAlign: "center",
-    paddingHorizontal: 8,
-  },
-});
+// const styles = StyleSheet.create({
+//   container: {
+//     flex: 1,
+//     backgroundColor: "#ffffff",
+//     paddingTop: 60,
+//     paddingHorizontal: 20,
+//   },
+//   header: {
+//     marginBottom: 20,
+//   },
+//   backButton: {
+//     alignSelf: "flex-start",
+//     marginBottom: 10,
+//     backgroundColor: "#FF4F21",
+//     marginTop: 7,
+//     borderRadius: 7,
+//     paddingVertical: 2,
+//     paddingHorizontal: 7,
+//   },
+//   backButtonText: {
+//     fontSize: 20,
+//     color: "#ffffffff",
+//     fontWeight: "500",
+//   },
+//   title: {
+//     fontSize: 42,
+//     fontWeight: "400",
+//     textAlign: "center",
+//     color: "#000000",
+//   },
+//   listContent: {
+//     paddingBottom: 20,
+//   },
+//   row: {
+//     justifyContent: "space-between",
+//     marginBottom: 20,
+//   },
+//   categoryButton: {
+//     width: "47%",
+//     aspectRatio: 1,
+//     borderRadius: 30,
+//     justifyContent: "center",
+//     alignItems: "center",
+//   },
+//   categoryText: {
+//     fontSize: 20,
+//     color: "#ffffffff",
+//     fontWeight: "400",
+//     textAlign: "center",
+//     paddingHorizontal: 8,
+//   },
+// });

@@ -9,7 +9,7 @@ import {
 } from "react-native";
 import { Antwoord, Vraag } from "@/types";
 import { useRouter } from "expo-router";
-import { adminStyles as styles } from "@/styles";
+import { adminStyles as styles } from "@/style/component.styles";
 
 const admin: React.FC = () => {
   const router = useRouter();
