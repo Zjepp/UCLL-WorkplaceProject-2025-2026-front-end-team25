@@ -10,6 +10,8 @@ import QuizChoice from "@/components/choice";
 import Score from "@/components/score";
 import HangmanQuiz from "@/components/hangman";
 import HeartIcon from "../assets/images/heart.png";
+import { addWrongAnswer } from "@/components/wrongItemStore";
+import { clearWrongAnswers } from "@/components/wrongItemStore";
 
 type Connect = {
   type: string;
@@ -67,10 +69,8 @@ export default function quiz() {
 
           console.log("Received questions:", vragen.length);
 
-          // Shuffle the arrays before setting them
           setStandaardQuestions(shuffleArray(vragen18));
 
-          // Group connect questions in sets of 4
           if (vragen8.length >= 4) {
             const shuffledConnect = shuffleArray(vragen8);
             const con1 = shuffledConnect.slice(0, 4);
@@ -98,27 +98,30 @@ export default function quiz() {
         }
       }
 
-      if (response.status === 200) {
-        const vragen: Vraag[] = await response.json();
+      if (response && response.status === 200) {
+        const vragen: Vraag[] | undefined = await response.json();
+        if (!vragen) {
+          setError("Onbekend probleem: geen data ontvangen van server.");
+          setLoading(false);
+          return;
+        }
         console.log("Received questions:", vragen.length);
+        console.log("Vragen ontvangen:", vragen);
 
         if (vragen.length === 0) {
           console.log("No questions found for category:", category);
-          setError(`Geen vragen gevonden voor categorie "${category}"`);
+          setError(`Geen vragen gevonden voor categorie \"${category}\"`);
           setLoading(false);
           return;
         }
 
-        // Filter out connect-choice questions for standaard questions
         const standaardVragen = vragen.filter(
           (v) => v.type !== "connect-choice"
         );
         const connectVragen = vragen.filter((v) => v.type === "connect-choice");
 
-        // Shuffle the arrays before setting them
         setStandaardQuestions(shuffleArray(standaardVragen));
 
-        // Group connect questions in sets of 4
         if (connectVragen.length >= 4) {
           const shuffledConnect = shuffleArray(connectVragen);
           const con1 = shuffledConnect.slice(0, 4);
@@ -131,12 +134,16 @@ export default function quiz() {
           setConnectQuestions(connects);
         }
       } else {
-        console.log("Ophalen van vragen mislukt, status:", response.status);
-        if (response.status === 401) {
-          console.log("Authenticatie error - probeer opnieuw in te loggen");
-          setError("Authenticatie verlopen. Log opnieuw in.");
+        if (!response) {
+          setError("Onbekend probleem: geen response van server.");
         } else {
-          setError(`Kon geen vragen ophalen. Status: ${response.status}`);
+          console.log("Ophalen van vragen mislukt, status:", response.status);
+          if (response.status === 401) {
+            console.log("Authenticatie error - probeer opnieuw in te loggen");
+            setError("Authenticatie verlopen. Log opnieuw in.");
+          } else {
+            setError(`Kon geen vragen ophalen. Status: ${response.status}`);
+          }
         }
         setLoading(false);
       }
@@ -153,6 +160,7 @@ export default function quiz() {
   };
 
   useEffect(() => {
+    clearWrongAnswers();
     setLoading(true);
     getRandom18();
   }, [category]);
@@ -215,14 +223,21 @@ export default function quiz() {
     console.log("Current question:", question);
 
     if (!question) {
-      // if (dataReady) {
+      if (questions.length > 0 && currentIndex >= questions.length) {
         return (
           <Score correctAmount={correctAmount} mistakesAmount={mistakeAmount} />
         );
-      // }
-
-      return null;
+      }
+      return (
+        <View style={styles.center}>
+          <ActivityIndicator size="large" />
+          <Text>Vragen worden geladen...</Text>
+        </View>
+      );
     }
+
+    // Log het type van de vraag
+    console.log("Loaded question type:", question.type);
 
     if (question.type === "standaard-choice") {
       return (
@@ -287,10 +302,10 @@ export default function quiz() {
       );
     }
 
-    // Fallback voor andere types
+    // Fallback voor andere types of ontbrekend type
     return (
       <View style={styles.center}>
-        <Text>Vraagtype '{question.type}' wordt nog niet ondersteund</Text>
+        <Text style={{color: 'red', fontWeight: 'bold'}}>Onbekend of niet-ondersteund vraagtype: '{question.type ?? "(leeg)"}'</Text>
         <Text style={styles.link} onPress={() => setCurrentIndex((i) => i + 1)}>
           Volgende vraag
         </Text>
