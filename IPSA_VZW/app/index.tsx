@@ -5,6 +5,7 @@ import React, { use, useEffect, useState } from "react";
 import { Text, View, StyleSheet, Pressable } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { isTokenExpired } from "@/utils/tokenUtils";
 
 export default function HomePage() {
   const router = useRouter();
@@ -24,8 +25,9 @@ export default function HomePage() {
 
   return (
     <View style={styles.container}>
-      {user == null && <Login user={user} setUser={setUser} />}
-      {user && user.role == "USER" && (
+      {!user || isTokenExpired(user?.token) ? (
+        <Login user={user} setUser={setUser} />
+      ) : user.role == "USER" ? (
         <View style={[styles.container, { marginTop: 35 }]}>
           <View style={styles.headerContainer}>
             <View>
@@ -89,9 +91,7 @@ export default function HomePage() {
             </Pressable>
           </View>
         </View>
-      )}
-
-      {user && user.role == "ADMIN" && (
+      ) : user.role == "ADMIN" ? (
         <View
           style={[
             styles.container,
@@ -158,7 +158,7 @@ export default function HomePage() {
             <Text style={styles.buttonText}>Log out</Text>
           </Pressable>
         </View>
-      )}
+      ) : null}
     </View>
   );
 }
