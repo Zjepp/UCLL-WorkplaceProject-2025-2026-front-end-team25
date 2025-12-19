@@ -1,4 +1,7 @@
 import React, { useEffect, useState } from "react";
+import { Platform } from "react-native"; // <-- voeg dit toe bovenaan
+
+import * as DocumentPicker from "expo-document-picker"; // ← nieuw
 import {
   Text,
   View,
@@ -78,15 +81,84 @@ const Vragen: React.FC = () => {
 
   const rowColors = ["#A89BC7", "#6FA8DC"];
 
+  const handleCsvUpload = async () => {
+    try {
+      let fileUri: string;
+      let fileName: string;
+      let fileType: string;
+
+      if (Platform.OS === "web") {
+        // Web: gebruik browser file input
+        const input = document.createElement("input");
+        input.type = "file";
+        input.accept = ".csv,text/csv,text/plain";
+
+        input.onchange = (e: any) => {
+          const file = e.target.files[0];
+          if (!file) return;
+
+          fileUri = URL.createObjectURL(file); // niet echt nodig, maar voor consistentie
+          fileName = file.name;
+          fileType = file.type || "text/csv";
+
+          // Roep upload aan
+          uploadAndRefresh(file, fileName, fileType);
+        };
+
+        input.click();
+        return; // wacht op user selectie
+      } else {
+        // Native (Android/iOS): gebruik expo-document-picker
+        const result = await DocumentPicker.getDocumentAsync({
+          type: ["text/csv", "application/csv", "text/plain"],
+          copyToCacheDirectory: true,
+          multiple: false,
+        });
+
+        if (result.canceled) {
+          console.log("Gebruiker annuleerde");
+          return;
+        }
+
+        const file = result.assets[0];
+        fileUri = file.uri;
+        fileName = file.name;
+        fileType = file.mimeType ?? "text/csv";
+
+        // Roep upload aan
+        await uploadAndRefresh(
+          { uri: fileUri, name: fileName, type: fileType } as any,
+          fileName,
+          fileType
+        );
+      }
+    } catch (err: any) {
+      console.error("Upload error:", err);
+      Alert.alert("Fout", err.message || "Upload mislukt");
+    }
+  };
+
+  // Helper functie om te uploaden en lijst te verversen
+  const uploadAndRefresh = async (
+    fileObject: any,
+    name: string,
+    mimeType: string
+  ) => {
+    const responseText = await quizService.uploadCsvForWeb(fileObject); // nieuwe functie, zie hieronder
+
+    Alert.alert("Succes", responseText || "Gebruikers toegevoegd!");
+    getVragen();
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.container2}>
-        <Pressable
-          style={styles.terugButton}
-          onPress={() => router.push("/")}
-          hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
-        >
+        <Pressable style={styles.terugButton} onPress={() => router.push("/")}>
           <Text style={styles.terugButtonText}>Terug</Text>
+        </Pressable>
+
+        <Pressable style={styles.nieuwButton2} onPress={handleCsvUpload}>
+          <Text style={styles.nieuwButtonText}>Nieuw (CSV)</Text>
         </Pressable>
 
         <Pressable
@@ -209,7 +281,6 @@ const styles = StyleSheet.create({
     borderRadius: 9,
   },
   container2: {
-    paddingHorizontal: 20,
     marginTop: 50,
     flexDirection: "row",
     justifyContent: "space-between",
@@ -219,10 +290,9 @@ const styles = StyleSheet.create({
   terugButton: {
     backgroundColor: "#E73E07",
     paddingVertical: 12,
-    paddingHorizontal: 24,
+    paddingHorizontal: 10,
     marginBottom: 30,
     borderRadius: 12,
-    minWidth: 120,
     alignItems: "center",
     justifyContent: "center",
   },
@@ -237,10 +307,19 @@ const styles = StyleSheet.create({
   nieuwButton: {
     backgroundColor: "#FFD285", // rood
     paddingVertical: 12,
-    paddingHorizontal: 24,
+    paddingHorizontal: 10,
     marginBottom: 30,
     borderRadius: 12,
-    minWidth: 120,
+    alignItems: "center", // belangrijk!
+    justifyContent: "center", // belangrijk!
+  },
+
+  nieuwButton2: {
+    backgroundColor: "#A89BC7", // rood
+    paddingVertical: 12,
+    paddingHorizontal: 10,
+    marginBottom: 30,
+    borderRadius: 12,
     alignItems: "center", // belangrijk!
     justifyContent: "center", // belangrijk!
   },

@@ -8,6 +8,7 @@ import {
   Pressable,
 } from "react-native";
 import { Antwoord, Vraag } from "@/types";
+import { addWrongAnswer } from './wrongItemStore';
 
 interface QuizOption {
   id: number;
@@ -36,23 +37,25 @@ const QuizMemoryChoice: React.FC<MultipleChoiceProps> = ({
 }: MultipleChoiceProps) => {
   const [selectedOption, setSelectedOption] = useState<number | null>(null);
   const windowWidth = Dimensions.get("window").width;
-  const [timeLeft, setTimeLeft] = useState(10);
+  const [timeLeft, setTimeLeft] = useState(question.tijd ?? 10);
   const boxSize = (windowWidth - 100) / 2;
   const [visible, setVisible] = useState(true);
   const [phase, setPhase] = useState<"view" | "answer">("view");
 
   useEffect(() => {
+    console.log(question.tijd);
     const interval = setInterval(() => {
       setTimeLeft((prev) => {
         if (prev <= 1) {
           clearInterval(interval);
+
           if (phase === "view") {
             setVisible(false);
             setPhase("answer");
-            setTimeLeft(10);
+            setTimeLeft(question.tijd ?? 10);
           } else {
             mistakeAmountSetter(mistakeAmount + 1);
-            setTimeLeft(10);
+            setTimeLeft(question.tijd ?? 10);
             setVisible(true);
             setPhase("view");
             onAnswerSelected?.(true);
@@ -61,9 +64,10 @@ const QuizMemoryChoice: React.FC<MultipleChoiceProps> = ({
         }
         return prev - 1;
       });
-    }, 1000);
+    }, (question.tijd ?? 10) * 100);
+
     return () => clearInterval(interval);
-  }, [phase]);
+  }, [phase, question.tijd, mistakeAmount, onAnswerSelected]);
 
   const questionData: {
     title: string;
@@ -97,26 +101,27 @@ const QuizMemoryChoice: React.FC<MultipleChoiceProps> = ({
       },
     ],
   };
-  const handleSelect = (option: QuizOption) => {
+  const handleSelect = (option: QuizOption) => { 
     console.log(`Je hebt gekozen voor: ${option.formula}`);
-    if (
-      typeof option.formula === "object" &&
-      option.formula !== null &&
-      "correct" in option.formula
-    ) {
-      if (option.formula.correct) {
-        correctAmountSetter(correctAmount + 1);
+    if(typeof option.formula === 'object' && option.formula !== null && 'correct' in option.formula){
+      if(option.formula.correct) {
+        correctAmountSetter(correctAmount+1);
       } else {
         mistakeAmountSetter(mistakeAmount + 1);
+        addWrongAnswer({
+          question: question,
+          userAnswer: option.formula.antwoord,
+        });
       }
     }
-    setTimeLeft(10);
+    setTimeLeft(question.tijd ?? 10);
     setVisible(true);
     setPhase("view");
     onAnswerSelected?.(true);
   };
 
-  const progressWidth = ((10 - timeLeft) / 10) * 100;
+  const progressWidth =
+    (((question.tijd ?? 10) - timeLeft) / (question.tijd ?? 10)) * 100;
   const progressColor = phase === "view" ? "#acece6ff" : "#FF4F21";
 
   return (
