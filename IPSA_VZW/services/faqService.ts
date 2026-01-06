@@ -4,12 +4,8 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { API_URL } from "@/config";
 
 const getApiUrl = () => {
-  // For web deployment, ALWAYS use window.EXPO_PUBLIC_API_URL (injected at runtime)
-  if (typeof window !== "undefined") {
-    return window.EXPO_PUBLIC_API_URL || "http://localhost:8080";
-  }
-  // Native fallback
-  return "http://localhost:8080";
+  // Production API URL for main branch deployment
+  return "https://back-end-team25-wpp-team-25.apps.okd.ucll.cloud";
 };
 
 const getFaqs = async () => {
