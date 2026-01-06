@@ -5,15 +5,8 @@ import { Platform } from 'react-native';
 
  
 const getApiUrl = () => {
-  // For web deployment, ALWAYS use window.EXPO_PUBLIC_API_URL (injected at runtime)
-  // For native, fall back to localhost for local development
-  if (typeof window !== "undefined") {
-    const url = window.EXPO_PUBLIC_API_URL || "http://localhost:8080";
-    console.log('🌐 API URL:', url);
-    return url;
-  }
-  // Native fallback
-  return "http://localhost:8080";
+  // Production API URL for main branch deployment
+  return "https://back-end-team25-wpp-team-25.apps.okd.ucll.cloud";
 };
 
 const login = async (user: LoginUser) => {
