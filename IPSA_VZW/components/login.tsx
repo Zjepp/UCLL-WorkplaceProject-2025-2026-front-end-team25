@@ -79,7 +79,7 @@ const Login: React.FC<LoginProps> = ({ user, setUser }) => {
             </Text>
             <TextInput
               style={loginStyles.input}
-              placeholder="Voer gebruikersnaam in"
+              placeholder="Voer email in"
               placeholderTextColor="#999"
               value={email}
               onChangeText={setEmail}
@@ -94,11 +94,11 @@ const Login: React.FC<LoginProps> = ({ user, setUser }) => {
               <Text style={[loginStyles.plusSign, { color: "#E73E07" }]}>
                 +
               </Text>
-              Username
+              Gebruikersnaam
             </Text>
             <TextInput
               style={loginStyles.input}
-              placeholder="Voer wachtwoord in"
+              placeholder="Voer gebruikersnaam in"
               placeholderTextColor="#999"
               value={password}
               onChangeText={setPassword}
