@@ -3,7 +3,15 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { API_URL } from "@/config";
 import { Platform } from 'react-native'; // <-- voeg dit toe bovenaan
 
-const apiUrl = API_URL;
+ 
+const getApiUrl = () => {
+  if (typeof window !== "undefined" && window.EXPO_PUBLIC_API_URL) {
+    return window.EXPO_PUBLIC_API_URL;
+  }
+  return process.env.EXPO_PUBLIC_API_URL || "http://localhost:8080";
+};
+
+const apiUrl = getApiUrl();
 
 const login = async (user: LoginUser) => {
   return await fetch(apiUrl + "/auth/login", {
