@@ -19,10 +19,12 @@ import { API_URL } from "@/config";
 import { get } from "react-native/Libraries/TurboModule/TurboModuleRegistry";
 
 const getApiUrl = () => {
-  if (typeof window !== "undefined" && window.EXPO_PUBLIC_API_URL) {
-    return window.EXPO_PUBLIC_API_URL;
+  // For web deployment, ALWAYS use window.EXPO_PUBLIC_API_URL (injected at runtime)
+  if (typeof window !== "undefined") {
+    return window.EXPO_PUBLIC_API_URL || "http://localhost:8080";
   }
-  return process.env.EXPO_PUBLIC_API_URL || "http://localhost:8080";
+  // Native fallback
+  return "http://localhost:8080";
 };
 
 const get18Questions = async () => {

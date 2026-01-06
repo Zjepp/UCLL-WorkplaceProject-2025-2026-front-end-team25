@@ -1,9 +1,7 @@
 # Build stage
 FROM node:20-alpine AS builder
 
-# Accept API URL as build argument
-ARG EXPO_PUBLIC_API_URL
-ENV EXPO_PUBLIC_API_URL=${EXPO_PUBLIC_API_URL}
+# DO NOT set EXPO_PUBLIC_API_URL at build time - it will be injected at runtime via window object
 
 WORKDIR /app
 
