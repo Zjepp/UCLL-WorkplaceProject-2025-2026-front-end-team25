@@ -3,7 +3,14 @@ import { Faq, LoginUserResponse } from "@/types";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { API_URL } from "@/config";
 
-const apiUrl = API_URL;
+const getApiUrl = () => {
+  if (typeof window !== "undefined" && window.EXPO_PUBLIC_API_URL) {
+    return window.EXPO_PUBLIC_API_URL;
+  }
+  return process.env.EXPO_PUBLIC_API_URL || "http://localhost:8080";
+};
+
+const apiUrl = getApiUrl();
 
 const getFaqs = async () => {
   const userValue = await AsyncStorage.getItem("loggedInUser");

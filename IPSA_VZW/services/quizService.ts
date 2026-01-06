@@ -18,7 +18,14 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { API_URL } from "@/config";
 import { get } from "react-native/Libraries/TurboModule/TurboModuleRegistry";
 
-const apiUrl = API_URL;
+const getApiUrl = () => {
+  if (typeof window !== "undefined" && window.EXPO_PUBLIC_API_URL) {
+    return window.EXPO_PUBLIC_API_URL;
+  }
+  return process.env.EXPO_PUBLIC_API_URL || "http://localhost:8080";
+};
+
+const apiUrl = getApiUrl();
 
 const get18Questions = async () => {
   const userValue = await AsyncStorage.getItem("loggedInUser");
