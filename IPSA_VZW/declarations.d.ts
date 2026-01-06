@@ -8,3 +8,7 @@ declare namespace NodeJS {
     EXPO_PUBLIC_API_URL?: string;
   }
 }
+
+interface Window {
+  EXPO_PUBLIC_API_URL?: string;
+}
