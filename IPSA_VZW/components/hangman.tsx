@@ -176,7 +176,7 @@ const HangmanQuiz: React.FC<HangmanQuizProps> = ({
             <Text
               style={[
                 styles.hangmanLetter,
-                { fontSize: hangmanFont, margin: letterMargin },
+                { fontSize: hangmanFont, margin: letterMargin, width: hangmanFont*0.6 },
               ]}
               key={index}
             >
