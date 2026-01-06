@@ -10,8 +10,6 @@ const getApiUrl = () => {
   return process.env.EXPO_PUBLIC_API_URL || "http://localhost:8080";
 };
 
-const apiUrl = getApiUrl();
-
 const getFaqs = async () => {
   const userValue = await AsyncStorage.getItem("loggedInUser");
   let token = "";
@@ -20,7 +18,7 @@ const getFaqs = async () => {
     token = user.token;
   }
 
-  return await fetch(apiUrl + "/faq", {
+  return await fetch(getApiUrl() + "/faq", {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
@@ -36,7 +34,7 @@ const getFaqById = async (id: number) => {
     const user: LoginUserResponse = JSON.parse(userValue);
     token = user.token;
   }
-  return fetch(apiUrl + "/faq/" + id, {
+  return fetch(getApiUrl() + "/faq/" + id, {
     method: "GET", // ← hier stond PUT!
     headers: {
       "Content-Type": "application/json",
@@ -52,7 +50,7 @@ const updateFaq = async (faq: Faq) => {
     const user: LoginUserResponse = JSON.parse(userValue);
     token = user.token;
   }
-  return fetch(`${apiUrl}/faq`, {
+  return fetch(`${getApiUrl()}/faq`, {
     method: "PUT",
     headers: {
       "Content-Type": "application/json",
@@ -69,7 +67,7 @@ const addQuestions = async (payload: Faq) => {
     const user: LoginUserResponse = JSON.parse(userValue);
     token = user.token;
   }
-  return await fetch(apiUrl + "/faq", {
+  return await fetch(getApiUrl() + "/faq", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -86,7 +84,7 @@ const deleteQuestions = async (id: number) => {
     const user: LoginUserResponse = JSON.parse(userValue);
     token = user.token;
   }
-  return await fetch(apiUrl + "/faq/" + id, {
+  return await fetch(getApiUrl() + "/faq/" + id, {
     method: "DELETE",
     headers: {
       "Content-Type": "application/json",
