@@ -5,8 +5,12 @@ import { Platform } from 'react-native';
 
  
 const getApiUrl = () => {
-  // Production API URL for main branch deployment
-  return "https://back-end-team25-wpp-team-25.apps.okd.ucll.cloud";
+  // Use runtime injected API URL from window (set by inject-env.sh in deployment)
+  if (typeof window !== "undefined" && window.EXPO_PUBLIC_API_URL) {
+    return window.EXPO_PUBLIC_API_URL;
+  }
+  // Fallback for local development
+  return "http://localhost:8080";
 };
 
 const login = async (user: LoginUser) => {

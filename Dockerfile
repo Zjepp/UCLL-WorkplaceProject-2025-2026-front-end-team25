@@ -38,11 +38,15 @@ COPY --chown=nginx:nginx --from=builder /app/dist /usr/share/nginx/html
 # Copy nginx configuration
 COPY --chown=nginx:nginx nginx.conf /etc/nginx/nginx.conf
 
+# Copy environment injection script
+COPY --chown=nginx:nginx inject-env.sh /docker-entrypoint.d/inject-env.sh
+RUN chmod +x /docker-entrypoint.d/inject-env.sh
+
 # Switch back to non-root user
 USER nginx
 
 # Expose port 8080 (non-privileged port)
 EXPOSE 8080
 
-# Start nginx
-CMD ["nginx", "-g", "daemon off;"]
+# Start nginx with environment injection
+CMD ["/docker-entrypoint.d/inject-env.sh"]
