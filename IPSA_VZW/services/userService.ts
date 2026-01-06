@@ -6,13 +6,18 @@ import { Platform } from 'react-native';
  
 const getApiUrl = () => {
   if (typeof window !== "undefined" && window.EXPO_PUBLIC_API_URL) {
+    console.log('✅ Using EXPO_PUBLIC_API_URL from window:', window.EXPO_PUBLIC_API_URL);
     return window.EXPO_PUBLIC_API_URL;
   }
-  return process.env.EXPO_PUBLIC_API_URL || "http://localhost:8080";
+  const envUrl = process.env.EXPO_PUBLIC_API_URL || "http://localhost:8080";
+  console.log('⚠️ Using fallback API URL:', envUrl, '(window.EXPO_PUBLIC_API_URL not set)');
+  return envUrl;
 };
 
 const login = async (user: LoginUser) => {
-  return await fetch(getApiUrl() + "/auth/login", {
+  const apiUrl = getApiUrl();
+  console.log('🔐 Login request to:', apiUrl + "/auth/login");
+  return await fetch(apiUrl + "/auth/login", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
