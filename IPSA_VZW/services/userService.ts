@@ -5,13 +5,15 @@ import { Platform } from 'react-native';
 
  
 const getApiUrl = () => {
-  if (typeof window !== "undefined" && window.EXPO_PUBLIC_API_URL) {
-    console.log('✅ Using EXPO_PUBLIC_API_URL from window:', window.EXPO_PUBLIC_API_URL);
-    return window.EXPO_PUBLIC_API_URL;
+  // For web deployment, ALWAYS use window.EXPO_PUBLIC_API_URL (injected at runtime)
+  // For native, fall back to localhost for local development
+  if (typeof window !== "undefined") {
+    const url = window.EXPO_PUBLIC_API_URL || "http://localhost:8080";
+    console.log('🌐 API URL:', url);
+    return url;
   }
-  const envUrl = process.env.EXPO_PUBLIC_API_URL || "http://localhost:8080";
-  console.log('⚠️ Using fallback API URL:', envUrl, '(window.EXPO_PUBLIC_API_URL not set)');
-  return envUrl;
+  // Native fallback
+  return "http://localhost:8080";
 };
 
 const login = async (user: LoginUser) => {
