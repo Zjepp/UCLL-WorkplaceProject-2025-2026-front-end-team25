@@ -1,7 +1,7 @@
 import { LoginUser, LoginUserResponse, User } from "@/types";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { API_URL } from "@/config";
-import { Platform } from 'react-native'; // <-- voeg dit toe bovenaan
+import { Platform } from 'react-native';
 
  
 const getApiUrl = () => {
@@ -11,10 +11,8 @@ const getApiUrl = () => {
   return process.env.EXPO_PUBLIC_API_URL || "http://localhost:8080";
 };
 
-const apiUrl = getApiUrl();
-
 const login = async (user: LoginUser) => {
-  return await fetch(apiUrl + "/auth/login", {
+  return await fetch(getApiUrl() + "/auth/login", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -30,7 +28,7 @@ const getAll = async () => {
     const user: LoginUserResponse = JSON.parse(userValue);
     token = user.token;
   }
-    return await fetch(apiUrl + '/users', {
+    return await fetch(getApiUrl() + '/users', {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json',
@@ -46,7 +44,7 @@ const deleteUser = async (id: number) => {
     const user: LoginUserResponse = JSON.parse(userValue);
     token = user.token;
   }
-    return await fetch(apiUrl + '/users/' + id, {
+    return await fetch(getApiUrl() + '/users/' + id, {
         method: 'DELETE',
         headers: {
             'Content-Type': 'application/json',
@@ -68,7 +66,7 @@ const uploadCsv = async (uri: string, name: string, mimeType?: string) => {
     type: mimeType || "text/csv",
   } as any);
 
-  const response = await fetch(apiUrl + "/users/upload-csv", {
+  const response = await fetch(getApiUrl() + "/users/upload-csv", {
     method: "POST",
     headers: {
       Authorization: `Bearer ${token}`,
@@ -94,7 +92,7 @@ const uploadCsvForWeb = async (file: File | any) => { // File op web, object op 
   const formData = new FormData();
   formData.append("file", file); // op web: echte File object → perfect voor Spring Boot
 
-  const response = await fetch(apiUrl + "/users/upload-csv", {
+  const response = await fetch(getApiUrl() + "/users/upload-csv", {
     method: "POST",
     headers: {
       Authorization: `Bearer ${token}`,
