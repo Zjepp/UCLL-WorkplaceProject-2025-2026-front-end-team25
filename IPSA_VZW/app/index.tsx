@@ -148,6 +148,18 @@ export default function HomePage() {
             </Pressable>
           </LinearGradient>
 
+          <LinearGradient
+            colors={["#1CA0A0", "#1CA0A0"]}
+            start={{ x: 0, y: 0 }}
+            end={{ x: 1, y: 0 }}
+            locations={[0.5, 0.5]}
+            style={styles.button}
+          >
+            <Pressable onPress={() => router.push("/nieuwecategorie")}>
+              <Text style={styles.buttonText}>Categorie</Text>
+            </Pressable>
+          </LinearGradient>
+
           <Pressable
             style={[styles.button, styles.logoutButton]}
             onPress={async () => {

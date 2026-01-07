@@ -44,6 +44,10 @@ const admin: React.FC = () => {
         <Pressable style={[styles.button, styles.faqButton]}>
           <Text style={styles.buttonText}>Faq</Text>
         </Pressable>
+
+        <Pressable onPress={() => router.push("/nieuwecategorie")} style={[styles.button, styles.categorieButton]}>
+          <Text style={styles.buttonText}>Maak Categorie</Text>
+        </Pressable>
       </View>
     </View>
   );
@@ -115,6 +119,9 @@ const styles = StyleSheet.create({
   },
   faqButton: {
     backgroundColor: "#FDCE7E"
+  },
+  categorieButton: {
+    backgroundColor: "#1CA0A0"
   },
   buttonText: {
     color: "white",

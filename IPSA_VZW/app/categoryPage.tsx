@@ -9,6 +9,7 @@ import {
   FlatList,
 } from "react-native";
 import quizService from "@/services/quizService";
+import categoryService from "@/services/categoryService";
 import { LoginUserResponse } from "@/types";
 import { isTokenExpired } from "@/utils/tokenUtils";
 
@@ -22,20 +23,27 @@ export default function CategoryPage() {
 
   useEffect(() => {
     const fetchCategories = async () => {
+      console.log("[CategoryPage] Fetching categories with questions...");
       try {
+        // Use quizService.getCategories() which calls /vragen/categories
+        // This returns only categories that have questions
         const response = await quizService.getCategories();
-        if (response.status === 200) {
+        if (response.ok) {
           const data = await response.json();
-          // Assign a color to each category (cycled)
-          const colored = data.map((cat: string, idx: number) => ({
-            name: cat,
+          console.log("[CategoryPage] Categories with questions loaded:", data.length, "items");
+          // data is an array of strings (category names)
+          const colored = data.map((categoryName: string, idx: number) => ({
+            name: categoryName,
             color: defaultColors[idx % defaultColors.length],
           }));
           setCategories(colored);
         } else {
+          const errorText = await response.text();
+          console.error("[CategoryPage] Failed to fetch categories:", response.status, errorText);
           setCategories([]);
         }
       } catch (e) {
+        console.error("[CategoryPage] Network error fetching categories:", e);
         setCategories([]);
       }
     };

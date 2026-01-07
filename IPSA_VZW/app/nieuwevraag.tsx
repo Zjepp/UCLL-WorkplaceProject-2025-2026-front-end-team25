@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Text,
   View,
@@ -12,6 +12,7 @@ import {
 } from "react-native";
 import DropDownPicker from "react-native-dropdown-picker";
 import quizService from "@/services/quizService"; // jouw service
+import categoryService from "@/services/categoryService";
 import { useRouter } from "expo-router";
 
 const Nieuwevraag = () => {
@@ -28,41 +29,35 @@ const Nieuwevraag = () => {
     { label: "Connect", value: "connect-choice" },
   ]);
 
-  const [categoryItems] = useState([
-    { label: "Cardiovasculair", value: "Cardiovasculair" },
-    { label: "Gastro-intestinaal", value: "Gastro-intestinaal" },
-    { label: "Respiratoir stelsel", value: "Respiratoir stelsel" },
-    { label: "Hormonaal stelsel", value: "Hormonaal stelsel" },
-    { label: "Pijn", value: "Pijn" },
-    { label: "Centraal zenuwstelsel", value: "Centraal zenuwstelsel" },
-    { label: "Infecties & immuniteit", value: "Infecties & immuniteit" },
-    { label: "Uro-genitaal stelsel", value: "Uro-genitaal stelsel" },
-    {
-      label: "Osteo-articulaire aandoeningen",
-      value: "Osteo-articulaire aandoeningen",
-    },
-    { label: "Kanker", value: "Kanker" },
-    { label: "Dermatologie", value: "Dermatologie" },
-    { label: "Oftalmologie", value: "Oftalmologie" },
-    { label: "Toxicomanie", value: "Toxicomanie" },
-    { label: "Mentaal welzijn", value: "Mentaal welzijn" },
-    { label: "Veterinair", value: "Veterinair" },
-    { label: "Gezonde levensstijl", value: "Gezonde levensstijl" },
-    { label: "Geriatrische patiënt", value: "Geriatrische patiënt" },
-    { label: "Pediatrische patiënt", value: "Pediatrische patiënt" },
-    {
-      label: "Zwangerschap & borstvoeding",
-      value: "Zwangerschap & borstvoeding",
-    },
-    { label: "Fytotherapeutica", value: "Fytotherapeutica" },
-    { label: "Vaccinatie", value: "Vaccinatie" },
-    { label: "Medicatienazicht", value: "Medicatienazicht" },
-    { label: "Medische materialen", value: "Medische materialen" },
-    { label: "Communicatie", value: "Communicatie" },
-    { label: "GGG", value: "GGG: Goed geneesmiddelengebruik" },
-    { label: "Magistrale bereidingen", value: "Magistrale bereidingen" },
-    { label: "Actua", value: "Actua" },
-  ]);
+  const [categoryItems, setCategoryItems] = useState<{ label: string; value: string }[]>([]);
+
+  // Haal categorieën op uit de database
+  useEffect(() => {
+    const fetchCategories = async () => {
+      console.log("[NieuweVraag] Fetching categories...");
+      try {
+        const response = await categoryService.getCategories();
+        if (response.ok) {
+          const categories = await response.json();
+          console.log("[NieuweVraag] Categories fetched:", categories.length, "items");
+          const formattedCategories = categories.map((cat: any) => ({
+            label: cat.name,
+            value: cat.name,
+          }));
+          setCategoryItems(formattedCategories);
+        } else {
+          const errorText = await response.text();
+          console.error("[NieuweVraag] Failed to fetch categories:", response.status, errorText);
+          Alert.alert("Fout", `Kon categorieën niet ophalen (Status: ${response.status})`);
+        }
+      } catch (error) {
+        console.error("[NieuweVraag] Network error fetching categories:", error);
+        Alert.alert("Netwerkfout", "Kon categorieën niet ophalen. Controleer je internetverbinding.");
+      }
+    };
+
+    fetchCategories();
+  }, []);
 
   const [tijd, setTijd] = useState("");
   const [vraag, setVraag] = useState("");
@@ -78,14 +73,18 @@ const Nieuwevraag = () => {
   };
 
   const saveVraag = async () => {
+    console.log("[NieuweVraag] Save vraag triggered");
+    
     if (!vraag || !vraagType || !category) {
+      console.log("[NieuweVraag] Validation error: missing required fields", { vraag: !!vraag, vraagType, category });
       Alert.alert("Fout", "Vraag, speltype en categorie zijn verplicht.");
       return;
     }
 
     // Tijd verplicht voor multiple_choice & memory
     if (vraagType === "memory-choice" && !tijd) {
-      Alert.alert("Fout", "Tijd is verplicht voor  Memory.");
+      console.log("[NieuweVraag] Validation error: tijd required for memory-choice");
+      Alert.alert("Fout", "Tijd is verplicht voor Memory.");
       return;
     }
 
@@ -93,6 +92,7 @@ const Nieuwevraag = () => {
 
     if (vraagType === "standaard-choice") {
       if (!juistAntwoord || !fout1 || !fout2 || !fout3) {
+        console.log("[NieuweVraag] Validation error: missing answers for standaard-choice");
         Alert.alert("Fout", "Vul alle 4 antwoorden in voor Multiple Choice.");
         return;
       }
@@ -107,6 +107,7 @@ const Nieuwevraag = () => {
     if (vraagType === "memory-choice") {
       // Memory: 4 paren → 4 juiste antwoorden nodig
       if (!juistAntwoord || !fout1 || !fout2 || !fout3) {
+        console.log("[NieuweVraag] Validation error: missing pairs for memory-choice");
         Alert.alert("Fout", "Vul alle 4 paren in voor Memory.");
         return;
       }
@@ -120,6 +121,7 @@ const Nieuwevraag = () => {
 
     if (vraagType === "hangman" || vraagType === "connect-choice") {
       if (!juistAntwoord) {
+        console.log("[NieuweVraag] Validation error: missing answer for", vraagType);
         Alert.alert("Fout", "Juist antwoord is verplicht.");
         return;
       }
@@ -130,15 +132,25 @@ const Nieuwevraag = () => {
       type: vraagType,
       vraag,
       category,
-      tijd: tijd ? parseInt(tijd, 10) : undefined, // alleen meesturen als nodig
+      tijd: tijd ? parseInt(tijd, 10) : undefined,
       antwoorden,
     };
 
-    console.log(payload);
+    console.log("[NieuweVraag] Sending payload:", JSON.stringify(payload, null, 2));
 
     try {
       const response = await quizService.addQuestions(payload);
-      if (!response.ok) throw new Error("Serverfout");
+      console.log("[NieuweVraag] Response status:", response.status);
+      
+      if (!response.ok) {
+        const errorText = await response.text();
+        console.error("[NieuweVraag] Server error:", response.status, errorText);
+        Alert.alert("Server Fout", `Kon vraag niet opslaan (Status: ${response.status}). ${errorText}`);
+        return;
+      }
+
+      const responseData = await response.json();
+      console.log("[NieuweVraag] Question saved successfully:", responseData);
 
       // Reset alles
       setVraag("");
@@ -151,7 +163,8 @@ const Nieuwevraag = () => {
       setCategory(null);
       router.push("/vragen");
     } catch (err) {
-      Alert.alert("Error", "Kon vraag niet opslaan.");
+      console.error("[NieuweVraag] Network/Unknown error:", err);
+      Alert.alert("Netwerkfout", "Kon vraag niet opslaan. Controleer je internetverbinding en probeer het opnieuw.");
     }
   };
 

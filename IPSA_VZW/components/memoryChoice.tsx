@@ -80,22 +80,30 @@ const QuizMemoryChoice: React.FC<MultipleChoiceProps> = ({
     options: [
       {
         id: 1,
-        formula: question.antwoorden?.[0] ?? "antwoord niet beschikbaar",
+        formula: typeof question.antwoorden?.[0] === 'object' && question.antwoorden[0]?.antwoord 
+          ? question.antwoorden[0].antwoord 
+          : question.antwoorden?.[0] ?? "antwoord niet beschikbaar",
         color: "#28A0A0",
       },
       {
         id: 2,
-        formula: question.antwoorden?.[1] ?? "antwoord niet beschikbaar",
+        formula: typeof question.antwoorden?.[1] === 'object' && question.antwoorden[1]?.antwoord 
+          ? question.antwoorden[1].antwoord 
+          : question.antwoorden?.[1] ?? "antwoord niet beschikbaar",
         color: "#e8bf4fff",
       },
       {
         id: 3,
-        formula: question.antwoorden?.[2] ?? "antwoord niet beschikbaar",
+        formula: typeof question.antwoorden?.[2] === 'object' && question.antwoorden[2]?.antwoord 
+          ? question.antwoorden[2].antwoord 
+          : question.antwoorden?.[2] ?? "antwoord niet beschikbaar",
         color: "#FF4F21",
       },
       {
         id: 4,
-        formula: question.antwoorden?.[3] ?? "antwoord niet beschikbaar",
+        formula: typeof question.antwoorden?.[3] === 'object' && question.antwoorden[3]?.antwoord 
+          ? question.antwoorden[3].antwoord 
+          : question.antwoorden?.[3] ?? "antwoord niet beschikbaar",
         color: "#B196C7",
       },
     ],

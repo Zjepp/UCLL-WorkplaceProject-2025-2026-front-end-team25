@@ -155,19 +155,36 @@ const updateQuestion = async (vraag: Vraag) => {
 };
 
 const getQuestionsByCategory = async (category: string) => {
-  const userValue = await AsyncStorage.getItem("loggedInUser");
-  let token = "";
-  if (userValue) {
-    const user: LoginUserResponse = JSON.parse(userValue);
-    token = user.token;
+  try {
+    const userValue = await AsyncStorage.getItem("loggedInUser");
+    let token = "";
+    if (userValue) {
+      const user: LoginUserResponse = JSON.parse(userValue);
+      token = user.token;
+    }
+    
+    const url = apiUrl + `/vragen/category/${encodeURIComponent(category)}`;
+    console.log("[QuizService] Fetching questions for category:", category);
+    console.log("[QuizService] Request URL:", url);
+    
+    const response = await fetch(url, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    
+    console.log("[QuizService] Response status:", response.status);
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.error("[QuizService] Error response:", errorText);
+    }
+    return response;
+  } catch (error) {
+    console.error("[QuizService] Network error fetching questions:", error);
+    throw error;
   }
-  return await fetch(apiUrl + `/vragen/category/${category}`, {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
-    },
-  });
 };
 
 const quizService = {
