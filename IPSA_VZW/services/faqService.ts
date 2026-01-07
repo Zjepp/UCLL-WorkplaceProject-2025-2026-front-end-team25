@@ -4,11 +4,11 @@ import storage from "@/utils/storage";
 import { API_URL } from "@/config";
 
 const getApiUrl = () => {
-  // Use runtime injected API URL from window (set by inject-env.sh in deployment)
-  if (typeof window !== "undefined" && window.EXPO_PUBLIC_API_URL) {
-    return window.EXPO_PUBLIC_API_URL;
+  // Detect production vs local based on hostname
+  if (typeof window !== "undefined" && window.location.hostname.includes("apps.okd.ucll.cloud")) {
+    return "https://back-end-team25-wpp-team-25.apps.okd.ucll.cloud";
   }
-  // Fallback for local development
+  // Local development
   return "http://localhost:8080";
 };
 
