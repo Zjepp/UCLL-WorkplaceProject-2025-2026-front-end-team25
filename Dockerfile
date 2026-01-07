@@ -35,6 +35,10 @@ RUN mkdir -p /var/cache/nginx/client_temp \
 # Copy built web app from builder
 COPY --chown=nginx:nginx --from=builder /app/dist /usr/share/nginx/html
 
+# Make /usr/share/nginx/html writable by nginx user for runtime env injection
+RUN chown -R nginx:nginx /usr/share/nginx/html \
+    && chmod -R 755 /usr/share/nginx/html
+
 # Copy nginx configuration
 COPY --chown=nginx:nginx nginx.conf /etc/nginx/nginx.conf
 
