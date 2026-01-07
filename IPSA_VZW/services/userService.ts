@@ -1,5 +1,5 @@
 import { LoginUser, LoginUserResponse, User } from "@/types";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import storage from "@/utils/storage";
 import { API_URL } from "@/config";
 import { Platform } from 'react-native';
 
@@ -26,7 +26,7 @@ const login = async (user: LoginUser) => {
 };
 
 const getAll = async () => {
-  const userValue = await AsyncStorage.getItem("loggedInUser");
+  const userValue = await storage.getItem("loggedInUser");
   let token = "";
   if (userValue) {
     const user: LoginUserResponse = JSON.parse(userValue);
@@ -42,7 +42,7 @@ const getAll = async () => {
 };
 
 const deleteUser = async (id: number) => {
-  const userValue = await AsyncStorage.getItem("loggedInUser");
+  const userValue = await storage.getItem("loggedInUser");
   let token = "";
   if (userValue) {
     const user: LoginUserResponse = JSON.parse(userValue);
@@ -58,7 +58,7 @@ const deleteUser = async (id: number) => {
 };
 
 const uploadCsv = async (uri: string, name: string, mimeType?: string) => {
-  const userValue = await AsyncStorage.getItem("loggedInUser");
+  const userValue = await storage.getItem("loggedInUser");
   if (!userValue) throw new Error("Niet ingelogd");
 
   const { token } = JSON.parse(userValue);
@@ -88,7 +88,7 @@ const uploadCsv = async (uri: string, name: string, mimeType?: string) => {
 };
 
 const uploadCsvForWeb = async (file: File | any) => { // File op web, object op native
-  const userValue = await AsyncStorage.getItem("loggedInUser");
+  const userValue = await storage.getItem("loggedInUser");
   if (!userValue) throw new Error("Niet ingelogd");
 
   const { token } = JSON.parse(userValue);

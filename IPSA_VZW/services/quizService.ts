@@ -1,5 +1,5 @@
 const getCategories = async () => {
-  const userValue = await AsyncStorage.getItem("loggedInUser");
+  const userValue = await storage.getItem("loggedInUser");
   let token = "";
   if (userValue) {
     const user: LoginUserResponse = JSON.parse(userValue);
@@ -14,7 +14,7 @@ const getCategories = async () => {
   });
 };
 import { LoginUserResponse, Vraag } from "@/types";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import storage from "@/utils/storage";
 import { API_URL } from "@/config";
 import { get } from "react-native/Libraries/TurboModule/TurboModuleRegistry";
 
@@ -28,7 +28,7 @@ const getApiUrl = () => {
 };
 
 const get18Questions = async () => {
-  const userValue = await AsyncStorage.getItem("loggedInUser");
+  const userValue = await storage.getItem("loggedInUser");
   let token = "";
   if (userValue) {
     const user: LoginUserResponse = JSON.parse(userValue);
@@ -44,7 +44,7 @@ const get18Questions = async () => {
 };
 
 const get8Questions = async () => {
-  const userValue = await AsyncStorage.getItem("loggedInUser");
+  const userValue = await storage.getItem("loggedInUser");
   let token = "";
   if (userValue) {
     const user: LoginUserResponse = JSON.parse(userValue);
@@ -60,7 +60,7 @@ const get8Questions = async () => {
 };
 
 const addQuestions = async (payload: Vraag) => {
-  const userValue = await AsyncStorage.getItem("loggedInUser");
+  const userValue = await storage.getItem("loggedInUser");
   let token = "";
   if (userValue) {
     const user: LoginUserResponse = JSON.parse(userValue);
@@ -77,7 +77,7 @@ const addQuestions = async (payload: Vraag) => {
 };
 
 const uploadCsv = async (uri: string, name: string, mimeType?: string) => {
-  const userValue = await AsyncStorage.getItem("loggedInUser");
+  const userValue = await storage.getItem("loggedInUser");
   if (!userValue) throw new Error("Niet ingelogd");
 
   const { token } = JSON.parse(userValue);
@@ -107,7 +107,7 @@ const uploadCsv = async (uri: string, name: string, mimeType?: string) => {
 };
 
 const uploadCsvForWeb = async (file: File | any) => { // File op web, object op native
-  const userValue = await AsyncStorage.getItem("loggedInUser");
+  const userValue = await storage.getItem("loggedInUser");
   if (!userValue) throw new Error("Niet ingelogd");
 
   const { token } = JSON.parse(userValue);
@@ -133,7 +133,7 @@ const uploadCsvForWeb = async (file: File | any) => { // File op web, object op 
 };
 
 const deleteQuestions = async (id: number) => {
-  const userValue = await AsyncStorage.getItem("loggedInUser");
+  const userValue = await storage.getItem("loggedInUser");
   let token = "";
   if (userValue) {
     const user: LoginUserResponse = JSON.parse(userValue);
@@ -149,7 +149,7 @@ const deleteQuestions = async (id: number) => {
 };
 
 const getAll = async () => {
-  const userValue = await AsyncStorage.getItem("loggedInUser");
+  const userValue = await storage.getItem("loggedInUser");
   let token = "";
   if (userValue) {
     const user: LoginUserResponse = JSON.parse(userValue);
@@ -165,7 +165,7 @@ const getAll = async () => {
 };
 
 const getQuestionById = async (id: number) => {
-  const userValue = await AsyncStorage.getItem("loggedInUser");
+  const userValue = await storage.getItem("loggedInUser");
   let token = "";
   if (userValue) {
     const user: LoginUserResponse = JSON.parse(userValue);
@@ -181,7 +181,7 @@ const getQuestionById = async (id: number) => {
 };
 
 const updateQuestion = async (vraag: Vraag) => {
-  const userValue = await AsyncStorage.getItem("loggedInUser");
+  const userValue = await storage.getItem("loggedInUser");
   let token = "";
   if (userValue) {
     const user: LoginUserResponse = JSON.parse(userValue);
@@ -198,7 +198,7 @@ const updateQuestion = async (vraag: Vraag) => {
 };
 
 const getQuestionsByCategory = async (category: string) => {
-  const userValue = await AsyncStorage.getItem("loggedInUser");
+  const userValue = await storage.getItem("loggedInUser");
   let token = "";
   if (userValue) {
     const user: LoginUserResponse = JSON.parse(userValue);
