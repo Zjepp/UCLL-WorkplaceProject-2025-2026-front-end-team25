@@ -20,9 +20,6 @@ spec:
         imagePullPolicy: Always
         ports:
         - containerPort: 8080
-        env:
-        - name: EXPO_PUBLIC_API_URL
-          value: "https://back-end-team25-wpp-team-25.apps.okd.ucll.cloud"
         resources:
           requests:
             memory: "128Mi"
