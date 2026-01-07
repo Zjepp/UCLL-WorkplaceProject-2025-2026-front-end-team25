@@ -1,6 +1,6 @@
 import { Platform } from "react-native";
 import { Faq, LoginUserResponse } from "@/types";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import storage from "@/utils/storage";
 import { API_URL } from "@/config";
 
 const getApiUrl = () => {
@@ -13,7 +13,7 @@ const getApiUrl = () => {
 };
 
 const getFaqs = async () => {
-  const userValue = await AsyncStorage.getItem("loggedInUser");
+  const userValue = await storage.getItem("loggedInUser");
   let token = "";
   if (userValue) {
     const user: LoginUserResponse = JSON.parse(userValue);
@@ -30,7 +30,7 @@ const getFaqs = async () => {
 };
 
 const getFaqById = async (id: number) => {
-  const userValue = await AsyncStorage.getItem("loggedInUser");
+  const userValue = await storage.getItem("loggedInUser");
   let token = "";
   if (userValue) {
     const user: LoginUserResponse = JSON.parse(userValue);
@@ -46,7 +46,7 @@ const getFaqById = async (id: number) => {
 };
 
 const updateFaq = async (faq: Faq) => {
-  const userValue = await AsyncStorage.getItem("loggedInUser");
+  const userValue = await storage.getItem("loggedInUser");
   let token = "";
   if (userValue) {
     const user: LoginUserResponse = JSON.parse(userValue);
@@ -63,7 +63,7 @@ const updateFaq = async (faq: Faq) => {
 };
 
 const addQuestions = async (payload: Faq) => {
-  const userValue = await AsyncStorage.getItem("loggedInUser");
+  const userValue = await storage.getItem("loggedInUser");
   let token = "";
   if (userValue) {
     const user: LoginUserResponse = JSON.parse(userValue);
@@ -80,7 +80,7 @@ const addQuestions = async (payload: Faq) => {
 };
 
 const deleteQuestions = async (id: number) => {
-  const userValue = await AsyncStorage.getItem("loggedInUser");
+  const userValue = await storage.getItem("loggedInUser");
   let token = "";
   if (userValue) {
     const user: LoginUserResponse = JSON.parse(userValue);

@@ -8,7 +8,7 @@ import {
   Image,
 } from "react-native";
 import { useRouter } from "expo-router";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import storage from "@/utils/storage";
 import userService from "@/services/userService";
 import { LoginUserResponse } from "@/types";
 
@@ -38,7 +38,7 @@ const Login: React.FC<LoginProps> = ({ user, setUser }) => {
         const user = await response.json();
         // sessionStorage.setItem('loggedInUser', JSON.stringify(user));
         const userValue = JSON.stringify(user);
-        await AsyncStorage.setItem("loggedInUser", userValue);
+        await storage.setItem("loggedInUser", userValue);
         setUser(user);
       } else {
         setError("Foute credentials");
