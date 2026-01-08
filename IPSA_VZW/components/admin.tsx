@@ -29,16 +29,8 @@ const admin: React.FC = () => {
 
 
       <View style={styles.buttonContainer}>
-        <Pressable style={[styles.button, styles.scoreBordButton]}>
-          <Text style={styles.buttonText}>Score Bord</Text>
-        </Pressable>
-
         <Pressable onPress={() => router.push("/quizPage")} style={[styles.quizButton]}>
           <Text style={styles.buttonQuizText}>Quiz</Text>
-        </Pressable>
-
-        <Pressable style={[styles.button, styles.overzichtButton]}>
-          <Text style={styles.buttonText}>Overzicht</Text>
         </Pressable>
 
         <Pressable style={[styles.button, styles.faqButton]}>
@@ -99,9 +91,6 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
-  scoreBordButton: {
-    backgroundColor: "#A395CA",
-  },
   quizButton: {
     borderRadius: 50,
     height: 100,
@@ -109,9 +98,6 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: "#FF4F21",
-  },
-  overzichtButton: {
-    backgroundColor: "#A1C2C2"
   },
   faqButton: {
     backgroundColor: "#FDCE7E"
