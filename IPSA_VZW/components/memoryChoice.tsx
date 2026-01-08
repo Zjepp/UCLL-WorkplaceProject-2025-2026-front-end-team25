@@ -8,7 +8,7 @@ import {
   Pressable,
 } from "react-native";
 import { Antwoord, Vraag } from "@/types";
-import { addWrongAnswer } from './wrongItemStore';
+import { addWrongAnswer } from "./wrongItemStore";
 
 interface QuizOption {
   id: number;
@@ -43,6 +43,30 @@ const QuizMemoryChoice: React.FC<MultipleChoiceProps> = ({
   const [phase, setPhase] = useState<"view" | "answer">("view");
 
   useEffect(() => {
+    if (timeLeft === 0 && phase === "answer") {
+      // This runs AFTER the render is committed, so it's safe to update parent state
+      mistakeAmountSetter(mistakeAmount + 1);
+      addWrongAnswer({
+        question: question,
+        userAnswer: "Geen antwoord gekozen (tijd voorbij)",
+      }); // optional: add a wrong answer entry for timeout
+
+      // Reset for next round
+      setTimeLeft(question.tijd ?? 10);
+      setVisible(true);
+      setPhase("view");
+      onAnswerSelected?.(true);
+    }
+  }, [
+    timeLeft,
+    phase,
+    mistakeAmount,
+    mistakeAmountSetter,
+    question,
+    onAnswerSelected,
+  ]);
+
+  useEffect(() => {
     console.log(question.tijd);
     const interval = setInterval(() => {
       setTimeLeft((prev) => {
@@ -53,12 +77,6 @@ const QuizMemoryChoice: React.FC<MultipleChoiceProps> = ({
             setVisible(false);
             setPhase("answer");
             setTimeLeft(question.tijd ?? 10);
-          } else {
-            mistakeAmountSetter(mistakeAmount + 1);
-            setTimeLeft(question.tijd ?? 10);
-            setVisible(true);
-            setPhase("view");
-            onAnswerSelected?.(true);
           }
           return 0;
         }
@@ -101,11 +119,15 @@ const QuizMemoryChoice: React.FC<MultipleChoiceProps> = ({
       },
     ],
   };
-  const handleSelect = (option: QuizOption) => { 
+  const handleSelect = (option: QuizOption) => {
     console.log(`Je hebt gekozen voor: ${option.formula}`);
-    if(typeof option.formula === 'object' && option.formula !== null && 'correct' in option.formula){
-      if(option.formula.correct) {
-        correctAmountSetter(correctAmount+1);
+    if (
+      typeof option.formula === "object" &&
+      option.formula !== null &&
+      "correct" in option.formula
+    ) {
+      if (option.formula.correct) {
+        correctAmountSetter(correctAmount + 1);
       } else {
         mistakeAmountSetter(mistakeAmount + 1);
         addWrongAnswer({
