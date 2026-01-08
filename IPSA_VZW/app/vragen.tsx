@@ -1,7 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { Platform } from "react-native"; // <-- voeg dit toe bovenaan
-
-import * as DocumentPicker from "expo-document-picker"; // ← nieuw
 import {
   Text,
   View,
@@ -12,9 +9,9 @@ import {
 } from "react-native";
 import { useRouter } from "expo-router";
 import quizService from "@/services/quizService";
-
 import { MaterialIcons } from "@expo/vector-icons";
 import { Antwoord } from "@/types";
+import { handleCsvUpload, questionsCSVValidator } from "@/utils/csvUpload";
 
 // Je type (pas aan als nodig)
 type Vraag = {
@@ -81,73 +78,22 @@ const Vragen: React.FC = () => {
 
   const rowColors = ["#A89BC7", "#6FA8DC"];
 
-  const handleCsvUpload = async () => {
+  const handleCsvUploadPress = async () => {
+    const result = await handleCsvUpload(questionsCSVValidator, "questions");
+    if (!result) return;
+
     try {
-      let fileUri: string;
-      let fileName: string;
-      let fileType: string;
+      const responseText = await quizService.uploadCsvForWeb({
+        uri: result.uri,
+        name: result.name,
+        type: result.type,
+      } as any);
 
-      if (Platform.OS === "web") {
-        // Web: gebruik browser file input
-        const input = document.createElement("input");
-        input.type = "file";
-        input.accept = ".csv,text/csv,text/plain";
-
-        input.onchange = (e: any) => {
-          const file = e.target.files[0];
-          if (!file) return;
-
-          fileUri = URL.createObjectURL(file); // niet echt nodig, maar voor consistentie
-          fileName = file.name;
-          fileType = file.type || "text/csv";
-
-          // Roep upload aan
-          uploadAndRefresh(file, fileName, fileType);
-        };
-
-        input.click();
-        return; // wacht op user selectie
-      } else {
-        // Native (Android/iOS): gebruik expo-document-picker
-        const result = await DocumentPicker.getDocumentAsync({
-          type: ["text/csv", "application/csv", "text/plain"],
-          copyToCacheDirectory: true,
-          multiple: false,
-        });
-
-        if (result.canceled) {
-          console.log("Gebruiker annuleerde");
-          return;
-        }
-
-        const file = result.assets[0];
-        fileUri = file.uri;
-        fileName = file.name;
-        fileType = file.mimeType ?? "text/csv";
-
-        // Roep upload aan
-        await uploadAndRefresh(
-          { uri: fileUri, name: fileName, type: fileType } as any,
-          fileName,
-          fileType
-        );
-      }
-    } catch (err: any) {
-      console.error("Upload error:", err);
-      Alert.alert("Fout", err.message || "Upload mislukt");
+      Alert.alert("Succes", responseText || "Vragen toegevoegd!");
+      getVragen();
+    } catch (error: any) {
+      Alert.alert("Fout", error.message || "Upload mislukt");
     }
-  };
-
-  // Helper functie om te uploaden en lijst te verversen
-  const uploadAndRefresh = async (
-    fileObject: any,
-    name: string,
-    mimeType: string
-  ) => {
-    const responseText = await quizService.uploadCsvForWeb(fileObject); // nieuwe functie, zie hieronder
-
-    Alert.alert("Succes", responseText || "Gebruikers toegevoegd!");
-    getVragen();
   };
 
   return (
@@ -157,7 +103,7 @@ const Vragen: React.FC = () => {
           <Text style={styles.terugButtonText}>Terug</Text>
         </Pressable>
 
-        <Pressable style={styles.nieuwButton2} onPress={handleCsvUpload}>
+        <Pressable style={styles.nieuwButton2} onPress={handleCsvUploadPress}>
           <Text style={styles.nieuwButtonText}>Nieuw (CSV)</Text>
         </Pressable>
 

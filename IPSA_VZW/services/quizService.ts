@@ -5,7 +5,7 @@ const getCategories = async () => {
     const user: LoginUserResponse = JSON.parse(userValue);
     token = user.token;
   }
-  return await fetch(getApiUrl() + "/vragen/categories", {
+  return await fetch(API_URL + "/vragen/categories", {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
@@ -16,16 +16,6 @@ const getCategories = async () => {
 import { LoginUserResponse, Vraag } from "@/types";
 import storage from "@/utils/storage";
 import { API_URL } from "@/config";
-import { get } from "react-native/Libraries/TurboModule/TurboModuleRegistry";
-
-const getApiUrl = () => {
-  // Detect production vs local based on hostname
-  if (typeof window !== "undefined" && window.location.hostname.includes("apps.okd.ucll.cloud")) {
-    return "https://back-end-team25-wpp-team-25.apps.okd.ucll.cloud";
-  }
-  // Local development
-  return "http://localhost:8080";
-};
 
 const get18Questions = async () => {
   const userValue = await storage.getItem("loggedInUser");
@@ -34,7 +24,7 @@ const get18Questions = async () => {
     const user: LoginUserResponse = JSON.parse(userValue);
     token = user.token;
   }
-  return await fetch(getApiUrl() + "/vragen/random18", {
+  return await fetch(API_URL + "/vragen/random18", {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
@@ -50,7 +40,7 @@ const get8Questions = async () => {
     const user: LoginUserResponse = JSON.parse(userValue);
     token = user.token;
   }
-  return await fetch(getApiUrl() + "/vragen/random8", {
+  return await fetch(API_URL + "/vragen/random8", {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
@@ -66,7 +56,7 @@ const addQuestions = async (payload: Vraag) => {
     const user: LoginUserResponse = JSON.parse(userValue);
     token = user.token;
   }
-  return await fetch(getApiUrl() + "/vragen", {
+  return await fetch(API_URL + "/vragen", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -89,7 +79,7 @@ const uploadCsv = async (uri: string, name: string, mimeType?: string) => {
     type: mimeType || "text/csv",
   } as any);
 
-  const response = await fetch(getApiUrl() + "/vragen/upload-csv", {
+  const response = await fetch(API_URL + "/vragen/upload-csv", {
     method: "POST",
     headers: {
       Authorization: `Bearer ${token}`,
@@ -115,7 +105,7 @@ const uploadCsvForWeb = async (file: File | any) => { // File op web, object op 
   const formData = new FormData();
   formData.append("file", file); // op web: echte File object → perfect voor Spring Boot
 
-  const response = await fetch(getApiUrl() + "/vragen/upload-csv", {
+  const response = await fetch(API_URL + "/vragen/upload-csv", {
     method: "POST",
     headers: {
       Authorization: `Bearer ${token}`,
@@ -139,7 +129,7 @@ const deleteQuestions = async (id: number) => {
     const user: LoginUserResponse = JSON.parse(userValue);
     token = user.token;
   }
-  return await fetch(getApiUrl() + "/vragen/" + id, {
+  return await fetch(API_URL + "/vragen/" + id, {
     method: "DELETE",
     headers: {
       "Content-Type": "application/json",
@@ -155,7 +145,7 @@ const getAll = async () => {
     const user: LoginUserResponse = JSON.parse(userValue);
     token = user.token;
   }
-  return await fetch(getApiUrl() + "/vragen/all", {
+  return await fetch(API_URL + "/vragen/all", {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
@@ -171,7 +161,7 @@ const getQuestionById = async (id: number) => {
     const user: LoginUserResponse = JSON.parse(userValue);
     token = user.token;
   }
-  return fetch(getApiUrl() + "/vragen/" + id, {
+  return fetch(API_URL + "/vragen/" + id, {
     method: "GET", // ← hier stond PUT!
     headers: {
       "Content-Type": "application/json",
@@ -187,7 +177,7 @@ const updateQuestion = async (vraag: Vraag) => {
     const user: LoginUserResponse = JSON.parse(userValue);
     token = user.token;
   }
-  return fetch(`${getApiUrl()}/vragen`, {
+  return fetch(`${API_URL}/vragen`, {
     method: "PUT",
     headers: {
       "Content-Type": "application/json",
@@ -204,7 +194,7 @@ const getQuestionsByCategory = async (category: string) => {
     const user: LoginUserResponse = JSON.parse(userValue);
     token = user.token;
   }
-  return await fetch(getApiUrl() + `/vragen/category/${category}`, {
+  return await fetch(API_URL + `/vragen/category/${category}`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",

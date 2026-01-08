@@ -1,16 +1,6 @@
-import { Platform } from "react-native";
 import { Faq, LoginUserResponse } from "@/types";
 import storage from "@/utils/storage";
 import { API_URL } from "@/config";
-
-const getApiUrl = () => {
-  // Detect production vs local based on hostname
-  if (typeof window !== "undefined" && window.location.hostname.includes("apps.okd.ucll.cloud")) {
-    return "https://back-end-team25-wpp-team-25.apps.okd.ucll.cloud";
-  }
-  // Local development
-  return "http://localhost:8080";
-};
 
 const getFaqs = async () => {
   const userValue = await storage.getItem("loggedInUser");
@@ -20,7 +10,7 @@ const getFaqs = async () => {
     token = user.token;
   }
 
-  return await fetch(getApiUrl() + "/faq", {
+  return await fetch(API_URL + "/faq", {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
@@ -36,7 +26,7 @@ const getFaqById = async (id: number) => {
     const user: LoginUserResponse = JSON.parse(userValue);
     token = user.token;
   }
-  return fetch(getApiUrl() + "/faq/" + id, {
+  return fetch(API_URL + "/faq/" + id, {
     method: "GET", // ← hier stond PUT!
     headers: {
       "Content-Type": "application/json",
@@ -52,7 +42,7 @@ const updateFaq = async (faq: Faq) => {
     const user: LoginUserResponse = JSON.parse(userValue);
     token = user.token;
   }
-  return fetch(`${getApiUrl()}/faq`, {
+  return fetch(`${API_URL}/faq`, {
     method: "PUT",
     headers: {
       "Content-Type": "application/json",
@@ -69,7 +59,7 @@ const addQuestions = async (payload: Faq) => {
     const user: LoginUserResponse = JSON.parse(userValue);
     token = user.token;
   }
-  return await fetch(getApiUrl() + "/faq", {
+  return await fetch(API_URL + "/faq", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -86,7 +76,7 @@ const deleteQuestions = async (id: number) => {
     const user: LoginUserResponse = JSON.parse(userValue);
     token = user.token;
   }
-  return await fetch(getApiUrl() + "/faq/" + id, {
+  return await fetch(API_URL + "/faq/" + id, {
     method: "DELETE",
     headers: {
       "Content-Type": "application/json",

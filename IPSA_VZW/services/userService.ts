@@ -1,22 +1,10 @@
 import { LoginUser, LoginUserResponse, User } from "@/types";
 import storage from "@/utils/storage";
 import { API_URL } from "@/config";
-import { Platform } from 'react-native';
-
- 
-const getApiUrl = () => {
-  // Detect production vs local based on hostname
-  if (typeof window !== "undefined" && window.location.hostname.includes("apps.okd.ucll.cloud")) {
-    return "https://back-end-team25-wpp-team-25.apps.okd.ucll.cloud";
-  }
-  // Local development
-  return "http://localhost:8080";
-};
 
 const login = async (user: LoginUser) => {
-  const apiUrl = getApiUrl();
-  console.log('🔐 Login request to:', apiUrl + "/auth/login");
-  return await fetch(apiUrl + "/auth/login", {
+  console.log('🔐 Login request to:', API_URL + "/auth/login");
+  return await fetch(API_URL + "/auth/login", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -32,7 +20,7 @@ const getAll = async () => {
     const user: LoginUserResponse = JSON.parse(userValue);
     token = user.token;
   }
-    return await fetch(getApiUrl() + '/users', {
+    return await fetch(API_URL + '/users', {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json',
@@ -48,7 +36,7 @@ const deleteUser = async (id: number) => {
     const user: LoginUserResponse = JSON.parse(userValue);
     token = user.token;
   }
-    return await fetch(getApiUrl() + '/users/' + id, {
+    return await fetch(API_URL + '/users/' + id, {
         method: 'DELETE',
         headers: {
             'Content-Type': 'application/json',
@@ -70,7 +58,7 @@ const uploadCsv = async (uri: string, name: string, mimeType?: string) => {
     type: mimeType || "text/csv",
   } as any);
 
-  const response = await fetch(getApiUrl() + "/users/upload-csv", {
+  const response = await fetch(API_URL + "/users/upload-csv", {
     method: "POST",
     headers: {
       Authorization: `Bearer ${token}`,
@@ -96,7 +84,7 @@ const uploadCsvForWeb = async (file: File | any) => { // File op web, object op 
   const formData = new FormData();
   formData.append("file", file); // op web: echte File object → perfect voor Spring Boot
 
-  const response = await fetch(getApiUrl() + "/users/upload-csv", {
+  const response = await fetch(API_URL + "/users/upload-csv", {
     method: "POST",
     headers: {
       Authorization: `Bearer ${token}`,
