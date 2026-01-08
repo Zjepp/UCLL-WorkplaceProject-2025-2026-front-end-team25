@@ -1,4 +1,4 @@
-import React, { use, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   View,
   Text,
@@ -108,8 +108,9 @@ const HangmanQuiz: React.FC<HangmanQuizProps> = ({
       onAnswerSelected?.(true);
     }
     if (livesLeft <= 0) {
-      const correct = question.antwoorden?.find((a) => a.correct)?.antwoord ?? "";
-      addWrongAnswer({ question: question, userAnswer: '/' });
+      const correct =
+        question.antwoorden?.find((a) => a.correct)?.antwoord ?? "";
+      addWrongAnswer({ question: question, userAnswer: "/" });
       mistakeAmountSetter(mistakeAmount + 1);
       setLivesLeft(3);
       heartsCountSetter?.(3);
@@ -172,11 +173,18 @@ const HangmanQuiz: React.FC<HangmanQuizProps> = ({
       </Text>
       <View style={styles.hangmanArray}>
         {answerArray.map((ch, index) => {
+          const minW = Math.round(hangmanFont * 0.9);
           return (
             <Text
               style={[
                 styles.hangmanLetter,
-                { fontSize: hangmanFont, margin: letterMargin },
+                {
+                  fontSize: hangmanFont,
+                  margin: letterMargin,
+                  minWidth: minW,
+                  textAlign: "center",
+                  lineHeight: Math.round(hangmanFont * 1.05),
+                },
               ]}
               key={index}
             >
@@ -211,9 +219,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     width: "100%",
   },
-  hangmanLetter: {
-    width: 10,
-  },
+  hangmanLetter: {},
   title: {
     position: "absolute",
     top: 100,
