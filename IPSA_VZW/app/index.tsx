@@ -63,14 +63,6 @@ export default function HomePage() {
               <Text style={styles.buttonText}>Quiz</Text>
             </Pressable>
 
-            <Pressable style={[styles.button, styles.scoreBordButton]}>
-              <Text style={styles.buttonText}>Score Bord</Text>
-            </Pressable>
-
-            <Pressable style={[styles.button, styles.overzichtButton]}>
-              <Text style={styles.buttonText}>Overzicht</Text>
-            </Pressable>
-
             <Pressable
               onPress={() => router.push("/faq" as any)}
               style={[styles.button, styles.faqButton]}
@@ -109,18 +101,6 @@ export default function HomePage() {
           >
             <Pressable onPress={() => router.push("/users")}>
               <Text style={styles.buttonText}>Gebruikers</Text>
-            </Pressable>
-          </LinearGradient>
-
-          <LinearGradient
-            colors={["#FF4F21", "#FF4F21"]}
-            start={{ x: 0, y: 0 }}
-            end={{ x: 1, y: 0 }}
-            locations={[0.5, 0.5]}
-            style={styles.button}
-          >
-            <Pressable onPress={() => router.push("/scorebord")}>
-              <Text style={styles.buttonText}>Scorebord</Text>
             </Pressable>
           </LinearGradient>
 
@@ -234,12 +214,6 @@ const styles = StyleSheet.create({
   buttonQuizText: {
     fontSize: 46,
     color: "white",
-  },
-  overzichtButton: {
-    backgroundColor: "#e8bf4fff",
-  },
-  scoreBordButton: {
-    backgroundColor: "#B196C7",
   },
   quizButton: {
     backgroundColor: "#FF4F21",
